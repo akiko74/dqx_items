@@ -3,9 +3,9 @@ class ItemsController < ApplicationController
   # GET /items.json
   def index
     @items = Item.scoped
-      unless [:keyword].blank?
+      unless params[:keyword].blank?
         @items = Item.where("name = ?", params[:keyword])
-        if @items.count = 1
+        if @items.count == 1
           @item = @items.first
           @recipes = @item.recipes
           @jobs = []

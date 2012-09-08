@@ -1,10 +1,10 @@
 <%= form_for(Item.new, :method => :get, :html => { :class => "form-search" }) do |f| %>
   <div class="input-append">
-    <%= f.text_field :name, :class => "span2 search-query" %>
+    <%= text_field_tag :keyword,'', :class => "span2 search-query" %>
     <%= f.submit "検索", :class => "btn" %>
   </div>
 <% end %>
-
+<% if @item %>
 <div class="tabbable"> 
 <ul class="nav nav-pills">
 <% Job.all.each do |job| %>
@@ -37,3 +37,4 @@
     </div>
 <% end %>
 </div>
+<% end %>
