@@ -1,23 +1,39 @@
-<h1>Listing items</h1>
+<%= form_for(Item.new, :method => :get, :html => { :class => "form-search" }) do |f| %>
+  <div class="input-append">
+    <%= f.text_field :name, :class => "span2 search-query" %>
+    <%= f.submit "検索", :class => "btn" %>
+  </div>
+<% end %>
+
+<div class="tabbable"> 
+<ul class="nav nav-pills">
+<% Job.all.each do |job| %>
+<%   @job_classes = [] %>
+<%   @job_classes << "disabled" unless @item.jobs.include? job %>
+  <li class="<%= @job_classes.join(" ") %>"><a href="#job<%= job.id %>" <%= 'data-toggle="tab"'.html_safe unless @job_classes.include? "disabled" %>><%= job.name %></a></li>
+<% end %>
+</ul>
+
+  <div class="tab-content">
+<% @item.jobs.each do |job| %>
+    <div class="tab-pane <%= active if job.id == 1 %>" id="job<%= job.id %>">
 
 <table>
   <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th><%= Recipe.human_attribute_name(:name) %></th>
+    <th><%= Recipe.human_attribute_name(:level) %></th>
   </tr>
 
-<% @items.each do |item| %>
+<% @item.recipes.where(:job_id => job.id).each do |recipe| %>
   <tr>
-    <td><%= item.name %></td>
-    <td><%= link_to 'Show', item %></td>
-    <td><%= link_to 'Edit', edit_item_path(item) %></td>
-    <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= recipe.name %></td>
+    <td><%= recipe.level %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Item', new_item_path %>
+    </div>
+<% end %>
+</div>
