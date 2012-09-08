@@ -2,8 +2,20 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
-
+    @items = Item.scoped
+      unless [:keyword].blank?
+        @items = Item.where("name = ?", params[:keyword])
+        if @items.count = 1
+          @item = @items.first
+          @recipes = @item.recipes
+          @jobs = []
+          @recipes.each do |recipe|
+            @jobs << recipe.job_id
+          end
+          @jobs = Job.find(@jobs.uniq)
+        end
+      end
+      
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @items }
