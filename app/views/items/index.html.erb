@@ -16,7 +16,7 @@
 
   <div class="tab-content">
 <% @item.jobs.each do |job| %>
-    <div class="tab-pane <%= active if job.id == 1 %>" id="job<%= job.id %>">
+    <div class="tab-pane <%= "active" if job.id == 1 %>" id="job<%= job.id %>">
 
 <table>
   <tr>
