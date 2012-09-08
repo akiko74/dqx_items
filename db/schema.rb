@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908075659) do
+ActiveRecord::Schema.define(:version => 20120908080258) do
 
   create_table "ingredients", :force => true do |t|
     t.integer  "recipe_id"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20120908075659) do
     t.integer  "level"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "job_id"
   end
 
 end
