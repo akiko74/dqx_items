@@ -4,6 +4,8 @@ gem 'rails', '3.2.8'
 
 gem 'mysql2'
 
+gem "twitter-bootstrap-rails"
+
 group :test,:development do
   # Net::HTTPデバック用 環境変数HTTP_SPY=1を設定すると有効化
   gem 'cucumber-rails', require: false
