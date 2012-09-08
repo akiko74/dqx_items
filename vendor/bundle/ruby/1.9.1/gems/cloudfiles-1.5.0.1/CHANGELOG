@@ -1,0 +1,56 @@
+================================================================================
+1.5.0.1 (2011/12/05
+================================================================================
+o Fixed small bug with encoding or URI's
+
+================================================================================
+1.5.0 (2011/10/31)
+================================================================================
+ o The underlying http wrapper now uses client.rb a simple abstraction to manage
+   each ReST call in its own function
+
+================================================================================
+1.4.18 (2011/09/07)
+================================================================================
+ o Added Streaming URL support
+
+================================================================================
+1.4.17 (2011/05/27)
+================================================================================
+ o Added Manifest support for Large Objects
+ o Add support for container metadata
+ o Option to check the MD5 of a file uploaded via the load_from_filename method
+
+================================================================================
+1.4.16 (2011/03/17)
+================================================================================
+ o Bugfix on CDN purging. (CvX)
+ o Better OpenStack Swift support with regards to handling the lack of
+   available CDN. (Topper Bowers)
+
+================================================================================
+1.4.15 (2011/03/09)
+================================================================================
+ o Added CDN SSL URL stuff
+
+================================================================================
+1.4.14 (2011/02/24)
+================================================================================
+  o Added CDN Purge functionality for containers and objects.
+
+================================================================================
+ 1.4.13 (2011/02/22)
+================================================================================
+  o Catch an IOError (HTTP session not started) in cfreq and attempt a retry.
+
+================================================================================
+ 1.4.12 (2011/02/04)
+================================================================================
+  o Configurable :auth_url support for OpenStack Swift and non-US deployments. Add constants for Cloud Servers USA and UK. (Chmouel Boudjnah, Dan Prince)
+  o Moved exceptions under the CloudFiles::Exception scope
+  o Added support for configurable path delimiters (Corey Ward)
+  o Improvements in path escaping (Corey Ward)
+  o Support for the new COPY method on objects, via storage_object.copy and storage_object.move
+  o Reduced the number of API calls for loading metadata (Edmund Salvacion)
+  o Allow setting of content_type on more operations (suggestion by Bo Benson)
+  

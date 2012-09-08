@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+# require 'ruby-debug'
+$:.unshift File.expand_path("../../lib", __FILE__)
+
+require 'astrails/safe'
+include Astrails::Safe
+
+def die(msg)
+  puts "ERROR: #{msg}"
+  exit 1
+end
+
+def usage
+  puts <<-END
+Usage: astrails-safe [OPTIONS] CONFIG_FILE
+Options:
+  -h, --help           This help screen
+  -v, --verbose        be verbose, duh!
+  -n, --dry-run        just pretend, don't do anything.
+  -L, --local          skip S3 and Cloud Files
+
+Note: config file will be created from template if missing
+END
+  exit 1
+end
+
+def process_options
+  usage if ARGV.delete("-h") || ARGV.delete("--help")
+  $_VERBOSE = ARGV.delete("-v") || ARGV.delete("--verbose")
+  $DRY_RUN = ARGV.delete("-n") || ARGV.delete("--dry-run")
+  $LOCAL   = ARGV.delete("-L") || ARGV.delete("--local")
+  usage unless ARGV.first
+  $CONFIG_FILE_NAME = File.expand_path(ARGV.first)
+end
+
+def main
+  process_options
+
+  unless File.exists?($CONFIG_FILE_NAME)
+    die "Missing configuration file. NOT CREATED! Rerun w/o the -n argument to create a template configuration file." if $DRY_RUN
+
+    FileUtils.cp File.join(Astrails::Safe::ROOT, "templates", "script.rb"), $CONFIG_FILE_NAME
+
+    die "Created default #{$CONFIG_FILE_NAME}. Please edit and run again."
+  end
+
+  load($CONFIG_FILE_NAME)
+end
+
+main
