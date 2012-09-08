@@ -1,7 +1,0 @@
-tmp/*
-coverage/*
-doc/*
-pkg/*
-*.gem
-.idea
-Gemfile.lock
