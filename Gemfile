@@ -42,5 +42,6 @@ group :production do
   gem 'request-log-analyzer' ,:require => false
   gem "pg"
 #  gem 'therubyracer-heroku'
+  gem "heroku"
 end
 
