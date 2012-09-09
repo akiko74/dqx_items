@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
 
-
 gem 'mysql2'
 gem 'nokogiri'
 
@@ -32,17 +31,15 @@ group :test,:development do
   gem 'email_spec',    :git=>'git://github.com/bmabey/email-spec.git', :branch=>'rails3',:require => false
   gem 'simplecov'
   gem 'debugger'
+  gem 'capistrano'           ,:require => false
 end
 
 
 group :production do
-#  Use unicorn as the web server
   gem 'unicorn'              ,:require => false
-  gem 'capistrano'           ,:require => false
   gem 'astrails-safe'        ,:require => false
   gem 'request-log-analyzer' ,:require => false
   gem "pg"
-#  gem 'therubyracer-heroku'
   gem "heroku"
 end
 
