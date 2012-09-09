@@ -273,6 +273,7 @@ DEPENDENCIES
   jquery-ui-rails
   mysql2
   net-http-spy
+  nokogiri
   pg
   rails (= 3.2.8)
   rb-fsevent
