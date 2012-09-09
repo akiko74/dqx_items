@@ -40,4 +40,7 @@ group :production do
   gem 'capistrano'           ,:require => false
   gem 'astrails-safe'        ,:require => false
   gem 'request-log-analyzer' ,:require => false
+  gem "pg"
+#  gem 'therubyracer-heroku'
 end
+
