@@ -1,40 +1,115 @@
+<% content_for :content do %>
 <%= form_for(Item.new, :method => :get, :html => { :class => "form-search" }) do |f| %>
   <div class="input-append">
-    <%= text_field_tag :keyword,'', :class => "span2 search-query" %>
+    <%= text_field_tag :keyword,'', :class => "span12 search-query", :autofocus => "autofocus" %>
     <%= f.submit "検索", :class => "btn" %>
   </div>
 <% end %>
+
 <% if @item %>
 <div class="tabbable"> 
-<ul class="nav nav-pills">
-<% Job.all.each do |job| %>
-<%   @job_classes = [] %>
-<%   @job_classes << "disabled" unless @item.jobs.include? job %>
-  <li class="<%= @job_classes.join(" ") %>"><a href="#job<%= job.id %>" <%= 'data-toggle="tab"'.html_safe unless @job_classes.include? "disabled" %>><%= job.name %></a></li>
-<% end %>
-</ul>
+  <ul class="nav nav-pills">
+<%   Job.all.each do |job| %>
+<%     @job_classes = [] %>
+<%     @job_classes << "disabled" unless @item.jobs.include? job %>
+    <li class="<%= @job_classes.join(" ") %>"><a href="#job<%= job.id %>" <%= 'data-toggle="tab"'.html_safe unless @job_classes.include? "disabled" %>><%= job.name %></a></li>
+<%   end %>
+  </ul>
 
   <div class="tab-content">
-<% @item.jobs.each do |job| %>
+<%   @item.jobs.each do |job| %>
     <div class="tab-pane <%= "active" if job.id == 1 %>" id="job<%= job.id %>">
-
-<table>
-  <tr>
-    <th><%= Recipe.human_attribute_name(:name) %></th>
-    <th><%= Recipe.human_attribute_name(:level) %></th>
-  </tr>
-
-<% @item.recipes.where(:job_id => job.id).each do |recipe| %>
-  <tr>
-    <td><%= recipe.name %></td>
-    <td><%= recipe.level %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
+      <table>
+        <tr>
+          <th><%= Recipe.human_attribute_name(:name) %></th>
+          <th><%= Recipe.human_attribute_name(:level) %></th>
+        </tr>
+<%     @item.recipes.where(:job_id => job.id).each do |recipe| %>
+        <tr>
+          <td><%= recipe.name %></td>
+          <td><%= recipe.level %></td>
+        </tr>
+<%     end %>
+      </table>
+      <br />
     </div>
-<% end %>
+<%   end %>
+
+  </div>
 </div>
+<% end %>
+
+<% end %>
+
+
+<% content_for :sidebar do %>
+<style>
+.histories li {
+	list-style	 : none;
+	margin-bottom	 : 1em;
+}
+
+.histories h2 {
+	font-weight	 : normal;
+	font-size	 : 13px;
+	line-height	 : 14px;
+	height		 : auto;
+	margin		 : 0px;
+}
+.job_markers li {
+	float		 : left;
+	margin-bottom	 : 0px;
+}
+.histories article {
+	clear		 : both;
+}
+.job_markers, .histories {
+	margin-left	 : 0px;
+}
+.job_markers .job_marker0 {
+	background-color : #F00;
+}
+.job_markers .job_marker1 {
+	background-color : #FF0;
+}
+.job_markers .job_marker2 {
+	background-color : #0F0;
+}
+.job_markers .job_marker3 {
+	background-color : #0FF;
+}
+.job_markers .job_marker4 {
+	background-color : #00F;
+}
+.job_markers .job_marker5 {
+	background-color : #F0F;
+}
+.job_markers .job_marker6 {
+	background-color : #FFF;
+}
+.job_markers .disabled {
+	background-color: gray;
+}
+
+</style>
+<ul class="histories">
+<%   @cookie_history.each do |history| %>
+<%     item = Item.find(history["i"]) %>
+<%= link_to items_path(:keyword => item.name) do %>
+<li>
+<article>
+<h2><%= item.name %></h2>
+<ul class="job_markers">
+<%     Job.all.each_with_index do |job,i| %>
+<%       @job_classes = ["label", "job_marker#{i}"] %>
+<%       @job_classes << "disabled" unless item.jobs.include? job %>
+  <li class="<%= @job_classes.join(" ") %>"><%= job.name[0] %></li>
+<%     end %>
+<br style="clear:both"/>
+</ul>
+</article>
+</li>
+<%   end %>
+<% end %>
+</ul>
 <% end %>

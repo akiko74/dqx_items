@@ -2,15 +2,21 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
+    history = (cookies[:keyword].nil? || cookies[:keyword].empty?) ? [] : JSON.parse(cookies[:keyword])
+
     @items = Item.scoped
-      unless params[:keyword].blank?
-        @items = Item.where('name LIKE ?', '%'+params[:keyword]+'%')
-        if @items.count == 1
-          @item = @items.first
-          @recipes = @item.recipes
-        end
+    unless params[:keyword].blank?
+      @items = Item.where('name LIKE ?', '%'+params[:keyword]+'%')
+      if @items.count == 1
+        @item = @items.first 
+        history.delete_if { |x| x["i"] == @item.id || Time.at(x["d"]) < Time.now.midnight }
+        @cookie_history = history
+        history.unshift( { "i" => @item.id, "d" => Time.now.to_i } )
+      else
+        @cookie_history = history
       end
-      
+    end
+    cookies[:keyword] = history.to_json
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @items }
