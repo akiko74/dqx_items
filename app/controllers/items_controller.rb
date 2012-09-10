@@ -4,15 +4,10 @@ class ItemsController < ApplicationController
   def index
     @items = Item.scoped
       unless params[:keyword].blank?
-        @items = Item.where("name = ?", params[:keyword])
+        @items = Item.where('name LIKE ?', '%'+params[:keyword]+'%')
         if @items.count == 1
           @item = @items.first
           @recipes = @item.recipes
-          @jobs = []
-          @recipes.each do |recipe|
-            @jobs << recipe.job_id
-          end
-          @jobs = Job.find(@jobs.uniq)
         end
       end
       
