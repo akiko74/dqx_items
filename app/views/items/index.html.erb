@@ -37,6 +37,14 @@
 
   </div>
 </div>
+<% else %>
+<div class="hero-unit">
+<ul>
+<% @items.each do |item| %>
+<li><%= link_to item.name, items_path(:keyword => item.name) %></li>
+<% end %>
+</ul>
+</div>
 <% end %>
 
 <% end %>

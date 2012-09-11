@@ -3,8 +3,8 @@ class ItemsController < ApplicationController
   # GET /items.json
   def index
     history = (cookies[:keyword].nil? || cookies[:keyword].empty?) ? [] : JSON.parse(cookies[:keyword])
-
-    @items = Item.scoped
+    @cookie_history = []
+    @items = []
     unless params[:keyword].blank?
       @items = Item.where('name LIKE ?', '%'+params[:keyword]+'%')
       if @items.count == 1
