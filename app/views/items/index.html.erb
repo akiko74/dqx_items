@@ -16,6 +16,12 @@ h1 {
 	line-height	 : 20px;
 	margin		 : 30px 0px 5px;
 }
+
+.item-list li {
+	font-size	 : 20px;
+	line-height	 : 30px;
+
+}
 </style>
 <% if @item %>
 <h1><%= @item.name %>を含むレシピ</h1>
@@ -57,14 +63,19 @@ h1 {
 
   </div>
 </div>
-<% else %>
-<div class="hero-unit">
-<ul>
+<% elsif @items.empty? && !params[:keyword].nil? %>
+<p>該当するアイテムがみつかりませんでした</p>
+<% elsif @items && !params[:keyword].nil? %>
+<p>複数のアイテムが該当しました。下記のなかからレシピを確認したいアイテムを選択してください</p>
+<div class="item-list">
+<ul class="nav nav-tabs nav-stacked">
 <% @items.each do |item| %>
-<li><%= link_to item.name, items_path(:keyword => item.name) %></li>
+  <li><%= link_to item.name, items_path(:keyword => item.name) %></li>
 <% end %>
 </ul>
 </div>
+<% else %>
+<p>アイテム名を入力して使う職人とレシピをチェックしよう！</p>
 <% end %>
 
 <% end %>
