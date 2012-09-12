@@ -9,7 +9,7 @@ class ItemsController < ApplicationController
       @items = Item.where('name LIKE ?', '%'+params[:keyword]+'%')
       if @items.count == 1
         @item = @items.first 
-        history.delete_if { |x| x["i"] == @item.id || Time.at(x["d"]) < Time.now.midnight }
+        history.delete_if { |x| x["i"] == @item.id || Time.at(x["d"]) < (Time.now - 24.hours) }
         @cookie_history = history
         history.unshift( { "i" => @item.id, "d" => Time.now.to_i } )
       else
