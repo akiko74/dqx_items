@@ -3,7 +3,7 @@
   <div class="input-append">
     <%= text_field_tag :keyword,
           '',
-          :placeholder   => "アイテム名を入力",
+          :placeholder   => "素材名を入力",
           :class         => "span12 search-query",
           :autofocus     => "autofocus",
           "data-provide" => "typeahead"  %>
@@ -64,9 +64,9 @@ h1 {
   </div>
 </div>
 <% elsif @items.empty? && !params[:keyword].nil? %>
-<p>該当するアイテムがみつかりませんでした</p>
+<p>該当する素材がみつかりませんでした</p>
 <% elsif @items && !params[:keyword].nil? %>
-<p>複数のアイテムが該当しました。下記のなかからレシピを確認したいアイテムを選択してください</p>
+<p>複数の素材が該当しました。下記のなかからレシピを確認したいアイテムを選択してください</p>
 <div class="item-list">
 <ul class="nav nav-tabs nav-stacked">
 <% @items.each do |item| %>
@@ -75,21 +75,13 @@ h1 {
 </ul>
 </div>
 <% else %>
-<p>アイテム名を入力して使う職人とレシピをチェックしよう！</p>
+<p>素材名を入力して使う職人とレシピをチェックしよう！</p>
 <% end %>
 
 <% end %>
 
 
 <% content_for :sidebar do %>
-<!--
-  <script type="text/javascript">
-        jQuery(document).ready(function() {
-            var alCities = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
-            $('#keyword').typeahead({source: alCities, items:5});
-        });
-    </script>
--->
 <ul class="histories">
 <%   @cookie_history.each do |history| %>
 <%     item = Item.find(history["i"]) %>

@@ -4,10 +4,24 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "ドラクエ10 レシピサーチβ" %></title>
+<meta name="description" content="素材名を入力して使う職人とレシピをチェックしよう！">
+    <title><%= content_for?(:title) ? yield(:title) : t("app_name") %></title>
     <%= csrf_meta_tags %>
 <script>
 	var itemList = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34763025-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -42,7 +56,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">ドラゴンクエスト10 レシピサーチβ</a>
+          <a class="brand" href="#"><%= t("app_name") %></a>
         </div>
       </div>
     </div>
@@ -62,6 +76,7 @@
       </div><!--/content-->
 
       <footer>
+<a href="https://plus.google.com/105330889456941233920" rel="author" style="display:none">ドラクエ逆引きレシピ</a>
       </footer>
 
     </div> <!-- /container -->
@@ -70,6 +85,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag "application" %>
+
 
   </body>
 </html>
