@@ -10,5 +10,10 @@ namespace :dqx_items do
     DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipes.xml")
   end
 
+  desc "Modify Recipes from misc/modify_recipes.csv"
+  task :modify_recipes do
+    DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/modify_recipes.csv", :action => :modify)
+  end
+
 end
 
