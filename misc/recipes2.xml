@@ -1,0 +1,646 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<recipes>
+
+  <recipe>
+    <name>うろこのたて</name>
+    <craftsperson>
+      <name>防具</name>
+      <level>4</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>どうのこうせき</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>小さなうろこ</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+
+
+  <recipe>
+    <name>MPを消費しない率+2%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>5</level>
+    </craftsperson>
+
+    <materials>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>小さな化石</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>MPを消費しない率+4%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>17</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+      <material>
+        <name>小さな化石</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>大きな化石</name>
+        <num>2</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>おびえガード+30%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>11</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>きよめの水</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>おびえガード+60%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>24</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>きよめの水</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>ホカホカストーン</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>しばりガード+30%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>12</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>するどい爪</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>しばりガード+60%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>26</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>するどいキバ</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>するどい爪</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>マヒガード+20%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>12</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>まんげつそう</name>
+        <num>5</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>マヒガード+40%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>25</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>まんげつそう</name>
+        <num>10</num>
+      </material>
+
+      <material>
+        <name>やわらかウール</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>幻惑ガード+20%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>11</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>うるわしキノコ</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>幻惑ガード+40%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>23</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>うるわしキノコ2</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ピンクパール</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>攻撃時2%でヘナトス</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>7</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>ふしぎなドロドロ</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>攻撃時2%でルカニ</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>8</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>どくどくヘドロ</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>攻撃時3%でヘナトス</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>19</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>うまのふん</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>ふしぎなドロドロ</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>攻撃時3%でルカニ</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>20</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>うしのふん</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>どくどくヘドロ</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>混乱ガード+20%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>11</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>天使のすず</name>
+        <num>3</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>混乱ガード+40%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>23</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+      <material>
+        <name>天使のすず</name>
+        <num>6</num>
+      </material>
+
+      <material>
+        <name>緑のコケ</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>呪いガード+40%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>25</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+      <material>
+        <name>小さなホネ</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>大きなホネ</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>即死ガード+40%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>26</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>ウェナールシェル</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ひかりの石</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>転びガード+30%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>12</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>つけもの石</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>転びガード+60%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>26</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>つけもの石</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>へびのぬけがら</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>封印ガード+20%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>12</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>ほしのカケラ</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>封印ガード+40%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>24</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>げんませき</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ほしのカケラ</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>眠りガード+20%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>12</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>めざめの花</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>眠りガード+40%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>25</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>プクランサフラン</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>めざめの花</name>
+        <num>6</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>踊りガード+30%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>11</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>まんねん雪</name>
+        <num>2</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>1</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+  <recipe>
+    <name>踊りガード+60%</name>
+    <craftsperson>
+      <name>ランプ</name>
+      <level>24</level>
+    </craftsperson>
+    <materials>
+    
+      <material>
+        <name>まんねん雪</name>
+        <num>3</num>
+      </material>
+
+      <material>
+        <name>氷のけっしょう</name>
+        <num>1</num>
+      </material>
+
+      <material>
+        <name>ようせいの粉</name>
+        <num>5</num>
+      </material>
+
+    </materials>
+  </recipe>
+  
+
+</recipes>
+

@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<recipes>
+
+<recipe>
+  <name>プラチナ錬金ツボ</name>
+  <craftsperson>
+  <name>道具</name>
+  <level>30</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>ドワチャカオイル</name>
+  <num>4</num>
+  </material>
+
+  <material>
+  <name>イエローアイ</name>
+  <num>1</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>くさりのはちがね</name>
+  <craftsperson>
+  <name>防具</name>
+  <level>8</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>みがきずな</name>
+  <num>2</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>プラチナ錬金ランプ</name>
+  <craftsperson>
+  <name>道具</name>
+  <level>27</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>パープルアイ</name>
+  <num>1</num>
+  </material>
+
+<material>
+  <name>プクランサフラン</name>
+  <num>4</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>ラブリースティック</name>
+  <craftsperson>
+  <name>木工</name>
+  <level>14</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>ピンクパール</name>
+  <num>1</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>水のサークレット</name>
+  <craftsperson>
+  <name>裁縫</name>
+  <level>25</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>メタルのカケラ</name>
+  <num>1</num>
+  </material>
+
+<material>
+  <name>ブルーアイ</name>
+  <num>1</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>水のはごろも下</name>
+  <craftsperson>
+  <name>裁縫</name>
+  <level>27</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>さざなみのしずく</name>
+  <num>3</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>水のはごろも上</name>
+  <craftsperson>
+  <name>裁縫</name>
+  <level>29</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>天使のソーマ</name>
+  <num>1</num>
+  </material>
+
+  <material>
+  <name>ときのすいしょう</name>
+  <num>1</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>水の脚帯</name>
+  <craftsperson>
+  <name>裁縫</name>
+  <level>25</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>水の樹木</name>
+  <num>2</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+<recipe>
+  <name>鉄の錬金ツボ</name>
+  <craftsperson>
+  <name>道具</name>
+  <level>15</level>
+  </craftsperson>
+  <materials>
+   
+  <material>
+  <name>なないろのまゆ</name>
+  <num>1</num>
+  </material>
+
+  </materials>
+  </recipe>
+
+</recipes>
+
+
