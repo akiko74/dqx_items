@@ -2,7 +2,8 @@
 
 FactoryGirl.define do
   factory :ingredient do
-    recipe_id 1
-    item_id 1
+    association :recipe
+    association :item
+    number (1..5).to_a.sample
   end
 end

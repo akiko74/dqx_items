@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :item do
-    name "MyString"
+    name { Faker::Lorem.words(1).first }
   end
 end
