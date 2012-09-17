@@ -67,4 +67,22 @@ share_examples_for 'the Request that is returned "Job edit Page"' do
   it { should render_template 'jobs/edit' }
 end
 
+share_examples_for 'the Request that is returned "Item Page"' do
+  it_should_behave_like 'the Request that is returned "HTTP OK"'
+  it { should render_template "layouts/application" }
+  it { should render_template 'items/show' }
+end
+
+share_examples_for 'the Request that is returned "Recipe Page"' do
+  it_should_behave_like 'the Request that is returned "HTTP OK"'
+  it { should render_template "layouts/application" }
+  it { should render_template 'recipes/show' }
+end
+
+share_examples_for 'the Request that is returned "Job Page"' do
+  it_should_behave_like 'the Request that is returned "HTTP OK"'
+  it { should render_template "layouts/application" }
+  it { should render_template 'jobs/show' }
+end
+
 
