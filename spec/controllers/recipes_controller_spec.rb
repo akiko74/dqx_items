@@ -6,6 +6,8 @@ require 'spec_helper'
 
 describe RecipesController do
 
+  let(:admin) { FactoryGirl.create(:admin) }
+
   context "#index" do
 
     subject { get :index }
@@ -15,10 +17,10 @@ describe RecipesController do
         ary
       end
     }
-    #let(:admin) { FactoryGirl.create(:admin) }
+
 
     context 'with registed admin' do
-      #before { sign_in admin }
+      before { sign_in admin }
       it_should_behave_like 'the Request that is returned "Recipe list Page"'
       context '@recipes' do
         subject {
@@ -53,7 +55,7 @@ describe RecipesController do
     let(:recipe) { FactoryGirl.create(:recipe) }
 
     context 'with registed admin' do
-      #before { sign_in admin }
+      before { sign_in admin }
       it_should_behave_like 'the Request that is returned "Recipe Page"'
       context '@recipe' do
         subject {
@@ -82,131 +84,157 @@ describe RecipesController do
   end
 
 
+  context "#new" do
 
+    subject { get :new }
 
-  # This should return the minimal set of attributes required to create a valid
-  # Recipe. As you add validations to Recipe, be sure to
-  # update the return value of this method accordingly.
-  def valid_attributes
-    {}
-  end
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # RecipesController. Be sure to keep this updated too.
-  def valid_session
-    {}
-  end
-
-  describe "GET new" do
-    it "assigns a new recipe as @recipe" do
-      get :new, {}, valid_session
-      assigns(:recipe).should be_a_new(Recipe)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested recipe as @recipe" do
-      recipe = Recipe.create! valid_attributes
-      get :edit, {:id => recipe.to_param}, valid_session
-      assigns(:recipe).should eq(recipe)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Recipe" do
-        expect {
-          post :create, {:recipe => valid_attributes}, valid_session
-        }.to change(Recipe, :count).by(1)
-      end
-
-      it "assigns a newly created recipe as @recipe" do
-        post :create, {:recipe => valid_attributes}, valid_session
-        assigns(:recipe).should be_a(Recipe)
-        assigns(:recipe).should be_persisted
-      end
-
-      it "redirects to the created recipe" do
-        post :create, {:recipe => valid_attributes}, valid_session
-        response.should redirect_to(Recipe.last)
+    context 'with registed admin' do
+      before { sign_in admin }
+      it_should_behave_like 'the Request that is returned "Recipe regist Page"'
+      context '@recipe' do
+        subject {
+          get :new
+          assigns(:recipe)
+        }
+        it "should assigns" do
+          should be_a_new(Recipe)
+        end
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved recipe as @recipe" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Recipe.any_instance.stub(:save).and_return(false)
-        post :create, {:recipe => {}}, valid_session
-        assigns(:recipe).should be_a_new(Recipe)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Recipe.any_instance.stub(:save).and_return(false)
-        post :create, {:recipe => {}}, valid_session
-        response.should render_template("new")
-      end
+    context 'with nobody' do
+      it { expect { subject }.to raise_error ActionController::RoutingError }
     end
+
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested recipe" do
-        recipe = Recipe.create! valid_attributes
-        # Assuming there are no other recipes in the database, this
-        # specifies that the Recipe created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Recipe.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => recipe.to_param, :recipe => {'these' => 'params'}}, valid_session
-      end
 
-      it "assigns the requested recipe as @recipe" do
-        recipe = Recipe.create! valid_attributes
-        put :update, {:id => recipe.to_param, :recipe => valid_attributes}, valid_session
-        assigns(:recipe).should eq(recipe)
-      end
+  context "#edit" do
 
-      it "redirects to the recipe" do
-        recipe = Recipe.create! valid_attributes
-        put :update, {:id => recipe.to_param, :recipe => valid_attributes}, valid_session
-        response.should redirect_to(recipe)
+    subject { get :edit, :id => recipe.id }
+    let(:recipe) { FactoryGirl.create(:recipe) }
+
+    context 'with registed admin' do
+      before { sign_in admin }
+      it_should_behave_like 'the Request that is returned "Recipe edit Page"'
+      context '@recipe' do
+        subject {
+          get :edit, :id => recipe.id
+          assigns(:recipe)
+        }
+        it "should assigns" do
+          should == recipe
+        end
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the recipe as @recipe" do
-        recipe = Recipe.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Recipe.any_instance.stub(:save).and_return(false)
-        put :update, {:id => recipe.to_param, :recipe => {}}, valid_session
-        assigns(:recipe).should eq(recipe)
+    context 'with nobody' do
+      it { expect { subject }.to raise_error ActionController::RoutingError }
+    end
+
+  end
+
+
+  context "#create" do
+    subject { post :create, params }
+    let(:params) { FactoryGirl.attributes_for(:recipe) }
+
+    context 'with registed admin' do
+      before { sign_in admin }
+
+      context "with valid params" do
+        it { expect { subject }.to change(Recipe, :count).by(1) }
+        it_should_behave_like 'the Request that is redirected to "Recipe Page"'
+        context '@recipe' do
+          subject {
+            post :create, params
+            assigns(:recipe)
+          }
+          it { should be_a Recipe }
+          it { should be_persisted }
+        end
       end
 
-      it "re-renders the 'edit' template" do
-        recipe = Recipe.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Recipe.any_instance.stub(:save).and_return(false)
-        put :update, {:id => recipe.to_param, :recipe => {}}, valid_session
-        response.should render_template("edit")
+      context "with invalid params" do
+        before { Recipe.any_instance.stub(:save).and_return(false) }        
+        it_should_behave_like 'the Request that is returned "Recipe regist Page"'
+        context '@recipe' do
+          subject {
+            post :create, params
+            assigns(:recipe)
+          }
+          it { should be_a_new(Recipe) }
+        end
       end
+
+    end
+    context 'with nobody' do
+      it { expect { subject }.to raise_error ActionController::RoutingError }
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested recipe" do
-      recipe = Recipe.create! valid_attributes
-      expect {
-        delete :destroy, {:id => recipe.to_param}, valid_session
-      }.to change(Recipe, :count).by(-1)
-    end
 
-    it "redirects to the recipes list" do
-      recipe = Recipe.create! valid_attributes
-      delete :destroy, {:id => recipe.to_param}, valid_session
-      response.should redirect_to(recipes_url)
+  context "#update" do
+    subject { put :update, params.merge(:id => recipe.id) }
+    let(:recipe) { FactoryGirl.create(:recipe) }
+    let(:params) { FactoryGirl.attributes_for(:recipe) }
+
+    context 'with registed admin' do
+      before { sign_in admin }
+
+      context "with valid params" do
+        it_should_behave_like 'the Request that is redirected to "Recipe Page"'
+        context '@recipe' do
+          subject {
+            put :update, params.merge(:id => recipe.id)
+            assigns(:recipe).attributes
+          }
+          it { should_not == recipe  }
+        end
+      end
+
+      context "with invalid params" do
+        before { Recipe.any_instance.stub(:save).and_return(false) }        
+        it_should_behave_like 'the Request that is returned "Recipe edit Page"'
+        context '@recipe' do
+          subject {
+            put :update, params.merge(:id => recipe.id)
+            assigns(:recipe)
+          }
+          it { should == recipe }
+        end
+      end
+
+    end
+    context 'with nobody' do
+      it { expect { subject }.to raise_error ActionController::RoutingError }
+    end
+  end
+
+
+  context "#destroy" do
+    subject { delete :destroy, :id => recipe.id }
+    let!(:recipe) { FactoryGirl.create(:recipe) }
+
+    context 'with registed admin' do
+      before { sign_in admin }
+
+      context "with valid params" do
+        it_should_behave_like 'the Request that is redirected to "Recipe list Page"'
+        it { expect { subject }.to change(Recipe, :count).by(-1) }
+      end
+
+      context "with invalid params" do
+        before { Recipe.any_instance.stub(:destroy).and_return(false) }        
+        it_should_behave_like 'the Request that is redirected to "Recipe list Page"'
+        it { expect { subject }.to_not change(Recipe, :count) }
+      end
+
+    end
+    context 'with nobody' do
+      it { expect { subject }.to raise_error ActionController::RoutingError }
     end
   end
 
 end
+
