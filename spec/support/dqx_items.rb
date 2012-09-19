@@ -13,6 +13,16 @@ share_examples_for 'the Request that is redirected to "Home Page"' do
   it { should redirect_to root_path }
 end
 
+share_examples_for 'the Request that is redirected to "Recipe Page"' do
+  it_should_behave_like 'the Request that is returned "HTTP Found"'
+  it { subject ; should redirect_to recipe_path(:id => assigns(:recipe).id) }
+end
+
+share_examples_for 'the Request that is redirected to "Recipe list Page"' do
+  it_should_behave_like 'the Request that is returned "HTTP Found"'
+  it { subject ; should redirect_to recipes_path }
+end
+
 share_examples_for 'the Request that is returned "Item list Page"' do
   it_should_behave_like 'the Request that is returned "HTTP OK"'
   it { should render_template "layouts/application" }
