@@ -1,170 +1,347 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <recipes>
 
-<recipe>
-  <name>プラチナ錬金ツボ</name>
-  <craftsperson>
-  <name>道具</name>
-  <level>30</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>ドワチャカオイル</name>
-  <num>4</num>
-  </material>
-
-  <material>
-  <name>イエローアイ</name>
-  <num>1</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>青竹の弓</name>
+    <materials>
+      <material>
+        <name>やわらかい枝</name>
+        <num>3</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>2</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>くさりのはちがね</name>
-  <craftsperson>
-  <name>防具</name>
-  <level>8</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>みがきずな</name>
-  <num>2</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>若木の弓</name>
+    <materials>
+      <material>
+        <name>やわらかい枝</name>
+        <num>3</num>
+      </material>
+      <material>
+        <name>じょうぶな枝</name>
+        <num>1</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>4</level>
+    </craftsperson>
+  </recipe>
+  <recipe>
+    <name>古木の弓</name>
+    <materials>
+      <material>
+        <name>やわらかい枝</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>サバンナウッド</name>
+        <num>3</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>6</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>プラチナ錬金ランプ</name>
-  <craftsperson>
-  <name>道具</name>
-  <level>27</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>パープルアイ</name>
-  <num>1</num>
-  </material>
-
-<material>
-  <name>プクランサフラン</name>
-  <num>4</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>ロングボウ</name>
+    <materials>
+      <material>
+        <name>じょうぶな枝</name>
+        <num>3</num>
+      </material>
+      <material>
+        <name>大きなホネ</name>
+        <num>2</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>8</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>ラブリースティック</name>
-  <craftsperson>
-  <name>木工</name>
-  <level>14</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>ピンクパール</name>
-  <num>1</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>したんの弓</name>
+    <materials>
+      <material>
+        <name>じょうぶな枝</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>よごれたほうたい</name>
+        <num>2</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>9</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>水のサークレット</name>
-  <craftsperson>
-  <name>裁縫</name>
-  <level>25</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>メタルのカケラ</name>
-  <num>1</num>
-  </material>
-
-<material>
-  <name>ブルーアイ</name>
-  <num>1</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>かりうどの弓</name>
+    <materials>
+      <material>
+        <name>じょうぶな枝</name>
+        <num>5</num>
+      </material>
+      <material>
+        <name>けものの皮</name>
+        <num>3</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>11</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>水のはごろも下</name>
-  <craftsperson>
-  <name>裁縫</name>
-  <level>27</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>さざなみのしずく</name>
-  <num>3</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>こあくまの弓</name>
+    <materials>
+      <material>
+        <name>じょうぶな枝</name>
+        <num>6</num>
+      </material>
+      <material>
+        <name>あやかしそう</name>
+        <num>4</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>13</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>水のはごろも上</name>
-  <craftsperson>
-  <name>裁縫</name>
-  <level>29</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>天使のソーマ</name>
-  <num>1</num>
-  </material>
-
-  <material>
-  <name>ときのすいしょう</name>
-  <num>1</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>エロスの弓</name>
+    <materials>
+      <material>
+        <name>しなやかな枝</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>ホワイトウッド</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>うるわしキノコ</name>
+        <num>3</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>15</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>水の脚帯</name>
-  <craftsperson>
-  <name>裁縫</name>
-  <level>25</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>水の樹木</name>
-  <num>2</num>
-  </material>
-
-  </materials>
+  <recipe>
+    <name>かぜきりの弓</name>
+    <materials>
+      <material>
+        <name>しなやかな枝</name>
+        <num>5</num>
+      </material>
+      <material>
+        <name>かぜきりのはね</name>
+        <num>2</num>
+      </material>
+      <material>
+        <name>天使のソーマ</name>
+        <num>1</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>17</level>
+    </craftsperson>
   </recipe>
 
-<recipe>
-  <name>鉄の錬金ツボ</name>
-  <craftsperson>
-  <name>道具</name>
-  <level>15</level>
-  </craftsperson>
-  <materials>
-   
-  <material>
-  <name>なないろのまゆ</name>
-  <num>1</num>
-  </material>
+  <recipe>
+    <name>ゆうわくの弓</name>
+    <materials>
+      <material>
+        <name>しなやかな枝</name>
+        <num>6</num>
+      </material>
+      <material>
+        <name>あやかしそう</name>
+        <num>3</num>
+      </material>
+      <material>
+        <name>ピンクパール</name>
+        <num>2</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>18</level>
+    </craftsperson>
+  </recipe>
 
-  </materials>
+  <recipe>
+    <name>月光の弓</name>
+    <materials>
+      <material>
+        <name>しなやかな枝</name>
+        <num>6</num>
+      </material>
+      <material>
+        <name>ひかりの石</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>黄色の宝石</name>
+        <num>1</num>
+      </material>
+      <material>
+        <name>かがやきの樹液</name>
+        <num>3</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>24</level>
+    </craftsperson>
+  </recipe>
+
+  <recipe>
+    <name>白鳥の弓</name>
+    <materials>
+      <material>
+        <name>しなやかな枝</name>
+        <num>6</num>
+      </material>
+      <material>
+        <name>せいれいせき</name>
+        <num>2</num>
+      </material>
+      <material>
+        <name>かぜきりのはね</name>
+        <num>1</num>
+      </material>
+      <material>
+        <name>かがやきの樹液</name>
+        <num>2</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>21</level>
+    </craftsperson>
+  </recipe>
+
+  <recipe>
+    <name>むげんの弓</name>
+    <materials>
+      <material>
+        <name>きれいな枝</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>ヤシの実</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>緑のコケ</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>かがやきの樹液</name>
+        <num>4</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>26</level>
+    </craftsperson>
+  </recipe>
+
+  <recipe>
+    <name>すざくの弓</name>
+    <materials>
+      <material>
+        <name>きれいな枝</name>
+        <num>8</num>
+      </material>
+      <material>
+        <name>せいじゃのはい</name>
+        <num>2</num>
+      </material>
+      <material>
+        <name>グリーンアイ</name>
+        <num>4</num>
+      </material>
+      <material>
+        <name>かがやきの樹液</name>
+        <num>8</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>29</level>
+    </craftsperson>
+  </recipe>
+
+  <recipe>
+    <name>ナイトスナイパー</name>
+    <materials>
+      <material>
+        <name>きれいな枝</name>
+        <num>6</num>
+      </material>
+      <material>
+        <name>よるのとばり</name>
+        <num>2</num>
+      </material>
+      <material>
+        <name>パープルアイ</name>
+        <num>1</num>
+      </material>
+      <material>
+        <name>かがやきの樹液</name>
+        <num>6</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>28</level>
+    </craftsperson>
+  </recipe>
+
+  <recipe>
+    <name>ケイロンの弓</name>
+    <materials>
+      <material>
+        <name>きれいな枝</name>
+        <num>20</num>
+      </material>
+      <material>
+        <name>けものの皮</name>
+        <num>60</num>
+      </material>
+      <material>
+        <name>ブルーオーブ</name>
+        <num>3</num>
+      </material>
+      <material>
+        <name>かがやきの樹液</name>
+        <num>16</num>
+      </material>
+    </materials>
+    <craftsperson>
+      <name>木工</name>
+      <level>30</level>
+    </craftsperson>
   </recipe>
 
 </recipes>
-
-
