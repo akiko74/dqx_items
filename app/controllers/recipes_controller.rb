@@ -21,16 +21,7 @@ class RecipesController < ApplicationController
 
         # TODO 計算結果に置き換える
         result_hash = {
-          :recipe_list => [ 
-            { 
-              :name  => "どうのつるぎ",
-              :price => "50"
-            },
-            {
-              :name  => "麻の服",
-              :price => "70"
-            }
-          ],
+          :recipe_list => @recipe_list,
           :item_list => [
             {
               :name  => "どうのこうせき",
