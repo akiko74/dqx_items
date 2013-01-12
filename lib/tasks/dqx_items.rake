@@ -18,6 +18,10 @@ namespace :dqx_items do
   desc "Load Recipes form misc/recipes2.xml"
   task :load_recipes2 do
     DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipes2.xml")
+  end
+
+  desc "Load Recipes form misc/recipes3.xml"
+  task :load_recipes3 do
     DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipes3.xml")
   end
 end
