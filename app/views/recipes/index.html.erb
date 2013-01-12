@@ -13,9 +13,21 @@
     </div>
   <% end %>
 
-  <table id="recipe_list"></table>
+  <table id="recipe_list" class="table">
+    <thead>
+      <tr><th>レシピ名</th><th>店頭販売価格</th><th>アクション</th></tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
 
-  <table id="item_list"></table>
+  <table id="item_list" class="table">
+    <thead>
+      <tr><th>アイテム名</th><th>合計必要数</th><th>購入金額（店売りのみ）</th></tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
 <% end %>
 
 
@@ -24,7 +36,7 @@
       function get_recipe_list() {
         var _recipes = new Array();
         $.each( 
-          $("#recipe_list th"),
+          $("#recipe_list tbody"),
           function(key,val) {
             _recipes.push($(val).text());
           }
@@ -32,9 +44,9 @@
         return _recipes;
       }
       function drow_recipe_list(recipe_list) {
-        $("#recipe_list").empty();
+        $("#recipe_list tbody").empty();
         for(var i in recipe_list) {
-          $("#recipe_list").append("<tr><th>" + recipe_list[i].name + "</th><td>" + recipe_list[i].price + "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
+          $("#recipe_list tbody").append("<tr><th>" + recipe_list[i].name + "</th><td>" + recipe_list[i].price + "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
         }
       }
       function add_recipes() {
@@ -55,9 +67,9 @@
         });
       }
       function drow_item_list(item_list) {
-        $("#item_list").empty();
+        $("#item_list tbody").empty();
         for(var i in item_list) {
-          $("#item_list").append("<tr><th>" + item_list[i].name + "</th><td>" + item_list[i].count + "</td></tr>");
+          $("#item_list tbody").append("<tr><th>" + item_list[i].name + "</th><td>" + item_list[i].count + "</td></tr>");
         }
       }
     </script>
