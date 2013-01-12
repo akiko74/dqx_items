@@ -69,7 +69,7 @@
       function drow_item_list(item_list) {
         $("#item_list tbody").empty();
         for(var i in item_list) {
-          $("#item_list tbody").append("<tr><th>" + item_list[i].name + "</th><td>" + item_list[i].count + "</td></tr>");
+          $("#item_list tbody").append("<tr><th>" + item_list[i].name + "</th><td>" + item_list[i].count + "</td><td>" + item_list[i].cost + "</td></tr>");
         }
       }
     </script>
