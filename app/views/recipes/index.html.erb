@@ -1,4 +1,51 @@
+<% content_for :content do %>
 
+  <%= form_for(Recipe.new, :method => :get, :html => { :class => "form-search", :onsubmit => 'add_recipes();return false;' }) do |f| %>
+    <div class="input-append">
+      <%= text_field_tag :recipes_keyword,
+                         '',
+                         :autocomplete  => "off", 
+                         :placeholder   => "レシピ名を入力",
+                         :class         => "span12 search-query",
+                         :autofocus     => "autofocus",
+                         "data-provide" => "typeahead"  %>
+      <%= f.submit "検索", :class => "btn" %>
+    </div>
+  <% end %>
+
+  <table id="recipe_list"></table>
+<% end %>
+
+
+<% content_for :head do %>
+    <script>
+      function add_recipes() {
+        $("#recipe_list").append("<tr><th>" + $('#recipes_keyword').val() + "</th><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
+        reload_items();
+        return false;
+      }
+      function drop_recipes(elm) {
+        $(elm).parents('tr').remove();
+        reload_items();
+        return false;
+      }
+      function reload_items() {
+        var _recipes = new Array();
+
+        $.each( 
+          $("#recipe_list th"),
+          function(key,val) {
+            _recipes.push($(val).text());
+          }
+        );
+        console.log(_recipes);
+        $.getJSON("/recipes.json", { recipes : _recipes }, function(json){
+          console.log(json);
+        });
+        return false;
+      }
+    </script>
+<% end %>
 
 <h1>Listing recipes</h1>
 
