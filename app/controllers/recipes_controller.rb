@@ -4,7 +4,15 @@ class RecipesController < ApplicationController
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.all
+    unless params[:recipes].blank?
+      params[:recipes].each do |recipe|
+        total = 0
+        Recipe.find_by_name(recipe).ingredients.each do |ingredient|
+          total += ingredient.item.price * ingredient.number
+        end
+        @recipe_list << {recipe => total}
+      end
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -55,7 +63,6 @@ class RecipesController < ApplicationController
   # GET /recipes/new.json
   def new
     @recipe = Recipe.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @recipe }
@@ -65,6 +72,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1/edit
   def edit
     @recipe = Recipe.find(params[:id])
+    @ingredients = Ingredient.where(:recipe_id => params[:id])
   end
 
   # POST /recipes
