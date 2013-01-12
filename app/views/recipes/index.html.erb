@@ -9,18 +9,19 @@
                          :class         => "span12 search-query",
                          :autofocus     => "autofocus",
                          "data-provide" => "typeahead"  %>
-      <%= f.submit "検索", :class => "btn" %>
+      <%= f.submit "追加", :class => "btn" %>
     </div>
   <% end %>
-
+  <h2>レシピリスト</h2>
   <table id="recipe_list" class="table">
     <thead>
-      <tr><th>レシピ名</th><th>店頭販売価格</th><th>アクション</th></tr>
+      <tr><th>レシピ名</th><th>原価合計（バザー除く）</th><th></th></tr>
     </thead>
     <tbody>
     </tbody>
   </table>
 
+  <h2>必要素材</h2>
   <table id="item_list" class="table">
     <thead>
       <tr><th>アイテム名</th><th>合計必要数</th><th>購入金額（店売りのみ）</th></tr>
@@ -46,7 +47,7 @@
       function drow_recipe_list(recipe_list) {
         $("#recipe_list tbody").empty();
         for(var i in recipe_list) {
-          $("#recipe_list tbody").append("<tr><th>" + recipe_list[i].name + "</th><td>" + recipe_list[i].price + "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
+          $("#recipe_list tbody").append("<tr><th>" + recipe_list[i].name + "</th><td>" + recipe_list[i].price + "G</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
         }
       }
       function add_recipes() {
@@ -69,7 +70,11 @@
       function drow_item_list(item_list) {
         $("#item_list tbody").empty();
         for(var i in item_list) {
-          $("#item_list tbody").append("<tr><th>" + item_list[i].name + "</th><td>" + item_list[i].count + "</td><td>" + item_list[i].cost + "</td></tr>");
+          var _cost = item_list[i].cost;
+          if (_cost == 0) {
+            _cost = "バザーのみ";
+          }
+          $("#item_list tbody").append("<tr><th>" + item_list[i].name + "</th><td>" + item_list[i].count + "</td><td>" + _cost + "</td></tr>");
         }
       }
     </script>
