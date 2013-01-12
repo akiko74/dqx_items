@@ -11,7 +11,7 @@ class RecipesController < ApplicationController
         Recipe.find_by_name(recipe).ingredients.each do |ingredient|
           total += ingredient.item.price * ingredient.number
         end
-        @recipe_list << {recipe => total}
+        @recipe_list << {:name => recipe, :price => total}
       end
     end
 
