@@ -1,18 +1,17 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 
 gem 'mysql2'
 gem 'nokogiri'
 gem 'devise'
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
   gem 'jquery-rails'
-#  gem 'jquery-ui-rails'
-  gem 'therubyracer'
+  gem 'therubyracer', '~> 0.10.2'
   gem "twitter-bootstrap-rails"
 end
 
