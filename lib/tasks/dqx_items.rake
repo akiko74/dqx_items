@@ -24,5 +24,20 @@ namespace :dqx_items do
   task :load_recipes3 do
     DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipes3.xml")
   end
+
+  desc "Load item prices from misc/item_prices.csv"
+  task :add_item_pricess do
+    DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/item_prices.csv", :action => :add_price)
+  end
+
+
+  desc "Load all recipes"
+  task :load_all_recipes do
+    Rake::Task["dqx_items:load_recipes"].invoke
+    Rake::Task["dqx_items:modify_recipes"].invoke
+    Rake::Task["dqx_items:load_recipes2"].invoke
+    Rake::Task["dqx_items:load_recipes3"].invoke
+  end
+
 end
 

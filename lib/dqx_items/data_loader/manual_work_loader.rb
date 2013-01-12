@@ -9,6 +9,35 @@ module DqxItems
       def self.execute(file_path = ARGV[0], options={})
         if options[:action]
           case options[:action]
+          when :add_price
+            require 'csv'
+            label = true
+            label_name = ['item_id', 'item_name', 'item_price']
+            _update_count = 0
+            _insert_count = 0
+            ::CSV.foreach(file_path) do |row|
+              if(label)
+                label = false
+                next
+              end
+              _item_id    = row[0].nil? ? nil : row[0].strip.to_i
+              _item_name  = row[1].strip
+              _item_price = row[2].strip.to_i
+              raise "Item ID is invalid !" if (!_item_id.nil? && !(_item_id > 0))
+              raise "Item Name is invalid !" if _item_name.strip.length == 0
+              if item = Item.find_by_name(_item_name)
+                raise "Item ID miss match!; #{row} --- #{item}" if item.id != _item_id
+                item.price = _item_price
+                _update_count += 1
+              else
+                item = Item.new(:name => _item_name, :price => _item_price)
+                _insert_count += 1
+              end
+              #item.save
+              p item
+            end
+            puts "update:#{_update_count}, insert:#{_insert_count}"
+
           when :modify
             require 'csv'
             label = true
