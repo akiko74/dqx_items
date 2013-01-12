@@ -9,6 +9,7 @@
     <%= csrf_meta_tags %>
 <script>
 	var itemList = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
+	var recipesList = <%= Recipe.all.map(&:name).sort.to_s.html_safe %>;
 </script>
 <script type="text/javascript">
 
@@ -30,6 +31,9 @@
     <![endif]-->
 
     <%= stylesheet_link_tag "application", :media => "all" %>
+
+    <%= yield(:head) if content_for?(:head) %>
+
 
     <!-- For third-generation iPad with high-resolution Retina display: -->
     <!-- Size should be 144 x 144 pixels -->
