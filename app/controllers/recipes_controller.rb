@@ -4,6 +4,7 @@ class RecipesController < ApplicationController
   # GET /recipes
   # GET /recipes.json
   def index
+    @recipe_list = []
     unless params[:recipes].blank?
       params[:recipes].each do |recipe|
         total = 0
