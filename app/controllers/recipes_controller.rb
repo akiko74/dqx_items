@@ -5,13 +5,23 @@ class RecipesController < ApplicationController
   # GET /recipes.json
   def index
     @recipe_list = []
+    items = {}
+    @item_list = []
     unless params[:recipes].blank?
       params[:recipes].each do |recipe|
         total = 0
         Recipe.find_by_name(recipe).ingredients.each do |ingredient|
           total += ingredient.item.price * ingredient.number
+          if items.has_key?(ingredient.item.name)
+            items[ingredient.item.name] += ingredient.number
+          else
+            items[ingredient.item.name] = ingredient.number
+          end
         end
         @recipe_list << {:name => recipe, :price => total}
+      end
+      items.each do |key, value|
+        @item_list << {:name => key, :count => value, :cost => Item.find_by_name(key).price * value }
       end
     end
 
@@ -22,18 +32,7 @@ class RecipesController < ApplicationController
         # TODO 計算結果に置き換える
         result_hash = {
           :recipe_list => @recipe_list,
-          :item_list => [
-            {
-              :name  => "どうのこうせき",
-              :count => "3"
-            },
-            {
-              :name  => "麻の糸",
-              :count => "3"
-            }
-          ]
-        }
-        # ここまで置き換える
+          :item_list => @item_list }
 
         render json: result_hash
       }
