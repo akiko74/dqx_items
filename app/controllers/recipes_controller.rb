@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class RecipesController < ApplicationController
   # GET /recipes
   # GET /recipes.json
@@ -6,7 +8,35 @@ class RecipesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @recipes }
+      format.json {
+
+        # TODO 計算結果に置き換える
+        result_hash = {
+          :recipe_list => [ 
+            { 
+              :name  => "どうのつるぎ",
+              :price => "50"
+            },
+            {
+              :name  => "麻の服",
+              :price => "70"
+            }
+          ],
+          :item_list => [
+            {
+              :name  => "どうのこうせき",
+              :count => "3"
+            },
+            {
+              :name  => "麻の糸",
+              :count => "3"
+            }
+          ]
+        }
+        # ここまで置き換える
+
+        render json: result_hash
+      }
     end
   end
 

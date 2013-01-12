@@ -14,35 +14,51 @@
   <% end %>
 
   <table id="recipe_list"></table>
+
+  <table id="item_list"></table>
 <% end %>
 
 
 <% content_for :head do %>
     <script>
-      function add_recipes() {
-        $("#recipe_list").append("<tr><th>" + $('#recipes_keyword').val() + "</th><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
-        reload_items();
-        return false;
-      }
-      function drop_recipes(elm) {
-        $(elm).parents('tr').remove();
-        reload_items();
-        return false;
-      }
-      function reload_items() {
+      function get_recipe_list() {
         var _recipes = new Array();
-
         $.each( 
           $("#recipe_list th"),
           function(key,val) {
             _recipes.push($(val).text());
           }
         );
-        console.log(_recipes);
-        $.getJSON("/recipes.json", { recipes : _recipes }, function(json){
-          console.log(json);
-        });
+        return _recipes;
+      }
+      function drow_recipe_list(recipe_list) {
+        $("#recipe_list").empty();
+        for(var i in recipe_list) {
+          $("#recipe_list").append("<tr><th>" + recipe_list[i].name + "</th><td>" + recipe_list[i].price + "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
+        }
+      }
+      function add_recipes() {
+        var _recipes = get_recipe_list();
+        _recipes.push($('#recipes_keyword').val());
+        reload_items(_recipes);
         return false;
+      }
+      function drop_recipes(elm) {
+        $(elm).parents('tr').remove();
+        reload_items(get_recipe_list());
+        return false;
+      }
+      function reload_items(recipes) {
+        $.getJSON("/recipes.json", { recipes : recipes }, function(json){
+          drow_recipe_list(json.recipe_list);
+          drow_item_list(json.item_list);
+        });
+      }
+      function drow_item_list(item_list) {
+        $("#item_list").empty();
+        for(var i in item_list) {
+          $("#item_list").append("<tr><th>" + item_list[i].name + "</th><td>" + item_list[i].count + "</td></tr>");
+        }
       }
     </script>
 <% end %>
