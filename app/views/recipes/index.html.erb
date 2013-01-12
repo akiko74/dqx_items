@@ -63,28 +63,3 @@
     </script>
 <% end %>
 
-<h1>Listing recipes</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Level</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @recipes.each do |recipe| %>
-  <tr>
-    <td><%= recipe.name %></td>
-    <td><%= recipe.level %></td>
-    <td><%= link_to 'Show', recipe %></td>
-    <td><%= link_to_if false, 'Edit', edit_recipe_path(recipe) %></td>
-    <td><%= link_to_if false, 'Destroy', recipe, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Recipe', new_recipe_path %>
