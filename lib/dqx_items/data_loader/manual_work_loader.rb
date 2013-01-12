@@ -33,7 +33,7 @@ module DqxItems
                 item = Item.new(:name => _item_name, :price => _item_price)
                 _insert_count += 1
               end
-              #item.save
+              item.save
               p item
             end
             puts "update:#{_update_count}, insert:#{_insert_count}"
