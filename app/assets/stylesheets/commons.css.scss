@@ -1,3 +1,20 @@
 a:hover {
 	background-color: transparent;
 }
+
+@media (min-width:768px) {
+  .navbar-fixed-top {
+    margin-bottom: 0px;
+  }
+  .navbar.sub .navbar-inner {
+    border: none;
+    border-radius : 0px;
+    border-bottom  : lightgray 1px solid;
+  }
+}
+@media (min-width:980px) {
+  body {
+    padding-top  : 40px;
+  }
+}
+

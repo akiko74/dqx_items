@@ -57,11 +57,31 @@
   </head>
   <body>
 
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#"><%= t("app_name") %></a>
+          <a class="brand" href="/"><%= t("app_name") %></a>
         </div>
+      </div>
+    </div>
+
+    <div class="navbar sub">
+      <div class="navbar-inner">
+        <ul class="nav">
+<% if params[:controller] == 'items' %>
+  <li class="active">
+<% else %>
+  <li>
+<% end %>
+  <%= link_to "素材 → 職人＋レシピ", items_path %>
+  </li>
+<% if params[:controller] == "recipes" %>
+  <li class="active">
+<% else %>
+  <li>
+<% end %>
+<a href="/recipes">レシピ → 素材＋コスト</a></li>
+        </ul>
       </div>
     </div>
 
@@ -89,7 +109,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag "application" %>
-
+    <%= yield(:javascripts) %>
 
   </body>
 </html>
