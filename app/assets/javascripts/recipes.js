@@ -20,6 +20,7 @@
         }
       }
       function add_recipes() {
+	      $('#recipes_keyword').attr("disabled", "disabled");
         var _recipes = get_recipe_list();
         _recipes.push($('#recipes_keyword').val());
         reload_items(_recipes);
@@ -43,6 +44,7 @@
           $("#added_contents").show();
           $("#default_contents").hide();
         }
+	$('#recipes_keyword').removeAttr("disabled");
       }
       function drow_item_list(item_list) {
         $("#item_list tbody").empty();
