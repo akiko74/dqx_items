@@ -29,7 +29,6 @@ class RecipesController < ApplicationController
       format.html # index.html.erb
       format.json {
 
-        # TODO 計算結果に置き換える
         result_hash = {
           :recipe_list => @recipe_list,
           :item_list => @item_list }
@@ -54,6 +53,8 @@ class RecipesController < ApplicationController
   # GET /recipes/new.json
   def new
     @recipe = Recipe.new
+    @ingredients = Array.new(5) {Ingredient.new}
+    @items = Item.scoped.map{|item| [item.name, item.id]}.sort
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @recipe }
@@ -64,6 +65,10 @@ class RecipesController < ApplicationController
   def edit
     @recipe = Recipe.find(params[:id])
     @ingredients = Ingredient.where(:recipe_id => params[:id])
+#    if @ingredients.count < 5
+#      @ingredients << Array.new(5-@ingredients.count) {Ingredient.new}
+#    end
+    @items = Item.scoped.map{|item| [item.name, item.id]}.sort
   end
 
   # POST /recipes
@@ -86,7 +91,6 @@ class RecipesController < ApplicationController
   # PUT /recipes/1.json
   def update
     @recipe = Recipe.find(params[:id])
-
     respond_to do |format|
       if @recipe.update_attributes(params[:recipe])
         format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }

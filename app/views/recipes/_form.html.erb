@@ -19,6 +19,26 @@
     <%= f.label :level %><br />
     <%= f.number_field :level %>
   </div>
+  <div>
+    <%= f.label :job %>
+    <%= f.collection_select :job_id, Job.all, :id, :name %>
+  </div>
+
+  <div class="field">
+    素材<br />
+  <% @ingredients.each do |ingredient| %>
+    <%= f.fields_for "ingredients_attributes[]", ingredient do |field| %>
+      <%# if ingredient.persisted? %>
+        <%= field.hidden_field(:id, value: ingredient.id) %>
+        削除<%= field.check_box :_destroy %>
+      <%# end %>
+      <%= field.select :item_id, @items, :include_blank => true %>
+      <% options = [1,2,3,4,5,6,7,8,9,10] %>
+      <%= field.select :number, options, :include_blank => true %><br />
+    <% end %>
+  <% end %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
