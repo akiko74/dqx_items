@@ -33,6 +33,7 @@ group :test,:development do
   gem 'simplecov'
   gem 'debugger'
   gem 'capistrano'           ,:require => false
+  gem 'thin'
 end
 
 
