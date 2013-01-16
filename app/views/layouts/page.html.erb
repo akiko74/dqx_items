@@ -1,0 +1,49 @@
+<% content_for :head do %>
+<% end %>
+<% content_for :javascripts do %>
+    <script>
+      var itemList    = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
+      var recipesList = <%= Recipe.all.map(&:name).sort.to_s.html_safe %>;
+    </script>
+<% end %>
+<% content_for :contents do %>
+    <div class="navbar sub">
+      <div class="navbar-inner">
+        <ul class="nav">
+<% if params[:controller] == 'items' %>
+  <li class="active">
+<% else %>
+  <li>
+<% end %>
+  <%= link_to "素材 → 職人＋レシピ", items_path %>
+  </li>
+<% if params[:controller] == "recipes" %>
+  <li class="active">
+<% else %>
+  <li>
+<% end %>
+<a href="/recipes">レシピ → 素材＋コスト</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="content">
+        <div class="row-fluid">
+          <div class="span8">
+<%= content_for?(:content) ? yield(:content) : yield %>
+          </div>
+          <div class="span4">
+            <div class="well sidebar-nav">
+<%= yield(:sidebar) %>
+            </div>
+          </div>
+        </div><!--/row-->
+      </div><!--/content-->
+
+      <%= render "commons/global_footer" %>
+
+    </div> <!-- /container -->
+
+<% end %>
+<%= render :file => 'layouts/application' %>
