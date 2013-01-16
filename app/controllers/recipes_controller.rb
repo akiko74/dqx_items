@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class RecipesController < ApplicationController
+class RecipesController < PageController
   # GET /recipes
   # GET /recipes.json
   def index

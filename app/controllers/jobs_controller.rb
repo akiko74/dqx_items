@@ -1,4 +1,4 @@
-class JobsController < ApplicationController
+class JobsController < PageController
   # GET /jobs
   # GET /jobs.json
   def index
