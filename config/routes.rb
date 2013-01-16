@@ -3,7 +3,7 @@ DqxItems::Application.routes.draw do
   devise_for :admins
     get 'admins', :to => 'items#index', :as => :admin_root
 
-  resources :jobs
+  #resources :jobs
 
   resources :recipes
 
