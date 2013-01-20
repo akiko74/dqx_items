@@ -15,8 +15,8 @@
       }
       function drow_recipe_list(recipe_list) {
         $("#recipe_list tbody").empty();
-	var _bazaar = new Array();
         for(var i in recipe_list) {
+	  var _bazaar = new Array();
           var _row = "<tr><th>";
           _row += '<a href="#" class="recipe_name" rel="popover" data-html="true" data-content="' ;
 	  _row += '<ul>';
