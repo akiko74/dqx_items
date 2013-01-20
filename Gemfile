@@ -32,8 +32,8 @@ group :test,:development do
   #gem 'email_spec',    :git=>'git://github.com/bmabey/email-spec.git', :branch=>'rails3',:require => false
   gem 'simplecov'
   gem 'debugger'
-  gem 'thin'
 end
+  gem 'thin'
 
 
 group :production do
