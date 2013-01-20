@@ -15,9 +15,38 @@
       }
       function drow_recipe_list(recipe_list) {
         $("#recipe_list tbody").empty();
+	var _bazaar = new Array();
         for(var i in recipe_list) {
-          $("#recipe_list tbody").append("<tr><th>" + recipe_list[i].name + "</th><td>" + recipe_list[i].price + "G</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a></td></tr>");
+          var _row = "<tr><th>";
+          _row += '<a href="#" class="recipe_name" rel="popover" data-html="true" data-content="' ;
+	  _row += '<ul>';
+	  for(var j in recipe_list[i].items) {
+            _row += '<li>' + recipe_list[i].items[j].name + ' × ' + recipe_list[i].items[j].count + '</li>';
+	    if (recipe_list[i].items[j].unitprice == 0) {
+              _bazaar.push(recipe_list[i].items[j].name)
+	    }
+          }
+	  _row += '</table>';
+	  _row += '" data-title="';
+	  _row += recipe_list[i].name + "のレシピ";
+	  _row += '" data-trigger="hover">';
+          _row += recipe_list[i].name;
+	  _row += "</a></th><td>" + recipe_list[i].price + "G";
+	  if (_bazaar.length > 0) {
+            _row += ' + <a href="#" class="recipe_name label" rel="popover" data-html="true" data-content="';
+	    _row += 'あ。';
+	    _row += '" data-title="';
+	    _row += "バザーでしか手に入らないもの";
+	    _row += '" data-trigger="hover">';
+	    _row += 'バザー品の値段';
+	    _row += '</a>';
+	  }
+	  console.log(_bazaar);
+	  _row += "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a>";
+          _row += "</td></tr>";
+          $("#recipe_list tbody").append(_row);
         }
+	$("a[rel=popover].recipe_name").popover();
       }
       function add_recipes() {
 	      $('#recipes_keyword').attr("disabled", "disabled");
