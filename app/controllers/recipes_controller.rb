@@ -26,6 +26,7 @@ class RecipesController < PageController
         @item_list << {:name => Item.find_by_kana(item[0]).name, :count => item[1], :cost => Item.find_by_kana(item[0]).price * item[1] }
       end
     end
+      respond_to do |format|
       format.html # index.html.erb
       format.json {
 
