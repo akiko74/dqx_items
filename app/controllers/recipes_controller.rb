@@ -10,15 +10,17 @@ class RecipesController < PageController
     unless params[:recipes].blank?
       params[:recipes].each do |recipe|
         total = 0
+        _ingredients = []
         Recipe.find_by_name(recipe).ingredients.each do |ingredient|
           total += ingredient.item.price * ingredient.number
+          _ingredients << {:name => ingredient.item.name, :count => ingredient.number, :unitprice => ingredient.item.price }
           if items.has_key?(ingredient.item.name)
             items[ingredient.item.name] += ingredient.number
           else
             items[ingredient.item.name] = ingredient.number
           end
         end
-        @recipe_list << {:name => recipe, :price => total}
+        @recipe_list << {:name => recipe, :price => total, :items => _ingredients}
       end
       items.each do |key, value|
         @item_list << {:name => key, :count => value, :cost => Item.find_by_name(key).price * value }
