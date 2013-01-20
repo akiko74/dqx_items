@@ -51,8 +51,10 @@
         for(var i in item_list) {
           var _cost = item_list[i].cost;
           if (_cost == 0) {
-            _cost = "バザーのみ";
-          }
-          $("#item_list tbody").append('<tr><th>' + item_list[i].name + '<a href="/items?keyword=' + item_list[i].name + '" class="label label-warning">レシピ</a></th><td>' + item_list[i].count + "</td><td>" + _cost + "G</td></tr>");
+            _cost = '<span class="label label-warning">バザーのみ</a>';
+          } else {
+            _cost += "G";
+	  }
+          $("#item_list tbody").append('<tr><th>' + item_list[i].name + '<a href="/items?keyword=' + item_list[i].name + '" class="label label-warning">レシピ</a></th><td>' + item_list[i].count + "</td><td>" + _cost + "</td></tr>");
         }
       }

@@ -1,4 +1,4 @@
-<%= form_for(@recipe) do |f| %>
+<%= form_for(@recipe, :html => {:class => 'form-horizontal'} ) do |f| %>
   <% if @recipe.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
@@ -11,21 +11,47 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+  <div class="control-group">
+    <%= f.label :name, :class => "control-label" %>
+    <div class="controls">
+      <%= f.text_field :name %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :level %><br />
-    <%= f.number_field :level %>
+  <div class="control-group">
+    <%= f.label :level, :class => "control-label" %>
+    <div class="controls">
+      <%= f.number_field :level, :min => 1 %>
+    </div>
   </div>
-  <div>
-    <%= f.label :job %>
-    <%= f.collection_select :job_id, Job.all, :id, :name %>
+  <div class="control-group">
+    <%= f.label :job, :class => "control-label" %>
+    <div class="controls">
+<% Job.all.each do |job| %>
+      <label class="radio radio-job" class="control-label">
+        <%= f.radio_button :job_id, job.id, {} %>
+        <%= job.name %>
+      </label>
+<% end %>
+<style>
+  .radio { float : left; }
+  .control-group { claer: both; }
+  .radio-job { 
+    padding-top : 3px !important;
+    padding-bottom : 5px;
+    height   : 1.3em;
+    line-height : 1.5em;
+    width   : 3.5em;
+    margin-right : 1em;
+    border   : solid 1px gray;
+    border-radius : 5px;
+  } 
+</style>
+    </div>
   </div>
 
-  <div class="field">
-    素材<br />
+  <div class="control-group">
+    <%= f.label :items, :class => "control-label" %>
+    <div class="controls">
   <% @ingredients.each do |ingredient| %>
     <%= f.fields_for "ingredients_attributes[]", ingredient do |field| %>
       <% if ingredient.persisted? %>
@@ -33,10 +59,10 @@
         削除<%= field.check_box :_destroy %>
       <% end %>
       <%= field.select :item_id, @items, :include_blank => true %>
-      <% options = [1,2,3,4,5,6,7,8,9,10] %>
-      <%= field.select :number, options, :include_blank => true %><br />
+      <%= field.number_field :number, :min => 1, :max => 10, :class => 'input-mini' %>
     <% end %>
   <% end %>
+    </div>
   </div>
 
   <div class="actions">

@@ -1,5 +1,7 @@
-<h1>New recipe</h1>
+<% content_for :content do %>
+  <p>下記の必要項目を入力し、[新しくレシピを追加する]ボタンを押してください</p>
 
 <%= render 'form' %>
 
 <%= link_to 'Back', recipes_path %>
+<% end %>
