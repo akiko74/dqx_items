@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  attr_accessible :name, :price
+  attr_accessible :name, :price, :kana
   has_many :ingredients
   has_many :recipes, :through => :ingredients
 
