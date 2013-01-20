@@ -8,13 +8,13 @@ a:hover {
   }
   .navbar.sub .navbar-inner {
     border: none;
-    border-radius : 0px;
-    border-bottom  : lightgray 1px solid;
+    border-radius: 0px;
+    border-bottom: lightgray 1px solid;
   }
 }
 @media (min-width:980px) {
   body {
-    padding-top  : 40px;
+    padding-top: 40px;
   }
 }
 
@@ -22,14 +22,14 @@ body {
   padding-bottom: 20px;
 }
 footer {
-    position:absolute;
-    bottom: 0px;
-    width  : 100%;
-    text-align:center;
-    height   : 18px;
-    line-height: 18px;
-    a { color : gray; }
-    color  : gray;
-  }
+  position:fixed;
+  bottom: 0px;
+  width: 100%;
+  text-align:center;
+  height: 18px;
+  line-height: 18px;
+  a { color: gray; }
+  color: gray;
+}
 
 

@@ -11,7 +11,7 @@
 <% end %>
 <% content_for :javascripts do %>
     <script>
-      var itemList    = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
+      var itemList    = <%= Item.order("kana asc", nil).all.map(&:name).to_s.html_safe %>;
       var recipesList = <%= Recipe.all.map(&:name).sort.to_s.html_safe %>;
     </script>
 <% end %>

@@ -31,7 +31,7 @@
   <h2>必要素材</h2>
   <table id="item_list" class="table">
     <thead>
-      <tr><th>アイテム名</th><th>合計必要数</th><th>購入金額（店売りのみ）</th></tr>
+      <tr><th>アイテム名</th><th>合計必要数</th><th>購入金額</th></tr>
     </thead>
     <tbody>
     </tbody>
@@ -41,6 +41,7 @@
 <% end %>
 
 <% content_for :javascripts do %>
+    <% @admin_flag = admin_signed_in? %>
     <%= javascript_include_tag "recipes" %>
 <% end %>
 

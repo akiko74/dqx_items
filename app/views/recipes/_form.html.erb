@@ -32,6 +32,33 @@
         <%= job.name %>
       </label>
 <% end %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :items, :class => "control-label" %>
+    <table class="controls">
+  <% @ingredients.each do |ingredient| %>
+      <tr>
+    <%= f.fields_for "ingredients_attributes[]", ingredient do |field| %>
+      <% if ingredient.persisted? %>
+        <%= field.hidden_field(:id, value: ingredient.id) %>
+        削除<%= field.check_box :_destroy %>
+      <% end %>
+        <td><%= field.select :item_id, @items, :include_blank => true %></td>
+        <td><%= field.number_field :number, :min => 1, :max => 10, :class => 'input-mini' %></td>
+    <% end %>
+  <% end %>
+      </tr>
+    </table>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<% content_for :head do %>
 <style>
   .radio { float : left; }
   .control-group { claer: both; }
@@ -46,26 +73,4 @@
     border-radius : 5px;
   } 
 </style>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <%= f.label :items, :class => "control-label" %>
-    <div class="controls">
-  <% @ingredients.each do |ingredient| %>
-    <%= f.fields_for "ingredients_attributes[]", ingredient do |field| %>
-      <% if ingredient.persisted? %>
-        <%= field.hidden_field(:id, value: ingredient.id) %>
-        削除<%= field.check_box :_destroy %>
-      <% end %>
-      <%= field.select :item_id, @items, :include_blank => true %>
-      <%= field.number_field :number, :min => 1, :max => 10, :class => 'input-mini' %>
-    <% end %>
-  <% end %>
-    </div>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>
