@@ -21,28 +21,24 @@
           _row += '<a href="#" class="recipe_name" rel="popover" data-html="true" data-content="' ;
 	  _row += '<ul>';
 	  for(var j in recipe_list[i].items) {
-            _row += '<li>' + recipe_list[i].items[j].name + ' × ' + recipe_list[i].items[j].count + '</li>';
+            _row += '<li>' + recipe_list[i].items[j].name + ' × ' + recipe_list[i].items[j].count;
 	    if (recipe_list[i].items[j].unitprice == 0) {
-              _bazaar.push(recipe_list[i].items[j].name)
+              _bazaar.push(recipe_list[i].items[j].name);
+              _row += "<span class='label label-warning'>バザー品</span>";
 	    }
+	    _row += '</li>';
           }
-	  _row += '</table>';
+	  _row += '</ul>';
 	  _row += '" data-title="';
 	  _row += recipe_list[i].name + "のレシピ";
 	  _row += '" data-trigger="hover">';
           _row += recipe_list[i].name;
 	  _row += "</a></th><td>" + recipe_list[i].price + "G";
 	  if (_bazaar.length > 0) {
-            _row += ' + <a href="#" class="recipe_name label" rel="popover" data-html="true" data-content="';
-	    _row += 'あ。';
-	    _row += '" data-title="';
-	    _row += "バザーでしか手に入らないもの";
-	    _row += '" data-trigger="hover">';
-	    _row += 'バザー品の値段';
-	    _row += '</a>';
+            _row += ' +<span class="label label-warning">バザー品</span>';
 	  }
 	  console.log(_bazaar);
-	  _row += "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn\">削除</a>";
+	  _row += "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn btn-small btn-danger\" style=\"color:white\">削除</a>";
           _row += "</td></tr>";
           $("#recipe_list tbody").append(_row);
         }
