@@ -1,22 +1,3 @@
-GIT
-  remote: git://github.com/bmabey/email-spec.git
-  revision: e197a167a3f89cba6848ba144e342537e1cf64ab
-  branch: rails3
-  specs:
-    email_spec (0.6.2)
-
-GIT
-  remote: git://github.com/rspec/rspec-rails.git
-  revision: 9f463b998b59235db489be910d7ab0197a34034b
-  specs:
-    rspec-rails (2.12.0)
-      actionpack (>= 3.0)
-      activesupport (>= 3.0)
-      railties (>= 3.0)
-      rspec-core (~> 2.12.0)
-      rspec-expectations (~> 2.12.0)
-      rspec-mocks (~> 2.12.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -59,12 +40,6 @@ GEM
       xml-simple
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
-    capistrano (2.14.1)
-      highline
-      net-scp (>= 1.0.0)
-      net-sftp (>= 2.0.0)
-      net-ssh (>= 2.0.14)
-      net-ssh-gateway (>= 1.1.0)
     capybara (2.0.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -143,7 +118,6 @@ GEM
       rubyzip
     heroku-api (0.3.7)
       excon (~> 0.16.10)
-    highline (1.6.15)
     hike (1.2.1)
     i18n (0.6.1)
     journey (1.0.4)
@@ -174,13 +148,9 @@ GEM
     multi_json (1.5.0)
     mysql2 (0.3.11)
     net-http-spy (0.2.1)
-    net-scp (1.0.4)
-      net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
       net-ssh (>= 2.0.9)
     net-ssh (2.6.3)
-    net-ssh-gateway (1.1.0)
-      net-ssh (>= 1.99.1)
     netrc (0.7.7)
     nokogiri (1.5.6)
     orm_adapter (0.4.0)
@@ -224,6 +194,13 @@ GEM
     rspec-expectations (2.12.1)
       diff-lcs (~> 1.1.3)
     rspec-mocks (2.12.1)
+    rspec-rails (2.12.2)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 2.12.0)
+      rspec-expectations (~> 2.12.0)
+      rspec-mocks (~> 2.12.0)
     rubyzip (0.9.9)
     sass (3.2.5)
     sass-rails (3.2.5)
@@ -281,13 +258,11 @@ PLATFORMS
 
 DEPENDENCIES
   astrails-safe
-  capistrano
   coffee-rails
   cucumber-rails
   database_cleaner
   debugger
   devise
-  email_spec!
   factory_girl_rails
   faker
   faker-japanese
@@ -302,7 +277,7 @@ DEPENDENCIES
   rails (= 3.2.11)
   rb-fsevent
   request-log-analyzer
-  rspec-rails!
+  rspec-rails
   sass-rails
   simplecov
   spork
