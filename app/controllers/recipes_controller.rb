@@ -14,20 +14,18 @@ class RecipesController < PageController
         Recipe.find_by_name(recipe).ingredients.each do |ingredient|
           total += ingredient.item.price * ingredient.number
           _ingredients << {:name => ingredient.item.name, :count => ingredient.number, :unitprice => ingredient.item.price }
-          if items.has_key?(ingredient.item.name)
-            items[ingredient.item.name] += ingredient.number
+          if items.has_key?(ingredient.item.kana)
+            items[ingredient.item.kana] += ingredient.number
           else
-            items[ingredient.item.name] = ingredient.number
+            items[ingredient.item.kana] = ingredient.number
           end
         end
         @recipe_list << {:name => recipe, :price => total, :items => _ingredients}
       end
-      items.each do |key, value|
-        @item_list << {:name => key, :count => value, :cost => Item.find_by_name(key).price * value }
+      items.sort.each do |item|
+        @item_list << {:name => Item.find_by_kana(item[0]).name, :count => item[1], :cost => Item.find_by_kana(item[0]).price * value }
       end
     end
-
-    respond_to do |format|
       format.html # index.html.erb
       format.json {
 
