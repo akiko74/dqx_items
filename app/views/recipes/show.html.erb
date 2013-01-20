@@ -9,7 +9,10 @@
   <b>Level:</b>
   <%= @recipe.level %>
 </p>
-
+  <% @recipe.ingredients.each do |ingredient| %>
+    <%= ingredient.item.name %>
+    <%= ingredient.number %><br>
+  <% end %>
 
 <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
 <%= link_to 'Back', recipes_path %>
