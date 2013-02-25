@@ -22,6 +22,7 @@ body {
   padding-bottom: 4em;
 }
 footer {
+    font-size: 10px;
   background-color:white;
   background:-webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.0)), color-stop(0.2, rgba(255,255,255,1.0)), to(rgba(255,255,255,1.0)));
 
@@ -32,7 +33,7 @@ footer {
     text-align:center;
     height   : auto;
     padding-top:1em;
-    line-height: 18px;
+    line-height: 12px;
     a { color : gray; }
     color  : gray;
     address {
