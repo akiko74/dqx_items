@@ -1,5 +1,7 @@
 DqxItems::Application.routes.draw do
 
+  devise_for :owners
+
   devise_for :admins
 
   resources :recipes
