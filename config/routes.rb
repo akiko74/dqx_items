@@ -8,6 +8,8 @@ DqxItems::Application.routes.draw do
 
   resources :items
 
+  resources :tools
+
   namespace :my do
     resources :items
   end

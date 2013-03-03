@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130228042332) do
+ActiveRecord::Schema.define(:version => 20130303065250) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -35,12 +35,30 @@ ActiveRecord::Schema.define(:version => 20130228042332) do
   add_index "admins", ["reset_password_token"], :name => "index_admins_on_reset_password_token", :unique => true
   add_index "admins", ["unlock_token"], :name => "index_admins_on_unlock_token", :unique => true
 
+  create_table "characters", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "char_name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "ingredients", :force => true do |t|
     t.integer  "recipe_id"
     t.integer  "item_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "number"
+  end
+
+  create_table "inventories", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "item_id"
+    t.integer  "character_id"
+    t.integer  "stock"
+    t.integer  "average_cost"
+    t.integer  "bazzar_cost"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "items", :force => true do |t|
@@ -57,12 +75,29 @@ ActiveRecord::Schema.define(:version => 20130228042332) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "mytools", :force => true do |t|
+    t.integer  "character_id"
+    t.integer  "tool_id"
+    t.integer  "cost"
+    t.integer  "bazzar_cost"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
   create_table "recipes", :force => true do |t|
     t.string   "name"
     t.integer  "level"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "job_id"
+  end
+
+  create_table "tools", :force => true do |t|
+    t.integer  "job_id"
+    t.string   "name"
+    t.integer  "usage_count"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
