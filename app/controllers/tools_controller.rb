@@ -27,7 +27,7 @@ class ToolsController < PageController
         format.json { render json: @tool, status: :created, location: @tool }
       else
         format.html { render action: "new" }
-        format.json { render json: @tool.errors, status: :unprocessable_entity}
+        format.json { render json: @tool.errors, status: :unprocessable_entity }
       end
     end
   end

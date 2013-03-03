@@ -12,6 +12,7 @@ DqxItems::Application.routes.draw do
 
   namespace :my do
     resources :items, :only => [ :index ]
+    resources :characters
   end
 
   # The priority is based upon order of creation:
