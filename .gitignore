@@ -1,6 +1,8 @@
 .bundle
 *.swp
 *.swo
+*~
+.rvmrc.*
 lbase.ymlog/**/*
 log/*
 /db/*.sqlite3
