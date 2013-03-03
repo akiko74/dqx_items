@@ -9,7 +9,7 @@ DqxItems::Application.routes.draw do
   resources :items
 
   namespace :my do
-    resources :items
+    resources :items, :only => [ :index ]
   end
 
   # The priority is based upon order of creation:
