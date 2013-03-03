@@ -13,7 +13,7 @@ class My::ItemsController < MyController
   # @example 在庫情報確認ページ
   # +GET /my/items(.html)
   # +
-  # +render '/my/items.html.erb'
+  # +render 'Rails.root/app/view/my/items/index.html.erb'
   #
   # @example 在庫情報取得API
   # +GET /my/items.json
