@@ -27,6 +27,10 @@ shared_examples_for 'Respond to HTML and JSON' do
   end
 end
 
+shared_examples 'the Routing that is routable with:' do |condition|
+  it { expect(subject).to route_to(condition) }
+  it { expect(subject).to be_routable }
+end
 
 
 
