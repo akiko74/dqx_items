@@ -8,11 +8,11 @@ class My::CharactersController < MyController
   end
 
   def create
-    @character = resourcces.new(params[:character])
+    @character = resources.new(params[:character])
 
     respond_to do |format|
       if @character.save
-        format.html { redirect_to @character, notice: 'Character was successfully created.' }
+        format.html { redirect_to my_characters_path, notice: 'Character was successfully created.' }
         format.json { render json: @character, status: :created, location: @character }
       else
         format.html { render action: "new" }
@@ -39,7 +39,7 @@ class My::CharactersController < MyController
 
     respond_to do |format|
       if @character.update_attributes(params[:character])
-        format.html { redirect_to @character, notice: 'Character was successfully updated.' }
+        format.html { redirect_to my_characters_path, notice: 'Character was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -53,7 +53,7 @@ class My::CharactersController < MyController
     @character.destroy
 
     respond_to do |format|
-      format.html { redirect_to characters_url }
+      format.html { redirect_to my_characters_path }
       format.json { head :no_content }
     end
   end

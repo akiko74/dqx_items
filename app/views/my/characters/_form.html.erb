@@ -1,4 +1,4 @@
-<%= form_for(:my, @character) do |f| %>
+<%= form_for([:my, @character]) do |f| %>
   <% if @character.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@character.errors.count, "error") %> prohibited this job from being saved:</h2>
@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.label :char_name %><br />
+    <%= f.text_field :char_name %>
   </div>
   <div class="actions">
     <%= f.submit %>
