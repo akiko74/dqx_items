@@ -27,7 +27,7 @@ class My::ItemsController < MyController
   # +++{
   # ++++"id": 2,
   # ++++"name": "サブきゃら"
-  # +++},
+  # +++}
   # ++],
   # ++"items": [
   # +++{
@@ -53,7 +53,7 @@ class My::ItemsController < MyController
   # ++++"kana": "あせとなみだのけっしょう",
   # ++++"cost": 0,
   # ++++"stock":20
-  # +++},
+  # +++}
   # ++]
   # +}
   # 
