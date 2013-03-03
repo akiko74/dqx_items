@@ -20,7 +20,7 @@ end
 group :test,:development do
   # Net::HTTPデバック用 環境変数HTTP_SPY=1を設定すると有効化
   gem 'cucumber-rails', require: false
-  gem 'rspec-rails'
+  gem 'rspec-rails','>= 2.13.0'
   gem 'net-http-spy',:require => false
   gem 'spork'
   gem 'database_cleaner'

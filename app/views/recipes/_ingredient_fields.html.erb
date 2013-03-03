@@ -1,0 +1,9 @@
+<p>
+  <%= form_for(:recipes, :method => :get, :html => { :class => "form-search"}) do |f| %>
+  <%= label_tag :keyword, "素材名" %>
+  <%= text_field_tag :keyword, '', :class => "span12 search-query", :autofocus => "autofocus", "data-provide" => "typeahead" %>
+  <%= label_tag :number, "数量" %>
+  <%= text_field_tag :number %>
+  <%= f.submit "設定", :class => "btn" %>
+  <% end %>
+</p>
