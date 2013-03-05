@@ -59,6 +59,14 @@ class My::ItemsController < MyController
   # 
   # @todo resultの中身作る
   def index
+    @characters = []
+    mychar.each do |char|
+      @characters << {:id => char.id, :name => char.char_name }
+    end
+    @items = []
+    resources.each do |item|
+      @items << {:id => item.item_id, :character_id => item.character_id, :name => Item.find(item.item_id).name,  :kana => Item.find(item.item_id).kana, :cost => item.average_cost, :stock => item.stock }
+    end
     @result = {} ##FIXME
     respond_to do |format|
       format.html
@@ -66,4 +74,12 @@ class My::ItemsController < MyController
     end
   end
 
+  private
+  def resources
+    resources = Inventory.where(:user_id => current_user.id)
+  end
+
+  def mychar
+    mychar = Character.where(:user_id => current_user.id)
+  end
 end
