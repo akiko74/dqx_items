@@ -128,6 +128,34 @@ describe ItemsController do
     end
   end
 
+  context "#create" do
+    let(:item) { FactoryGirl.create(:item) }
+    let(:params) { { :id => item.id } }
+    before { post :create, params }
+    subject { response }
+    it { expect(subject).to be_success }
+    its(:status) { should be(200) }
+    context "@item" do
+      subject { assigns(:item) }
+      it { should be_instance_of Item }
+      it { should == item }
+    end
+    context "without :format" do
+      its(:content_type) { should == "text/html" }
+    end
+    context 'with :format => "json"' do
+      let(:params) { { :id => item.id, :format => "json" } }
+      its(:content_type) { should == "application/json" }
+    end
+    context 'with :format => "html"' do
+      let(:params) { { :id => item.id, :format => "html" } }
+      its(:content_type) { should == "text/html" }
+    end
+    it "should not call controller#authenticate_admin" do
+      controller.should_not_receive(:authenticate_admin)
+      get :show, params
+    end
+  end
 
 end
 

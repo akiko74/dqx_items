@@ -1,0 +1,80 @@
+.character_items td {
+  line-height : 20px;
+  vertical-align : bottom;
+  padding-bottom : 20px;
+}
+
+.character_items em {
+  font-size: 20px;
+}
+
+td.item_cost, td.item_stock {
+  text-align   : right;
+}
+
+td.item_name em {
+  font-style : normal;
+  font-weight  : normal;
+}
+
+td.stock_action {
+  padding-bottom : 10px;
+  width  : 50px;
+  a {
+    width  : 40px;
+    line-height : 20px;
+  }
+  a.plus {
+    border-bottom-right-radius : 0px;
+    border-bottom-left-radius : 0px;
+  }
+  a.minus {
+    border-top-right-radius : 0px;
+    border-top-left-radius : 0px;
+  }
+}
+
+tr.add_consoles, tr.del_consoles {
+  display: none;
+  table {
+    border: 1px solid #CCC;
+    border-top:none;
+    input {
+      width: 100px;
+    }
+    th {
+      text-align: right;
+      font: {
+        size:16px;
+      }
+    }
+    td {
+      text-align: right;
+      vertical-align: bottom;
+      input {
+        margin-bottom: 0px;
+      }
+    }
+    td.add_stock, td.add_cost, td.del_stock {
+      width: 140px;
+      text-align:left;
+    }
+    td.add_action, td.del_action {
+      width: 80px;
+      a {
+        display: block;
+      }
+    }
+  }
+}
+tr.add_consoles td a {
+  line-height: 3em;
+}
+tr.del_consoles td a {
+}
+
+tr.add_consoles > td, tr.del_consoles > td {
+  padding: 0px;
+  border-top:none;
+}
+

@@ -12,6 +12,7 @@ DqxItems::Application.routes.draw do
 
   namespace :my do
     resources :items, :only => [ :index ]
+    put 'items' => "items#updates" 
     resources :characters
   end
 

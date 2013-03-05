@@ -8,6 +8,8 @@
 #
 class My::ItemsController < MyController
 
+  before_filter :parse_character_items_stocks, :only => [:updates]
+
   # 在庫情報一覧
   #
   # @example 在庫情報確認ページ
@@ -68,18 +70,42 @@ class My::ItemsController < MyController
       @items << {:id => item.item_id, :character_id => item.character_id, :name => Item.find(item.item_id).name,  :kana => Item.find(item.item_id).kana, :cost => item.average_cost, :stock => item.stock }
     end
     @result = {} ##FIXME
+
     respond_to do |format|
       format.html
       format.json { render json: @result }
     end
   end
 
-  private
-  def resources
-    resources = Inventory.where(:user_id => current_user.id)
+  def updates
+    logger.debug @character_items_stocks ##FIXME
+
+    respond_to do |format|
+      format.json { render json: {} }
+    end
   end
 
-  def mychar
-    mychar = Character.where(:user_id => current_user.id)
-  end
+
+  private
+
+    def parse_character_items_stocks
+      @character_items_stocks = params["character_items_stocks"].inject(Array.new) do |ary, key|
+        _character_item_stock = {
+          :character_id => key.last["character_id"].to_i,
+          :item_id      => key.last["item_id"].to_i,
+          :stock        => key.last["stock"].to_i,
+        }
+        _character_item_stock[:total_cost] = key.last["total_cost"].to_i if _character_item_stock[:stock] > 0
+        ary << _character_item_stock
+        ary
+      end
+    end
+
+    def resources
+      resources = Inventory.where(:user_id => current_user.id)
+    end
+
+    def mychar
+      mychar = Character.where(:user_id => current_user.id)
+    end
 end
