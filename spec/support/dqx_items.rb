@@ -7,6 +7,15 @@ shared_context 'http-request' do
   let(:params) { required_params.merge(append_params) }
 end
 
+shared_examples_for 'Respond to JSON' do
+  context 'with :format => "json"' do
+    before { req }
+    subject { response }
+    let(:append_params) { { :format => "json" } }
+    its(:content_type) { should == "application/json" }
+  end
+end
+
 shared_examples_for 'Respond to HTML and JSON' do
   context "without :format" do
     before { req }

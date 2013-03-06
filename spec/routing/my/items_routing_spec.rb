@@ -71,6 +71,32 @@ describe "routing to /my/items" do
       it { should_not be_routable }
     end
 
+    context "/my/items" do
+      let(:path) { "/my/items" }
+      include_examples 'the Routing that is routable with:', {
+        :controller => 'my/items',
+        :action     => 'updates' 
+      }
+    end
+
+    context "/my/items.html" do
+      let(:path) { "/my/items.html" }
+      include_examples 'the Routing that is routable with:', {
+        :controller => 'my/items',
+        :action     => 'updates', 
+        :format     => 'html'
+      }
+    end
+
+    context "/my/items.json" do
+      let(:path) { "/my/items.json" }
+      include_examples 'the Routing that is routable with:', {
+        :controller => 'my/items',
+        :action     => 'updates', 
+        :format     => 'json'
+      }
+    end
+
   end
 
   context "DELETE" do
