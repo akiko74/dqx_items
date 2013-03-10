@@ -3,11 +3,42 @@
         <div class="container">
           <a class="brand" href="/"><%= t("app_name") %></a>
           <div class="pull-right">
+
             <% if user_signed_in? -%>
-              <%= link_to 'ログアウト', destroy_user_session_path, :class => 'btn'  %>
-            <% else -%>
-              <%= link_to '登録', new_user_registration_path, :class => 'btn btn-primary'  %>
-              <%= link_to 'ログイン', new_user_session_path, :class => 'btn'  %>
+            <ul class="nav">
+              <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-user"></i>アカウント
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "キャラ設定", my_characters_path %></li>
+                <li><%= link_to 'ログアウト', destroy_user_session_path %></li>
+              </ul>
+              </li>
+            </ul>
+
+
+            <% else %>
+<%
+  def resource_name
+    :user
+  end
+
+  def resource
+    @resource ||= User.new
+  end
+
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
+%>
+              <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "navbar-form"}) do |f| %>
+                <%= f.email_field :email, :class => "span2", :placeholder => "Email" %>
+                <%= f.password_field :password, :class => "span2", :placeholder => "Password" %>
+                <%= f.button "ログイン", :class => "btn" %>
+                <%= f.button "新規登録", { class: "btn btn-primary", id: "regist-button" } %>
+              <% end %>
             <% end -%>
           </div>
         </div>

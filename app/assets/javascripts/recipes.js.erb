@@ -38,11 +38,12 @@
             _row += ' +<span class="label label-warning">バザー品</span>';
 	  }
 	  console.log(_bazaar);
-	  _row += "</td><td><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn btn-small btn-danger\" style=\"color:white\">削除</a>";
+	  _row += "</td><td class=\"recipes-action\"><a href=\"#\" onclick=\"javascript:drop_recipes(this)\" class=\"btn btn-small btn-danger\" style=\"color:white\">削除</a>";
           _row += "</td></tr>";
           $("#recipe_list tbody").append(_row);
         }
 	$("a[rel=popover].recipe_name").popover();
+        recipes_callback();
       }
       function add_recipes() {
 	      $('#recipes_keyword').attr("disabled", "disabled");

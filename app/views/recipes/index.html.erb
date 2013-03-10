@@ -42,8 +42,14 @@
 <% end %>
 
 <% content_for :javascripts do %>
-    <% @admin_flag = admin_signed_in? %>
     <%= javascript_include_tag "recipes" %>
+    <script>
+      function recipes_callback() {
+  <% unless admin_signed_in? %>
+       $(".recipes-action").append("<p>aaaa</p>");
+  <% end %>
+    }
+    </script>
 <% end %>
 
 <% content_for :head do %>

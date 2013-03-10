@@ -15,5 +15,6 @@
 //= require twitter/bootstrap
 //= require bootstrap
 // require_tree 
-//= require my/items
 //= require sha1
+//= require commons
+//= require my/items
