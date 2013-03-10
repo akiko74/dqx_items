@@ -67,6 +67,46 @@ tr.add_consoles, tr.del_consoles {
     }
   }
 }
+
+form#new_item {
+  table {
+    width: 100%;
+
+    th {
+      display : none;
+    }
+    td {
+      line-height  : 30px;
+      vertical-align: middle;
+      padding-bottom: 1em;
+      input {
+        margin-bottom: 0px;
+      }
+      label {
+      padding-left:30px;
+      }
+      .tab-pane {
+        width:100%;
+      }
+      .nav-tabs {
+        width: 39px;
+        a {
+          min-width: 12px;
+          height   : 32px;
+        }
+        margin-right: 0px;
+        height   : 100px;
+      }
+      .tab-content {
+        border: solid 1px #CCC;
+        border-radius: 0px 8px 5px 0px;
+        border-left: none;
+        padding: 15px;
+        height   : 70px;
+       }
+    }
+  }
+}
 tr.add_consoles td a {
   line-height: 3em;
 }

@@ -1,28 +1,86 @@
-<div id="item_form">
-  <%= form_for(Item.new, :method => :get, :html => { :class => "form-search" }) do |f| %>
-    <div class="input-append">
-      <%= text_field_tag :keyword,
+<%= form_for([:my, Item.new], :method => :put, :html => { :class => "" }) do |f| %>
+  <table class="">
+    <tbody>
+      <tr>
+        <th>アイテム名</th>
+        <td>
+          <%= text_field_tag :keyword,
             '',
             :autocomplete  => "off",
-            :placeholder   => "アイテム名を入力",
-            :class         => "span12 search-query",
+            :placeholder   => "アイテム名または職人道具名を入力",
+            :class         => "span12",
             :autofocus     => "autofocus",
             "data-provide" => "typeahead"  %>
-      <%= text_field_tag :stock,
-            '',
-            :autocomplete  => "off",
-            :placeholder   => "仕入数",
-            :type          => :number_field %>
-      <%= text_field_tag :cost,
-            '',
-            :autocomplete  => "off",
-            :placeholder   => "合計価格",
-            :type          => :number_field %>
-      <%= f.submit "追加", :class => "btn" %>
-    </div>
-  <% end %>
-</div>
+        </td>
+      </tr>
+      <tr>
+        <th>追加先</th>
+        <td>
+          <% current_user.characters.each do |caracter| %>
+          <label class="radio inline btn">
+            <%= radio_button_tag 'change_to', caracter.id %><%= caracter.char_name %>
+          </label>
+          <% end %>
+          <label class="radio  inline btn">
+            <%= radio_button_tag 'change_to', '0' %>共有
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div id="item_form" class="tabbable tabs-left">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <%= link_to "#add", "data-toggle" => "tab" do %>
+                  <i class="icon-plus"></i>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to "#del", "data-toggle" => "tab" do %>
+                  <i class="icon-minus"></i>
+                <% end %>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="add">
+                <%= text_field_tag :cost,
+                      '',
+                      :autocomplete  => "off",
+                      :class         => "span3",
+                      :placeholder   => "単価",
+                      :type          => :number %>
+                ×
+                <%= text_field_tag :stock,
+                      '',
+                      :autocomplete  => "off",
+                      :class         => "span3",
+                      :placeholder   => "仕入数",
+                      :type          => :number %>
+                ＝
+                <%= text_field_tag :total,
+                      '',
+                      :autocomplete  => "off",
+                      :class         => "span3",
+                      :placeholder   => "合計価格",
+                      :type          => :number %>
+                <%= f.submit "追加", :class => "btn btn-block" %>
+              </div>
+              <div class="tab-pane" id="del">
+                <%= text_field_tag :stock,
+                      '',
+                      :autocomplete  => "off",
+                      :class         => "span3",
+                      :placeholder   => "削減数",
+                      :type          => :number %>
+                <%= f.submit "削減", :class => "btn btn-block" %>
+              </div>
+            </div>
+          </div>
 
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
 <div id="result">
-
 </div>
