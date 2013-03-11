@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303065250) do
+ActiveRecord::Schema.define(:version => 20130311223500) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -50,17 +50,15 @@ ActiveRecord::Schema.define(:version => 20130303065250) do
     t.integer  "number"
   end
 
-  add_index "ingredients", ["item_id"], :name => "item_id"
-
   create_table "inventories", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",                     :null => false
     t.integer  "item_id"
-    t.integer  "character_id"
+    t.integer  "character_id", :default => 0, :null => false
     t.integer  "stock"
     t.integer  "average_cost"
     t.integer  "bazzar_cost"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "items", :force => true do |t|
