@@ -3,6 +3,10 @@ class Recipe < ActiveRecord::Base
   belongs_to :job
   has_many :ingredients
   has_many :items, :through => :ingredients
+
+  has_many :equipments
+  has_many :users, :through => :equipments
+
   accepts_nested_attributes_for :ingredients, :reject_if => proc {|attributes| attributes['item_id'].blank?}, :allow_destroy => true
 
   validates :level,

@@ -10,12 +10,6 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   #
   has_many :items, :through => :inventories
-  has_many :characters
+  has_many :recipes, :through => :equipments
 
-  accepts_nested_attributes_for :characters
-
-  def with_character
-    Array.new(5) {self.characters.build}
-    self
-  end
 end

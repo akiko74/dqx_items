@@ -78,7 +78,6 @@ class My::ItemsController < MyController
   end
 
 
-
   # 在庫情報更新
   #
   # @param [Hash] params リクエストパラメータ
@@ -97,7 +96,7 @@ class My::ItemsController < MyController
   # +PUT /my/items(.json)
   # +params => {"character_items_stocks"=>{"0"=>{"character_id"=>"2", "item_id"=>"1", "stock"=>"4", "total_cost"=>"30"}, "1"=>{"character_id"=>"1", "item_id"=>"2", "stock"=>"-4"}}}
   # +
-  # +
+  # +レスポンス
   # +{
   # ++"items": [
   # +++{
@@ -117,6 +116,32 @@ class My::ItemsController < MyController
   #
   # @todo parse_character_items_stocksが処理した@character_items_stocksを、ごにょごにょして@resultに入れる 
   def updates
+    ##やること##
+    ##更新対象のitem_id,average_cost,stockを取得
+    ##更新対象のレコードを user_id && item_id で特定
+    ##在庫情報と追加情報をマージ
+    ## => params[:stock] > 0の場合
+    #       # => new_average_cost = param[total_cost] + Inventory[average_cost * stock] / params[stock]+Inventory[stock]
+    # 共通
+    ## => new_stock = params[stock] + Inventory[stock]
+    #  => new_stock < 0 の場合、delete_record && return 0 とする
+    # New
+    ##更新対象がなかった場合はnewを呼ぶ
+    #
+    @character_items_stocks.each do |item|
+       inventories = Inventory.where("user_id = ? AND item_id = ?", current_user.id, item[:item_id])
+       if inventories.present?
+         inventory = Inventory.find(inventories.first.id)
+           if item[:stock] >= 0
+           inventory.average_cost = (inventory.average_cost * inventory.stock + item[:total_cost])/(inventory.stock + item[:stock])
+           end
+           inventory.stock = inventory.stock + item[:stock]
+       else
+         inventory = Inventory.new(:user_id => current_user.id, :item_id => item[:item_id], :stock => item[:stock], :average_cost => (item[:total_cost]/item[:stock]))
+       end
+         inventory.save
+    end
+    
     @result = {}
 
     ##FIXME @character_items_stocksを、ごにょごにょして@resultに入れる 
@@ -249,9 +274,5 @@ class My::ItemsController < MyController
 
     def resources
       resources = Inventory.where(:user_id => current_user.id)
-    end
-
-    def mychar
-      mychar = Character.where(:user_id => current_user.id)
     end
 end
