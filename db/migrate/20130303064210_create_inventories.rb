@@ -1,12 +1,10 @@
 class CreateInventories < ActiveRecord::Migration
   def change
     create_table :inventories do |t|
-      t.integer :user_id
-      t.integer :item_id
-      t.integer :character_id
-      t.integer :stock
-      t.integer :average_cost
-      t.integer :bazzar_cost
+      t.integer :user_id, :null => 0
+      t.integer :item_id, :null => 0
+      t.integer :stock, :default => 0
+      t.integer :average_cost, :default => 0
 
       t.timestamps
     end
