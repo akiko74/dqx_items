@@ -14,19 +14,6 @@
         </td>
       </tr>
       <tr>
-        <th>追加先</th>
-        <td>
-          <% current_user.characters.each do |caracter| %>
-          <label class="radio inline btn">
-            <%= radio_button_tag 'change_to', caracter.id %><%= caracter.char_name %>
-          </label>
-          <% end %>
-          <label class="radio  inline btn">
-            <%= radio_button_tag 'change_to', '0' %>共有
-          </label>
-        </td>
-      </tr>
-      <tr>
         <td colspan="2">
           <div id="item_form" class="tabbable tabs-left">
             <ul class="nav nav-tabs">
@@ -71,8 +58,9 @@
                       :autocomplete  => "off",
                       :class         => "span3",
                       :placeholder   => "削減数",
+                      :id            => "del_stock",
                       :type          => :number %>
-                <%= f.submit "削減", :class => "btn btn-block" %>
+                <%= f.submit "削減", :class => "btn btn-block", :id => 'del-button' %>
               </div>
             </div>
           </div>
@@ -82,5 +70,7 @@
     </tbody>
   </table>
 <% end %>
+
+<div id="users_item_list">
 <div id="result">
 </div>

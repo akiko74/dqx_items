@@ -2,5 +2,9 @@
 
 FactoryGirl.define do
   factory :inventory do
+    user
+    item
+    stock 32
+    average_cost 120
   end
 end

@@ -11,5 +11,6 @@ class User < ActiveRecord::Base
   #
   has_many :items, :through => :inventories
   has_many :recipes, :through => :equipments
+  has_many :inventories
 
 end

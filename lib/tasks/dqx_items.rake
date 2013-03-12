@@ -44,5 +44,20 @@ namespace :dqx_items do
     Rake::Task["dqx_items:load_recipes3"].invoke
   end
 
+
+  desc "Load Demo Data"
+  task :load_demo_data do
+    require 'factory_girl'
+    #Dir::glob("factories/*.rb") do |file|
+    #  load File.expand_path(file)
+    #end
+    User.delete_all(:email => "testuser@localhost.localdomain")
+
+    _user = FactoryGirl.create(:user, :email => "testuser@localhost.localdomain")
+    FactoryGirl.create(:inventory, user: _user, item_id: 1)
+    FactoryGirl.create(:inventory, user: _user, item_id: 2)
+    FactoryGirl.create(:inventory, user: _user, item_id: 3)
+  end
+
 end
 

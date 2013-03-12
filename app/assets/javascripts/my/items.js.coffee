@@ -78,6 +78,8 @@ renew_my_items_data = () ->
         console.log key
       console.log "-------------------------------------------------------------------------"
 
+
+tmp = () ->
     characters_items_hash = {}
     characters_items_hash[sha1.hex("characters-0-items")] = []
     character_key_list = []
@@ -183,6 +185,16 @@ fetch_characters_items = (character_id) ->
 
 
 $ ->
+  $("input#del-button").bind 'click', (e) ->
+    _stock = parseInt($("#del_stock").val());
+    console.log _stock;
+    _stock = -1 * _stock if _stock > 0
+    
+    console.log "=====";
+    console.log _stock;
+    console.log "=====";
+    return false;
+  
   renew_my_items_data()
   character_list = fetch_character_list()
   generate_character_tab_tags(character_list)
@@ -230,3 +242,5 @@ $ ->
       console.log character_item['name']
   $('#character_list li:first-child').addClass("active")
   $(".tab-pane:first-child").addClass("active")
+
+
