@@ -91,140 +91,12 @@ class My::ItemsController < MyController
   # 在庫情報更新
   #
   # @param [Hash] params リクエストパラメータ
-  # @option params [Hash] items_stocks キャラクター毎のアイテム変更情報の配列もどき
-  # @option character_items_stocks [Hash] /\d+/ 変更順をキーとするキャラクター毎のアイテム変更情報
-  # @option /\d+/ [String] character_id 在庫変更対象のキャラクターID(共用の場合は"0"が入る
-  # @option /\d+/ [String] item_id 在庫変更対象のアイテムID
-  # @option /\d+/ [String] stock 在庫の変動数
-  # @option /\d+/ [String] total_cost 購入時の合計金額（使用時には付かない）
   # @return [String] 変更されたデータの情報を含むJSONオブジェクト（例参照）
   # 
-  # @note before_filter :parse_character_items_stocksにより、パラメータは@character_items_stocksに解析され、格納される。
-  # @see #parse_character_items_stocks
+  # @note before_filter :parse_equipments_items_jsonにより、パラメータは@requested_equipments_itemsに解析され、格納される。
+  # @see #parse_equipments_items_json
   #
-  # @example 在庫情報更新API
-  # +PUT /my/items(.json)
-  # +params => {
-  # ++"equipments_stocks"=>{
-  # +++"add"=>{"0"=>{"recipe_id"=>"1", "cost"=>"430"}},
-  # +++"del"=>{"0"=>{"equipment_id"=>"1"}}
-  # ++},
-  # ++"items_stocks"=>{"0"=>{"item_id"=>"1", "stock"=>"4", "total_cost"=>"30"}, "1"=>{"item_id"=>"2", "stock"=>"-4"}}
-  #
-  # @note 初級魔法戦士服を作って登録する（コットン草は使い切る）
-  # +@my_items_updates = {
-  # ++"equipments" => [
-  # +++{ "name" => "初級魔法戦士服", "stock" => "1",  "renkin_count" => "0", "total_cost" => "1260" }
-  # ++],
-  # ++"items" => [
-  # +++{ "name" => "あやかしそう",   "stock" => "-3" },
-  # +++{ "name" => "コットン草",     "stock" => "-3" }
-  # ++]
-  # +
-  # +#=> {
-  # ++"equipments": [
-  # +++{ "name": "初級魔法戦士服", "stock": 1, "renkin_count": 0, "cost": 1260 }
-  # ++],
-  # ++"items": [
-  # +++{ "name": "あやかしそう",   "stock": 7, "cost": 290 },
-  # +++{ "name": "コットン草",     "stock": 0, "cost": 120 }
-  # ++]
-  # +}
-  #
-  # @note ぬすっとの服＋１にしゅび力+2を付けて＋２にして登録する
-  # +@my_items_updates = {
-  # ++"equipments" => [
-  # +++{ "name" => "ぬすっとの服", "stock" => "-1", "renkin_count" => "1",
-  # "cost" => "700" },
-  # +++{ "name" => "ぬすっとの服", "stock" => "1",  "renkin_count" => "2", "cost" => "1000" }
-  # ++],
-  # ++"items" => [
-  # +++{ "name" => "小さなこうら", "stock" => "-1" },
-  # +++{ "name" => "ようせいの粉", "stock" => "-1" }
-  # ++]
-  # +
-  # +#=> {
-  # ++"equipments": [
-  # +++{ "name": "ぬすっとの服", "renkin_count": 0, "cost": 1260 }
-  # ++],
-  # ++"items": [
-  # +++{ "name": "あやかしそう", "stock": 7, "cost": 290 },
-  # +++{ "name": "コットン草",   "stock": 0, "cost": 0   }
-  # ++]
-  # +}
-  #
-  # +@my_items_updates = [
-  # ++{
-  # +++"name"       => "初級魔法戦士服",
-  # +++"stock"      => "-1",
-  # +++"total_cost" => "-960"
-  # ++},
-  # ++{
-  # +++"name"       => "小さなこうら",
-  # +++"stock"      => "-1",
-  # +++"total_cost" => "-250"
-  # ++},
-  # ++{
-  # +++"name"       => "ようせいの粉",
-  # +++"stock"      => "-1",
-  # +++"total_cost" => "-100"
-  # ++},
-  # ++{
-  # +++"name"       => "銀の錬金ツボ",
-  # +++"total_cost" => "-37"
-  # ++}
-  # +]
-  # +
-  # +#=> {
-  # ++"items": [
-  # +++{
-  # ++++"name": "あやかしそう",
-  # ++++"stock": 7,
-  # ++++"cost": 290
-  # +++},
-  # +++{
-  # ++++"name": "コットン草",
-  # ++++"stock": 0,
-  # ++++"cost": 0
-  # +++},
-  # +++{
-  # +++}
-  # ++],
-  # ++"equipments": [
-  # +++{
-  # ++++"name": "初級魔法戦士服",
-  # ++++"stock": 4,
-  # ++++"total_cost": 960
-  # +++}
-  # ++]
-  # +}
-
-
-
-
-
-
-  # +}
-  # +
-  # +レスポンス
-  # +{
-  # ++"items": [
-  # +++{
-  # ++++"id": 1,
-  # ++++"character_id": 2,
-  # ++++"cost": 30,
-  # ++++"stock":20
-  # +++},
-  # +++{
-  # ++++"id": 2,
-  # ++++"character_id": 1,
-  # ++++"cost": 0,
-  # ++++"stock":0
-  # +++}
-  # ++]
-  # +}
-  #
-  # @todo parse_character_items_stocksが処理した@character_items_stocksを、ごにょごにょして@resultに入れる 
+  # @todo parse_equipments_items_jsonが処理した@requested_equipments_itemsを、ごにょごにょして@resultに入れる 
   def updates
 
 
@@ -255,15 +127,13 @@ class My::ItemsController < MyController
          inventory.save
     end
     
-
-    ##FIXME @character_items_stocksを、ごにょごにょして@resultに入れる 
-    logger.debug @character_items_stocks
-    @result = {"items"=>[{"id"=>1, "character_id"=>2, "cost"=>30, "stock"=>0}, {"id"=>3, "character_id"=>0, "cost"=>100, "stock"=>20}]}
-    ######
 =end
 
-
+    ##FIXME @requested_equipments_itemsを、ごにょごにょして@resultに入れる 
+    logger.debug @requested_equipments_items
     @result = {}
+    ######
+
     respond_to do |format|
       format.json { render json: @result }
     end
