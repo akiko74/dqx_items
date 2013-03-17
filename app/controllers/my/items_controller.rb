@@ -63,13 +63,9 @@ class My::ItemsController < MyController
     @uid = Digest::SHA1.hexdigest("user-#{current_user.id}")
 
 =begin
-    @characters = []
-    mychar.each do |char|
-      @characters << {:id => char.id, :name => char.char_name }
-    end
     @items = []
     resources.each do |item|
-      @items << {:id => item.item_id, :character_id => item.character_id, :name => Item.find(item.item_id).name,  :kana => Item.find(item.item_id).kana, :cost => item.average_cost, :stock => item.stock }
+      @items << {:id => item.item_id, :name => Item.find(item.item_id).name,  :kana => Item.find(item.item_id).kana, :cost => item.average_cost, :stock => item.stock }
     end
     @result = {:uid => @uid, :characters => @characters, :items => @items}
 =end
@@ -166,27 +162,52 @@ class My::ItemsController < MyController
     #  => new_stock < 0 の場合、delete_record && return 0 とする
     # New
     ##更新対象がなかった場合はnewを呼ぶ
-    #
-=begin
-    @character_items_stocks.each do |item|
-       inventories = Inventory.where("user_id = ? AND item_id = ?", current_user.id, item[:item_id])
-       if inventories.present?
-         inventory = Inventory.find(inventories.first.id)
-           if item[:stock] >= 0
-           inventory.average_cost = (inventory.average_cost * inventory.stock + item[:total_cost])/(inventory.stock + item[:stock])
+
+    #input sample:
+    #{:equipments => [{ :name => "初級魔法戦士服", :stock => 1, :renkin_count => 0, :cost => 1260 }],
+    #              :items => [{ :name => "あやかしそう", :stock => -3 },{ :name => "コットン草", :stock => -3 }]}
+    @equipment_result = []
+    @item_result =[]
+    @equipments = @requested_equipments_items[:equipments]
+      @equipments.each do |equipment|
+        recipe_id = Recipe.where(:name => equipment[:name]).first.id
+        case
+          when equipment[:stock] == -1
+            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND total_cost = ?", recipe_id, equipment[:renkin_count], equipment[:total_cost]).first.destroy, equipment[:name], 0 ]
+          when equipment[:stock] == 1
+            @equipment_result << [my_equipments.create(:recipe_id => recipe_id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], 1 ]
+        end
+      end
+    @inventories = @requested_equipments_items[:items]
+       @inventories.each do |inventory|
+         item_id = Item.where(:name => inventory[:name]).first.id
+           if resources.where(:item_id => item_id).present?
+             my_inventory = resources.where(:item_id => item[:item_id]).first
+             my_inventory.stock += inventory[:stock]
+             my_inventory.total_cost += inventory[:cost]
+               if my_inventory.stock <= 0
+                 my_inventory.stock = 0
+                 my_inventory.total_cost = 0
+                 @item_result << [my_inventory.destroy, invetory[:name]]
+               else
+                 @item_result << [my_inventory.save, inventory[:name]]
+               end
+           else
+             @item_result << resources.create(:item_id => item_id, :total_cost => inventory[:cost], :stock => inventory[:stock]) if inventory[:stock] > 0
            end
-           inventory.stock = inventory.stock + item[:stock]
-       else
-         inventory = Inventory.new(:user_id => current_user.id, :item_id => item[:item_id], :stock => item[:stock], :average_cost => (item[:total_cost]/item[:stock]))
        end
-         inventory.save
-    end
-    
-=end
+      equipment_array = []
+      @equipment_result.each do |equipment|
+        equipment_array << {:name => equipment[1], :stock => equipment[2], :renkin_count => equipment[0].renkin_count, :cost => equipment[0].cost}
+      end
+      item_array = []
+      @item_result.each do |item|
+        item_array << {:name => item[1], :stock => item[0].stock, :cost => item[0].total_cost/item[0].stock}
+      end
 
     ##FIXME @requested_equipments_itemsを、ごにょごにょして@resultに入れる 
     logger.debug @requested_equipments_items
-    @result = {}
+    @result = {:equipments => equipment_array, :items => item_array }
     ######
 
     respond_to do |format|
@@ -279,5 +300,9 @@ class My::ItemsController < MyController
 
     def resources
       resources = Inventory.where(:user_id => current_user.id)
+    end
+
+    def my_equipments
+      my_equipmnets = Equipment.where(:user_id => current_user.id)
     end
 end

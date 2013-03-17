@@ -103,7 +103,7 @@ describe My::ItemsController do
             "0" => { "name" => "あやかしそう", "stock" => "-3" },
             "1" => { "name" => "コットン草",   "stock" => "-3" }
           }
-        } 
+        }
       }
 
       before {
