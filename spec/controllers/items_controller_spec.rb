@@ -4,6 +4,9 @@ require 'spec_helper'
 
 describe ItemsController do
 
+  before {
+    controller.stub!(:authenticate_admin).and_return(true)
+  }
   context "#index" do
     let(:params) { {} }
     before { get :index, params }
