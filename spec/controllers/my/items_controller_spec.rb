@@ -70,25 +70,80 @@ describe My::ItemsController do
     it_behaves_like "Respond to JSON"
   end
 
+  context "#parse_equipments_items_json" do
+    context "controller" do
 
-  context "#parse_character_items_stocks" do
+      let(:expected_results) {
+        {
+          equipments:  [
+            { name: "初級魔法戦士服", stock: 1, renkin_count: 0, total_cost: 1260 }
+          ],
+          items: [
+            { name: "あやかしそう", stock: -3 },
+            { name: "コットン草",   stock: -3 }
+          ]
+        }
+      }
+      let(:request_params) {
+        {
+          "equipments" => {
+            "0" => { "name" => "初級魔法戦士服", "stock" => "1", "renkin_count" => "0", "total_cost" => "1260" }
+          },
+          "items" => {
+            "0" => { "name" => "あやかしそう", "stock" => "-3" },
+            "1" => { "name" => "コットン草",   "stock" => "-3" }
+          }
+        } 
+      }
+
+      before {
+        controller.stub!(:params).and_return(request_params)
+      #  controller.unstub!(:parse_equipments_items_json)
+      }
+
+      subject { controller.send(:parse_equipments_items_json) }
+
+      context "instance variables" do
+        before { controller.send(:parse_equipments_items_json) }
+        subject { controller.instance_variables }
+        it { should include :@requested_equipments_items }
+      end
+    
+      context "@requested_equipments_items" do
+        before { controller.send(:parse_equipments_items_json) }
+        subject { controller.instance_variable_get(:@requested_equipments_items) }
+        it { should == expected_results }
+      end
+=begin
     before {
-#      controller.unstub!(:parse_character_items_stocks)
-      controller.stub!(:params).and_return({"character_items_stocks"=>{"0"=>{"character_id"=>"0", "item_id"=>"3", "stock"=>"4", "total_cost"=>"0"}}})
-    }
-    #subject { controller.send(:parse_character_items_stocks) }
-    subject {
+      controller.stub!(:params).and_return(request_params)
       put :updates, :format => 'json'
-      response
     }
-    it { should be_success }
+    context "response" do
+      subject { response }
+      it { should be_succes }
+    end
+    context "instance variables" do
+      subject { controller.instance_variables }
+      it { should include :@requested_equipments_items }
+    end
+
+    context "@requested_equipments_items" do
+      subject { controller.instance_variable_get(:@requested_equipments_items) }
+      it { should == expected_results }
+    end
+
+#    it { should be_success }
 #    it { should be_true }
 #    it { should be_instance_of Array }
 #    it { should == [] }
-    it { controller.instance_variables.should == [] }
-    it { assigns[:@character_items_stocks].should == "" }
+#    it { controller.instance_variables.should == [] }
+#    it { assigns[:@character_items_stocks].should == "" }
 #    it { controller.instance_variable_get(:@character_items_stocks).should_not be_nil }
 
+=end
+
+    end
 
   end
 

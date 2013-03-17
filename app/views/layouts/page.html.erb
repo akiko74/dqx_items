@@ -19,6 +19,15 @@
     <div class="navbar sub">
       <div class="navbar-inner">
         <ul class="nav">
+<% if user_signed_in? %>
+<% if params[:controller] == "my/items" %>
+  <li class="active">
+<% else %>
+  <li>
+<% end %>
+    <a href="/my/items">マイページ</a>
+  </li>
+<% end %>
 <% if params[:controller] == 'items' %>
   <li class="active">
 <% else %>
@@ -32,15 +41,6 @@
   <li>
 <% end %>
 <a href="/recipes">レシピ → 素材＋コスト</a></li>
-<% if user_signed_in? %>
-<% if params[:controller] == "my/items" %>
-  <li class="active">
-<% else %>
-  <li>
-<% end %>
-    <a href="/my/items">在庫管理ページ</a>
-  </li>
-<% end %>
         </ul>
       </div>
     </div>

@@ -8,7 +8,7 @@
 #
 class My::ItemsController < MyController
 
-  before_filter :parse_character_items_stocks, :only => [:updates]
+  before_filter :parse_equipments_items_json, :only => [:updates]
 
   # 在庫情報一覧
   #
@@ -21,20 +21,26 @@ class My::ItemsController < MyController
   # +GET /my/items.json
   # +
   # +{
-  # ++"characters": [
+  # ++"uid": "547118FF172E4BFD9D3881A83EA79B62",
+  # ++"equipments": [
   # +++{
-  # ++++"id": 1,
-  # ++++"name": "きゃら"
+  # ++++"recipe_id": 1,
+  # ++++"recipe_name": "どうのつるぎ",
+  # ++++"recipe_kana": "どうのつるぎ",
+  # ++++"cost": 320,
+  # ++++"renkin_count": 1
   # +++},
   # +++{
-  # ++++"id": 2,
-  # ++++"name": "サブきゃら"
+  # ++++"recipe_id": 12,
+  # ++++"recipe_name": "銅のさいほう針",
+  # ++++"recipe_kana": "どうのさいほうばり",
+  # ++++"cost": 20,
+  # ++++"renkin_count": 0,
   # +++}
   # ++],
   # ++"items": [
   # +++{
   # ++++"id": 1,
-  # ++++"character_id": 2,
   # ++++"name": "どうのこうせき",
   # ++++"kana": "どうのこうせき",
   # ++++"cost": 30,
@@ -42,7 +48,6 @@ class My::ItemsController < MyController
   # +++},
   # +++{
   # ++++"id": 2,
-  # ++++"character_id": 1,
   # ++++"name": "じょうぶな枝",
   # ++++"kana": "じょうぶなえだ",
   # ++++"cost": 40,
@@ -50,7 +55,6 @@ class My::ItemsController < MyController
   # +++},
   # +++{
   # ++++"id": 3,
-  # ++++"character_id": 0,
   # ++++"name": "汗と涙の結晶",
   # ++++"kana": "あせとなみだのけっしょう",
   # ++++"cost": 0,
@@ -61,6 +65,10 @@ class My::ItemsController < MyController
   # 
   # @todo resultの中身作る
   def index
+
+    @uid = Digest::SHA1.hexdigest("user-#{current_user.id}")
+
+=begin
     @characters = []
     mychar.each do |char|
       @characters << {:id => char.id, :name => char.char_name }
@@ -69,7 +77,9 @@ class My::ItemsController < MyController
     resources.each do |item|
       @items << {:id => item.item_id, :character_id => item.character_id, :name => Item.find(item.item_id).name,  :kana => Item.find(item.item_id).kana, :cost => item.average_cost, :stock => item.stock }
     end
-    @result = {:characters => @characters, :items => @items}
+    @result = {:uid => @uid, :characters => @characters, :items => @items}
+=end
+    @result = {}
 
     respond_to do |format|
       format.html
@@ -81,7 +91,7 @@ class My::ItemsController < MyController
   # 在庫情報更新
   #
   # @param [Hash] params リクエストパラメータ
-  # @option params [Hash] character_items_stocks キャラクター毎のアイテム変更情報の配列もどき
+  # @option params [Hash] items_stocks キャラクター毎のアイテム変更情報の配列もどき
   # @option character_items_stocks [Hash] /\d+/ 変更順をキーとするキャラクター毎のアイテム変更情報
   # @option /\d+/ [String] character_id 在庫変更対象のキャラクターID(共用の場合は"0"が入る
   # @option /\d+/ [String] item_id 在庫変更対象のアイテムID
@@ -94,7 +104,107 @@ class My::ItemsController < MyController
   #
   # @example 在庫情報更新API
   # +PUT /my/items(.json)
-  # +params => {"character_items_stocks"=>{"0"=>{"character_id"=>"2", "item_id"=>"1", "stock"=>"4", "total_cost"=>"30"}, "1"=>{"character_id"=>"1", "item_id"=>"2", "stock"=>"-4"}}}
+  # +params => {
+  # ++"equipments_stocks"=>{
+  # +++"add"=>{"0"=>{"recipe_id"=>"1", "cost"=>"430"}},
+  # +++"del"=>{"0"=>{"equipment_id"=>"1"}}
+  # ++},
+  # ++"items_stocks"=>{"0"=>{"item_id"=>"1", "stock"=>"4", "total_cost"=>"30"}, "1"=>{"item_id"=>"2", "stock"=>"-4"}}
+  #
+  # @note 初級魔法戦士服を作って登録する（コットン草は使い切る）
+  # +@my_items_updates = {
+  # ++"equipments" => [
+  # +++{ "name" => "初級魔法戦士服", "stock" => "1",  "renkin_count" => "0", "total_cost" => "1260" }
+  # ++],
+  # ++"items" => [
+  # +++{ "name" => "あやかしそう",   "stock" => "-3" },
+  # +++{ "name" => "コットン草",     "stock" => "-3" }
+  # ++]
+  # +
+  # +#=> {
+  # ++"equipments": [
+  # +++{ "name": "初級魔法戦士服", "stock": 1, "renkin_count": 0, "cost": 1260 }
+  # ++],
+  # ++"items": [
+  # +++{ "name": "あやかしそう",   "stock": 7, "cost": 290 },
+  # +++{ "name": "コットン草",     "stock": 0, "cost": 120 }
+  # ++]
+  # +}
+  #
+  # @note ぬすっとの服＋１にしゅび力+2を付けて＋２にして登録する
+  # +@my_items_updates = {
+  # ++"equipments" => [
+  # +++{ "name" => "ぬすっとの服", "stock" => "-1", "renkin_count" => "1",
+  # "cost" => "700" },
+  # +++{ "name" => "ぬすっとの服", "stock" => "1",  "renkin_count" => "2", "cost" => "1000" }
+  # ++],
+  # ++"items" => [
+  # +++{ "name" => "小さなこうら", "stock" => "-1" },
+  # +++{ "name" => "ようせいの粉", "stock" => "-1" }
+  # ++]
+  # +
+  # +#=> {
+  # ++"equipments": [
+  # +++{ "name": "ぬすっとの服", "renkin_count": 0, "cost": 1260 }
+  # ++],
+  # ++"items": [
+  # +++{ "name": "あやかしそう", "stock": 7, "cost": 290 },
+  # +++{ "name": "コットン草",   "stock": 0, "cost": 0   }
+  # ++]
+  # +}
+  #
+  # +@my_items_updates = [
+  # ++{
+  # +++"name"       => "初級魔法戦士服",
+  # +++"stock"      => "-1",
+  # +++"total_cost" => "-960"
+  # ++},
+  # ++{
+  # +++"name"       => "小さなこうら",
+  # +++"stock"      => "-1",
+  # +++"total_cost" => "-250"
+  # ++},
+  # ++{
+  # +++"name"       => "ようせいの粉",
+  # +++"stock"      => "-1",
+  # +++"total_cost" => "-100"
+  # ++},
+  # ++{
+  # +++"name"       => "銀の錬金ツボ",
+  # +++"total_cost" => "-37"
+  # ++}
+  # +]
+  # +
+  # +#=> {
+  # ++"items": [
+  # +++{
+  # ++++"name": "あやかしそう",
+  # ++++"stock": 7,
+  # ++++"cost": 290
+  # +++},
+  # +++{
+  # ++++"name": "コットン草",
+  # ++++"stock": 0,
+  # ++++"cost": 0
+  # +++},
+  # +++{
+  # +++}
+  # ++],
+  # ++"equipments": [
+  # +++{
+  # ++++"name": "初級魔法戦士服",
+  # ++++"stock": 4,
+  # ++++"total_cost": 960
+  # +++}
+  # ++]
+  # +}
+
+
+
+
+
+
+  # +}
   # +
   # +レスポンス
   # +{
@@ -116,6 +226,8 @@ class My::ItemsController < MyController
   #
   # @todo parse_character_items_stocksが処理した@character_items_stocksを、ごにょごにょして@resultに入れる 
   def updates
+
+
     ##やること##
     ##更新対象のitem_id,average_cost,stockを取得
     ##更新対象のレコードを user_id && item_id で特定
@@ -128,6 +240,7 @@ class My::ItemsController < MyController
     # New
     ##更新対象がなかった場合はnewを呼ぶ
     #
+=begin
     @character_items_stocks.each do |item|
        inventories = Inventory.where("user_id = ? AND item_id = ?", current_user.id, item[:item_id])
        if inventories.present?
@@ -142,13 +255,15 @@ class My::ItemsController < MyController
          inventory.save
     end
     
-    @result = {}
 
     ##FIXME @character_items_stocksを、ごにょごにょして@resultに入れる 
     logger.debug @character_items_stocks
     @result = {"items"=>[{"id"=>1, "character_id"=>2, "cost"=>30, "stock"=>0}, {"id"=>3, "character_id"=>0, "cost"=>100, "stock"=>20}]}
     ######
+=end
 
+
+    @result = {}
     respond_to do |format|
       format.json { render json: @result }
     end
@@ -159,116 +274,17 @@ class My::ItemsController < MyController
     
     # リクエストパラメータからキャラクター毎の在庫変更情報を抽出して@character_items_stocksに格納する
     # 
-    # @example 在庫追加情報を含むパラメータの処理
-    # +Parameters:
-    # ++params = {
-    # +++"character_items_stocks" => {
-    # ++++"0" => { "character_id" => "2", "item_id" => "1", "stock" => "4", "total_cost" => "30" }
-    # +++}
-    # ++}
-    # +
-    # +Result:
-    # ++@character_items_stocks = [
-    # +++{
-    # ++++:character_id => 2,
-    # ++++:item_id      => 1,
-    # ++++:stock        => 4,
-    # ++++:total_cost   => 30
-    # +++}
-    # ++]
     # 
-    # @example 在庫削減情報を含むパラメータの処理
-    # +Parameters:
-    # ++params = {
-    # +++"character_items_stocks" => {
-    # ++++"0" => { "character_id" => "1", "item_id" => "2", "stock" => "-4" }
-    # +++}
-    # ++}
-    # +
-    # +result:
-    # ++@character_items_stocks = [
-    # +++{
-    # ++++:character_id => 1,
-    # ++++:item_id      => 2,
-    # ++++:stock        => -4
-    # +++}
-    # ++]
-    # 
-    # @example 在庫追加情報と削減情報の両方を含むパラメータの処理
-    # +Parameters:
-    # ++params = {
-    # +++"character_items_stocks" => {
-    # ++++"0" => { "character_id" => "2", "item_id" => "10", "stock" => "4", "total_cost" => "30" },
-    # ++++"1" => { "character_id" => "2", "item_id" => "2", "stock" => "-4" },
-    # ++++"2" => { "character_id" => "2", "item_id" => "5", "stock" => "1", "total_cost" => "200" },
-    # ++++"3" => { "character_id" => "2", "item_id" => "7", "stock" => "-52" },
-    # ++++"4" => { "character_id" => "2", "item_id" => "15", "stock" => "-7" }
-    # +++}
-    # ++}
-    # +
-    # +Result:
-    # ++@character_items_stocks = [
-    # +++{
-    # ++++:character_id => 2,
-    # ++++:item_id      => 10,
-    # ++++:stock        => 4,
-    # ++++:total_cost   => 30
-    # +++},
-    # +++{
-    # ++++:character_id => 2,
-    # ++++:item_id      => 2,
-    # ++++:stock        => -4
-    # +++},
-    # +++{
-    # ++++:character_id => 2,
-    # ++++:item_id      => 5,
-    # ++++:stock        => 1,
-    # ++++:total_cost   => 200
-    # +++},
-    # +++{
-    # ++++:character_id => 2,
-    # ++++:item_id      => 7,
-    # ++++:stock        => -52
-    # +++},
-    # +++{
-    # ++++:character_id => 2,
-    # ++++:item_id      => 15,
-    # ++++:stock        => -7
-    # +++}
-    # 
-    # @example 複数のキャラクターにまたがる処理
-    # +Parameters:
-    # ++params = {
-    # +++"character_items_stocks" => {
-    # ++++"0" => { "character_id" => "1", "item_id" => "2", "stock" => "4", "total_cost" => "0" },
-    # ++++"1" => { "character_id" => "2", "item_id" => "2", "stock" => "-4" }
-    # +++}
-    # ++}
-    # +
-    # +Result:
-    # ++@character_items_stocks = [
-    # +++{
-    # ++++:character_id => 1,
-    # ++++:item_id      => 2,
-    # ++++:stock        => 4,
-    # ++++:total_cost   => 0
-    # +++},
-    # +++{
-    # ++++:character_id => 2,
-    # ++++:item_id      => 2,
-    # ++++:stock        => -4
-    # +++}
-    # 
-    def parse_character_items_stocks
-      @character_items_stocks = params["character_items_stocks"].inject(Array.new) do |ary, key|
-        _character_item_stock = {
-          :character_id => key.last["character_id"].to_i,
-          :item_id      => key.last["item_id"].to_i,
-          :stock        => key.last["stock"].to_i,
+    def parse_equipments_items_json
+      @requested_equipments_items ||= begin
+        _equipments_items_hash = params.keys.each_with_object({}) { |key, hash|
+          hash[key.to_sym] = Array.new
+          params[key].each do |no,value|
+            hash[key.to_sym][no.to_i] = value.each_with_object({}) { |set,hash|
+              hash[set[0].to_sym] = set[0] == "name" ? set[1] : set[1].to_i
+            }
+          end
         }
-        _character_item_stock[:total_cost] = key.last["total_cost"].to_i if _character_item_stock[:stock] > 0
-        ary[key.first.to_i] = _character_item_stock
-        ary
       end
     end
 

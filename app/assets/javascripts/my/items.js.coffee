@@ -77,8 +77,7 @@ renew_my_items_data = () ->
       for key of localStorage
         console.log key
       console.log "-------------------------------------------------------------------------"
-
-
+  
 tmp = () ->
     characters_items_hash = {}
     characters_items_hash[sha1.hex("characters-0-items")] = []
