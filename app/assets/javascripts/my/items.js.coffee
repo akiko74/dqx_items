@@ -1,6 +1,7 @@
 window.Application ||= {}
 
 debug = true
+map = {};
 
 jQuery ->
   bootstrap();
@@ -30,18 +31,12 @@ bind_functions = () ->
     e.preventDefault();
     return false;
 
-  $("#my_items_update_form #total")
+  $("#my_items_update_form #total, #my_items_update_form #cost, #my_items_update_form #stock, #my_items_update_form #del_stock")
      .bind("keyup", calc_inputs)
      .bind("change", calc_inputs)
-  $("#my_items_update_form #cost")
-     .bind("keyup", calc_inputs)
-     .bind("change", calc_inputs)
-  $("#my_items_update_form #stock")
-     .bind("keyup", calc_inputs)
-     .bind("change", calc_inputs)
-  $("#my_items_update_form #del_stock")
-     .bind("keyup", calc_inputs)
-     .bind("change", calc_inputs)
+  $("#my_items_update_form input#keyword")
+     .bind("keyup", check_inputs)
+     .bind("change", check_inputs)
 
   $("#add-button").bind "click", ->
     console.log "Add Item !"
@@ -60,7 +55,6 @@ bind_functions = () ->
     console.log "Del Item !"
     return false;
 
-  map = {};
   $("#my_items_update_form input#keyword").typeahead({
 
     source: (query, process) ->
@@ -95,6 +89,8 @@ bind_functions = () ->
   });
 
   console.log "Set typeahead."
+  $("#del-button").attr("disabled", "disabled");
+  $("#add-button").attr("disabled", "disabled");
 
 
 calc_inputs = (e) ->
@@ -110,10 +106,13 @@ calc_inputs = (e) ->
     console.log "total: #{_input_total}";
     console.log "del_stock: #{_input_del_stock}";
   if ( isFinite(_input_cost) && _input_cost < 0 )
+    _input_cost = 0
     $("#my_items_update_form input#cost").val(0);
   if ( isFinite(_input_stock) && _input_stock < 0 )
+    _input_stock = 0
     $("#my_items_update_form input#stock").val(0);
   if ( isFinite(_input_total) && _input_total < 0 )
+    _input_total = 0
     $("#my_items_update_form input#total").val(0);
 
   if $(e.target)[0].id == "stock"
@@ -127,8 +126,23 @@ calc_inputs = (e) ->
   else if $(e.target)[0].id == "total"
     if ( isFinite(_input_stock) && isFinite(_input_total) )
       $("#my_items_update_form input#cost").val(parseInt(_input_total / _input_stock));
+  check_inputs();
 
+check_inputs = () ->
+  _input_keyword = $("#my_items_update_form input#keyword").val()
+  _input_cost  = parseInt($("#my_items_update_form input#cost").val())
+  _input_stock = parseInt($("#my_items_update_form input#stock").val())
+  _input_total = parseInt($("#my_items_update_form input#total").val())
+  _input_del_stock = parseInt($("#my_items_update_form input#del_stock").val())
+  if ( isFinite(_input_stock) && isFinite(_input_cost) && isFinite(_input_total) && _input_keyword && _input_stock > 0 && typeof map[_input_keyword] != "undefined")
+    $("#add-button").removeAttr("disabled");
+  else
+    $("#add-button").attr("disabled", "disabled");
 
+  if ( isFinite(_input_del_stock) && _input_keyword && _input_del_stock != 0 && typeof map[_input_keyword] != "undefined")
+    $("#del-button").removeAttr("disabled");
+  else
+    $("#del-button").attr("disabled", "disabled");
 
 ###
 
