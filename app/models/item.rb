@@ -14,4 +14,11 @@ class Item < ActiveRecord::Base
     recipes.map(&:job).uniq
   end
 
+  def to_dictionary_hash
+    {
+      name: name,
+      kana: kana,
+      type: 'item'
+    }
+  end
 end

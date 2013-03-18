@@ -1,4 +1,4 @@
-<%= form_for([:my, Item.new], :method => :put, :html => { :class => "" }) do |f| %>
+<%= form_tag({}, { id: "my_items_update_form" }) do |f| %>
   <table class="">
     <tbody>
       <tr>
@@ -50,7 +50,7 @@
                       :class         => "span3",
                       :placeholder   => "合計価格",
                       :type          => :number %>
-                <%= f.submit "追加", :class => "btn btn-block" %>
+                <%= submit_tag "追加", class: "btn btn-block", id: 'add-button' %>
               </div>
               <div class="tab-pane" id="del">
                 <%= text_field_tag :stock,
@@ -60,7 +60,7 @@
                       :placeholder   => "削減数",
                       :id            => "del_stock",
                       :type          => :number %>
-                <%= f.submit "削減", :class => "btn btn-block", :id => 'del-button' %>
+                <%= submit_tag "削減", :class => "btn btn-block", :id => 'del-button' %>
               </div>
             </div>
           </div>

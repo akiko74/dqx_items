@@ -17,4 +17,13 @@ class Recipe < ActiveRecord::Base
     }
 
 
+  def to_dictionary_hash          
+    {                             
+      name: name,                 
+      kana: name,                 
+      type: 'recipe'                
+    }                             
+  end                             
+
+
 end

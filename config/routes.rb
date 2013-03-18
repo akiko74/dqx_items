@@ -10,6 +10,8 @@ DqxItems::Application.routes.draw do
 
   resources :tools
 
+  resources :dictionaries, only: [:index]
+
   namespace :my do
     resources :items, :only => [ :index ]
     put 'items' => "items#updates" 

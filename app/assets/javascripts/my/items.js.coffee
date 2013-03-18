@@ -2,6 +2,136 @@ window.Application ||= {}
 
 debug = true
 
+jQuery ->
+  bootstrap();
+
+
+bootstrap = () ->
+  console.log "bootstrap" if debug
+  fetch_dictionaries();
+  bind_functions();
+  console.log "bootstraped" if debug
+
+
+fetch_dictionaries = () ->
+  $.getJSON '/dictionaries.json', (data, status) ->
+    console.log "Ajax Request => #{status}" if debug
+    localStorage['dictionaries'] = JSON.stringify(data)
+    if debug
+      console.log "--- data ----------------------------------------------------------------"
+      console.log localStorage['dictionaries']
+      console.log "-------------------------------------------------------------------------"
+
+
+bind_functions = () ->
+  console.log "Set typeahead to #my_items_update_form input#keyword"
+
+  $("#my_items_update_form").bind "submit", (e) ->
+    e.preventDefault();
+    return false;
+
+  $("#my_items_update_form #total")
+     .bind("keyup", calc_inputs)
+     .bind("change", calc_inputs)
+  $("#my_items_update_form #cost")
+     .bind("keyup", calc_inputs)
+     .bind("change", calc_inputs)
+  $("#my_items_update_form #stock")
+     .bind("keyup", calc_inputs)
+     .bind("change", calc_inputs)
+  $("#my_items_update_form #del_stock")
+     .bind("keyup", calc_inputs)
+     .bind("change", calc_inputs)
+
+  $("#add-button").bind "click", ->
+    console.log "Add Item !"
+    submit_data = { name: "", cost: 0, stock: 0 };
+    _input_cost  = parseInt($("#my_items_update_form input#total").val())
+    _input_stock = parseInt($("#my_items_update_form input#stock").val())
+    submit_data.name   = $("#my_items_update_form input#keyword").val();
+    submit_data.cost  += _input_cost if isFinite(_input_cost); 
+    submit_data.stock += _input_stock if isFinite(_input_stock); 
+    console.log '-----------';
+    console.log submit_data;
+    console.log '-----------';
+    return false;
+
+  $("#del-button").bind "click", ->
+    console.log "Del Item !"
+    return false;
+
+  map = {};
+  $("#my_items_update_form input#keyword").typeahead({
+
+    source: (query, process) ->
+      JSON.parse(localStorage['dictionaries'])
+      states = [];
+      data = JSON.parse(localStorage['dictionaries']);
+      $.each data, (i, item) ->
+        map[item.name] = item;
+        states.push(item.name);
+      console.log states;
+      return states;
+
+    matcher: (item) ->
+      if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) 
+        console.log "match!: " + item;
+        return true;
+
+    sorter: (items) ->
+      return items.sort();
+
+    highlighter: (item) ->
+      regex = new RegExp( '(' + this.query + ')', 'gi' );
+      item_str = item.replace( regex, "<strong>$1</strong>" );
+      console.log item_str;
+      return item_str;
+
+    updater: (item) ->
+      console.log JSON.stringify(map[item]);
+      return item;
+
+    items: 8;
+  });
+
+  console.log "Set typeahead."
+
+
+calc_inputs = (e) ->
+  if debug
+    console.log "calc inputs."
+  _input_cost  = parseInt($("#my_items_update_form input#cost").val())
+  _input_stock = parseInt($("#my_items_update_form input#stock").val())
+  _input_total = parseInt($("#my_items_update_form input#total").val())
+  _input_del_stock = parseInt($("#my_items_update_form input#del_stock").val())
+  if debug
+    console.log "cost: #{_input_cost}";
+    console.log "stock: #{_input_stock}";
+    console.log "total: #{_input_total}";
+    console.log "del_stock: #{_input_del_stock}";
+  if ( isFinite(_input_cost) && _input_cost < 0 )
+    $("#my_items_update_form input#cost").val(0);
+  if ( isFinite(_input_stock) && _input_stock < 0 )
+    $("#my_items_update_form input#stock").val(0);
+  if ( isFinite(_input_total) && _input_total < 0 )
+    $("#my_items_update_form input#total").val(0);
+
+  if $(e.target)[0].id == "stock"
+    if ( isFinite(_input_stock) && isFinite(_input_cost) && _input_cost > 0 )
+      $("#my_items_update_form input#total").val(_input_stock * _input_cost);
+    else if ( isFinite(_input_stock) && isFinite(_input_total) && _input_total > 0)
+      $("#my_items_update_form input#cost").val(parseInt(_input_total / _input_stock));
+  else if $(e.target)[0].id == "cost"
+    if ( isFinite(_input_stock) && isFinite(_input_cost) )
+      $("#my_items_update_form input#total").val(_input_stock * _input_cost);
+  else if $(e.target)[0].id == "total"
+    if ( isFinite(_input_stock) && isFinite(_input_total) )
+      $("#my_items_update_form input#cost").val(parseInt(_input_total / _input_stock));
+
+
+
+###
+
 Application.display_stock_console = (type,character_item_id) ->
   if $('#' + character_item_id + " ." + type + "_consoles").css("display") == "none"
     $(".plus").removeClass("btn-inverse")
@@ -183,7 +313,10 @@ fetch_characters_items = (character_id) ->
   return character_items
 
 
+
 $ ->
+  console.log "Loading my/items."
+  bootstrap();
   $("input#del-button").bind 'click', (e) ->
     _stock = parseInt($("#del_stock").val());
     console.log _stock;
@@ -242,4 +375,4 @@ $ ->
   $('#character_list li:first-child').addClass("active")
   $(".tab-pane:first-child").addClass("active")
 
-
+###
