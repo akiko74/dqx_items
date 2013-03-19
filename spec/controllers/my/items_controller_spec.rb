@@ -86,22 +86,22 @@ describe My::ItemsController do
       let(:expected_results) {
         {
           equipments:  [
-            { name: "初級魔法戦士服", stock: 1, renkin_count: 0, total_cost: 1260 }
+            { name: "初級魔法戦士服", stock: 1, renkin_count: 0, cost: 1260 }
           ],
           items: [
-            { name: "あやかしそう", stock: -3 },
-            { name: "コットン草",   stock: -3 }
+            { name: "あやかしそう", stock: -3, cost: -600 },
+            { name: "コットン草",   stock: -3, cost: -630 }
           ]
         }
       }
       let(:request_params) {
         {
           "equipments" => {
-            "0" => { "name" => "初級魔法戦士服", "stock" => "1", "renkin_count" => "0", "total_cost" => "1260" }
+            "0" => { "name" => "初級魔法戦士服", "stock" => "1", "renkin_count" => "0", "cost" => "1260" }
           },
           "items" => {
-            "0" => { "name" => "あやかしそう", "stock" => "-3" },
-            "1" => { "name" => "コットン草",   "stock" => "-3" }
+            "0" => { "name" => "あやかしそう", "stock" => "-3", "cost" => "-600" },
+            "1" => { "name" => "コットン草",   "stock" => "-3", "cost" => "-630" }
           }
         }
       }

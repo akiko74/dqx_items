@@ -170,27 +170,28 @@ class My::ItemsController < MyController
     @item_result =[]
     @equipments = @requested_equipments_items[:equipments]
       @equipments.each do |equipment|
-        recipe_id = Recipe.where(:name => equipment[:name]).first.id
+        recipe_id = Recipe.find_by_name(equipment[:name]).id
         case
           when equipment[:stock] == -1
-            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND total_cost = ?", recipe_id, equipment[:renkin_count], equipment[:total_cost]).first.destroy, equipment[:name], 0 ]
+            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND total_cost = ?", recipe_id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], 0 ]
           when equipment[:stock] == 1
             @equipment_result << [my_equipments.create(:recipe_id => recipe_id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], 1 ]
         end
       end
     @inventories = @requested_equipments_items[:items]
        @inventories.each do |inventory|
-         item_id = Item.where(:name => inventory[:name]).first.id
+         item_id = Item.find_by_name(inventory[:name]).id
            if resources.where(:item_id => item_id).present?
-             my_inventory = resources.where(:item_id => item[:item_id]).first
+             my_inventory = resources.find_by_item_id(item_id)
              my_inventory.stock += inventory[:stock]
              my_inventory.total_cost += inventory[:cost]
                if my_inventory.stock <= 0
                  my_inventory.stock = 0
                  my_inventory.total_cost = 0
-                 @item_result << [my_inventory.destroy, invetory[:name]]
+                 @item_result << [my_inventory.destroy, inventory[:name]]
                else
-                 @item_result << [my_inventory.save, inventory[:name]]
+                 my_inventory.save
+                 @item_result << [my_inventory, inventory[:name]]
                end
            else
              @item_result << resources.create(:item_id => item_id, :total_cost => inventory[:cost], :stock => inventory[:stock]) if inventory[:stock] > 0
@@ -202,7 +203,7 @@ class My::ItemsController < MyController
       end
       item_array = []
       @item_result.each do |item|
-        item_array << {:name => item[1], :stock => item[0].stock, :cost => item[0].total_cost/item[0].stock}
+        item_array << {:name => item[1], :stock => item[0].stock, :cost => (item[0].total_cost/item[0].stock rescue 0)}
       end
 
     ##FIXME @requested_equipments_itemsを、ごにょごにょして@resultに入れる 
