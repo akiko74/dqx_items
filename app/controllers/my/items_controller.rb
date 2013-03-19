@@ -170,12 +170,12 @@ class My::ItemsController < MyController
     @item_result =[]
     @equipments = @requested_equipments_items[:equipments]
       @equipments.each do |equipment|
-        recipe_id = Recipe.find_by_name(equipment[:name]).id
+        recipe = Recipe.find_by_name(equipment[:name])
         case
           when equipment[:stock] == -1
-            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND total_cost = ?", recipe_id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], 0 ]
+            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND total_cost = ?", recipe.id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], 0 ]
           when equipment[:stock] == 1
-            @equipment_result << [my_equipments.create(:recipe_id => recipe_id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], 1 ]
+            @equipment_result << [my_equipments.create(:recipe_id => recipe.id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], recipe.usage_count, 1 ]
         end
       end
     @inventories = @requested_equipments_items[:items]
@@ -199,7 +199,7 @@ class My::ItemsController < MyController
        end
       equipment_array = []
       @equipment_result.each do |equipment|
-        equipment_array << {:name => equipment[1], :stock => equipment[2], :renkin_count => equipment[0].renkin_count, :cost => equipment[0].cost}
+        equipment_array << {:name => equipment[1], :stock => equipment[3], :renkin_count => equipment[0].renkin_count, :cost => (equipment[0].cost/equipment[2] rescue 0)}
       end
       item_array = []
       @item_result.each do |item|
