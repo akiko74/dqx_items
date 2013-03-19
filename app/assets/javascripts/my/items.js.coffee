@@ -2,6 +2,7 @@ window.Application ||= {}
 
 debug = true
 map = {};
+uid = '';
 
 jQuery ->
   bootstrap();
@@ -11,6 +12,7 @@ bootstrap = () ->
   console.log "bootstrap" if debug
   fetch_dictionaries();
   bind_functions();
+  fetch_my_items();
   console.log "bootstraped" if debug
 
 
@@ -35,8 +37,8 @@ bind_functions = () ->
      .bind("keyup", calc_inputs)
      .bind("change", calc_inputs)
   $("#my_items_update_form input#keyword")
-     .bind("keyup", check_inputs)
-     .bind("change", check_inputs)
+     .bind("keyup", check_keyword)
+     .bind("change", check_keyword)
 
   $("#add-button").bind "click", ->
     console.log "Add Item !"
@@ -139,10 +141,201 @@ check_inputs = () ->
   else
     $("#add-button").attr("disabled", "disabled");
 
-  if ( isFinite(_input_del_stock) && _input_keyword && _input_del_stock != 0 && typeof map[_input_keyword] != "undefined")
+  if ( isFinite(_input_del_stock) && _input_keyword && _input_del_stock != 0 && typeof map[_input_keyword] != "undefined" && typeof localStorage[uid + sha1.hex(_input_keyword)] != "undefined")
     $("#del-button").removeAttr("disabled");
   else
     $("#del-button").attr("disabled", "disabled");
+ 
+
+check_keyword = () ->
+  _input_keyword = $("#my_items_update_form input#keyword").val()
+  keyword_key = uid + sha1.hex(_input_keyword);
+  if (typeof localStorage[keyword_key] != "undefined")
+    console.log localStorage[keyword_key]
+    reload_my_items_tabs([], [ JSON.parse(localStorage[keyword_key]) ])
+  check_inputs();
+
+
+fetch_my_items = () ->
+  $.getJSON '/my/items.json', (data, status) ->
+    if debug
+      console.log "Ajax Request => #{status}"
+      console.log "--- data ----------------------------------------------------------------"
+      console.log JSON.stringify(data)
+      console.log "-------------------------------------------------------------------------"
+      console.log "--- localStorage keys ---------------------------------------------------"
+      for key of localStorage
+        console.log key
+      console.log "-------------------------------------------------------------------------"
+
+    uid = data['uid']
+    console.log "uid = #{uid}" if debug
+
+    for equipment in data['equipments']
+      _equipment = set_and_get_my_equipment(equipment);
+      add_my_equipment_list(_equipment);
+
+    for item in data['items']
+      _item = set_and_get_my_item(item);
+      add_my_item_list(_item);
+
+    if debug
+      console.log "MyEquipmentList:";
+      console.log get_my_equipment_list();
+      console.log "MyItemList:";
+      console.log get_my_item_list();
+      console.log "";
+
+    reload_my_items_tabs(get_my_item_list(), my_equipments)
+
+
+my_equipment_key = (equipment_name) ->
+  return uid + sha1.hex(equipment_name);
+
+get_my_equipment_by_name = (equipment_name) ->
+  return get_my_equipment_by_key(my_equipment_key(equipment_name));
+
+get_my_equipment_by_key = (equipment_key) ->
+  _equipment = localStorage[equipment_key];
+  if typeof _equipment != "undefined"
+    return JSON.parse(_equipment);
+  return { name: equipment_name, cost: 0, stock: 0, renkin_count: 0 };
+
+set_my_equipment = (equipment) ->
+  localStorage[my_equipment_key(equipment.name)] = JSON.stringify(equipment);
+
+set_and_get_my_equipment = (equipment) ->
+  set_my_equipment(equipment);
+  return get_my_equipment_by_name(equipment.name);
+
+
+my_equipment_list_key = () ->
+  return uid + sha1.hex('equipments');
+
+set_and_get_my_equipment_list = (my_equipment_list) ->
+  set_my_equipment_list(my_equipment_list);
+  return get_my_equipment_list();
+
+set_my_equipment_list = (my_equipment_list) ->
+  localStorage[my_equipment_list_key()] = JSON.stringify(my_equipment_list);
+
+get_my_equipment_list = () ->
+  return JSON.parse(localStorage[my_equipment_list_key()] || "[]")
+  
+add_my_equipment_list = (equipment) ->
+  _my_equipment_list = get_my_equipment_list();
+  _my_equipment_list.push(my_equipment_key(equipment.name));
+  _my_equipment_list = jQuery.unique(_my_equipment_list);
+  set_my_equipment_list(_my_equipment_list);
+
+add_and_get_my_equipment_list = (equipment) ->
+  add_my_equipment_list(equipment);
+  return get_my_equipment_list();
+
+
+get_my_equipment_list_with_data = () ->
+  _my_equipment_list_data = [];
+  for _equipment_key in get_my_equipment_list()
+    _my_equipment_list_data.push JSON.parse(localStorage[_equipment_key]);
+  return _my_equipment_list_data;
+ 
+
+
+my_item_key = (item_name) ->
+  return uid + sha1.hex(item_name); 
+
+set_and_get_my_item = (item) ->
+  set_my_item(item);
+  return get_my_item_by_name(item.name);
+
+set_my_item = (item) ->
+  localStorage[my_item_key(item.name)] = JSON.stringify(item);
+
+get_my_item_by_name = (item_name) ->
+  return get_my_item_by_key(my_item_key(item_name));
+
+get_my_item_by_key = (item_key) ->
+  _item = localStorage[item_key];
+  if typeof _item != "undefined"
+    return JSON.parse(_item);
+  return { name: item_name, cost: 0, stock: 0 };
+
+
+my_item_list_key = () ->
+  return uid + sha1.hex('items');
+
+set_and_get_my_item_list = (my_item_list) ->
+  set_my_item_list(my_item_list);
+  return get_my_item_list();
+
+set_my_item_list = (my_item_list) ->
+  localStorage[my_item_list_key()] = JSON.stringify(my_item_list);
+
+get_my_item_list = () ->
+  return JSON.parse(localStorage[my_item_list_key()] || "[]")
+  
+add_my_item_list = (item) ->
+  _my_item_list = get_my_item_list();
+  _my_item_list.push(my_item_key(item.name));
+  _my_item_list = jQuery.unique(_my_item_list);
+  set_my_item_list(_my_item_list);
+
+add_and_get_my_item_list = (item) ->
+  add_my_item_list(item);
+  return get_my_item_list();
+
+
+get_my_item_list_with_data = () ->
+  _my_item_list_data = [];
+  for _item_key in get_my_item_list()
+    _my_item_list_data.push JSON.parse(localStorage[_item_key]);
+  return _my_item_list_data;
+ 
+
+
+
+reload_my_items_tabs = (items, equipments) ->
+  console.log items;
+  console.log equipments;
+  if items.length == 0 && equipments.length == 0
+    get_all_items_and_equipments()
+  else
+    for item of items
+      key = uid + sha1.hex(item.name)
+      console.log "#{item} => #{key}"
+      item['type'] = 'items'
+      if typeof localStorage[key] != "undefined"
+        console.log localStorage[key] 
+      localStorage[key] = item
+    for equipment of equipments
+      console.log equipment
+      equipment['type'] = 'equipments'
+      localStorage[uid + sha1.hex(equipment.name)] = equipment
+
+
+get_all_items_and_equipments = () ->
+  for item of JSON.parse(localStorage[uid + sha1.hex('items')] || "[]") 
+    items.push JSON.parse(localStorage[item])
+  for equipments of JSON.parse(localStorage[uid + sha1.hex('equipments')] || "[]") 
+    equipments.push JSON.parse(localStorage[equipments])
+  return { items: items, equipments: equipments }
+
+
+#  if items.length > 0 || equipments.length > 0
+#    $.ajax({
+#      type: "POST",
+#      url: '/my/items.json',
+#      data: { _method:'PUT', items: items, equipments: equipments },
+#      dataType: 'json',
+#      success: (msg) ->
+#        console.log "Data Saved: " + msg
+#    })
+#  else
+
+
+update_all = (hash) ->
+  console.log hash
+
 
 ###
 

@@ -69,7 +69,7 @@ class My::ItemsController < MyController
     end
     @result = {:uid => @uid, :characters => @characters, :items => @items}
 =end
-    @result = {}
+    @result = { uid: @uid, equipments: [], items: [] }
 
     respond_to do |format|
       format.html
