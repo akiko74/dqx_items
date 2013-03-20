@@ -153,13 +153,14 @@ class My::ItemsController < MyController
     ActiveRecord::Base.transaction do
 
     #input sample:
-    #{:equipments => [{ :name => "初級魔法戦士服", :stock => 1, :renkin_count => 0, :cost => 1260 }],
-    #              :items => [{ :name => "あやかしそう", :stock => -3 },{ :name => "コットン草", :stock => -3 }]}
+    #{:equipments => [{ :name => "麻の服", :stock => 1, :renkin_count => 0, :cost => 1260 }],
+    # :items => [{ :name => "あやかしそう", :stock => 3, :cost => 300 },{ :name => "コットン草", :stock => 3, :cost => 600 }]}
     @equipment_result = []
     @item_result =[]
     @equipments = @requested_equipments_items[:equipments]
       @equipments.each do |equipment|
         recipe = Recipe.find_by_name(equipment[:name])
+      if recipe.present?
         case
           when equipment[:stock] == -1
             @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND total_cost = ?", recipe.id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], 0 ]
@@ -167,11 +168,13 @@ class My::ItemsController < MyController
             @equipment_result << [my_equipments.create(:recipe_id => recipe.id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], recipe.usage_count, 1 ]
         end
       end
+      end
     @inventories = @requested_equipments_items[:items]
        @inventories.each do |inventory|
-         item_id = Item.find_by_name(inventory[:name]).id
-           if resources.where(:item_id => item_id).present?
-             my_inventory = resources.find_by_item_id(item_id)
+         item = Item.find_by_name(inventory[:name])
+         if item.present?
+           if resources.where(:item_id => item.id).present?
+             my_inventory = resources.find_by_item_id(item.id)
              my_inventory.stock += inventory[:stock]
              my_inventory.total_cost += inventory[:cost]
                if my_inventory.stock <= 0
@@ -183,22 +186,27 @@ class My::ItemsController < MyController
                  @item_result << [my_inventory, inventory[:name]]
                end
            else
-             @item_result << resources.create(:item_id => item_id, :total_cost => inventory[:cost], :stock => inventory[:stock]) if inventory[:stock] > 0
+             @item_result << resources.create(:item_id => item.id, :total_cost => inventory[:cost], :stock => inventory[:stock]) if inventory[:stock] > 0
            end
+         end
        end
-      equipment_array = []
+      @equipment_array = []
+      unless @equipment_result.blank?
       @equipment_result.each do |equipment|
-        equipment_array << {:name => equipment[1], :stock => equipment[3], :renkin_count => equipment[0].renkin_count, :cost => (equipment[0].cost/equipment[2] rescue 0)}
+        @equipment_array << {:name => equipment[1], :stock => equipment[3], :renkin_count => equipment[0].renkin_count, :cost => (equipment[0].cost/equipment[2] rescue 0)}
       end
-      item_array = []
+      end
+      @item_array = []
+      unless @item_result.blank?
       @item_result.each do |item|
-        item_array << {:name => item[1], :stock => item[0].stock, :cost => (item[0].total_cost/item[0].stock rescue 0)}
+        @item_array << {:name => item[1], :stock => item[0].stock, :cost => (item[0].total_cost/item[0].stock rescue 0)}
+      end
       end
 
     end
     ##FIXME @requested_equipments_itemsを、ごにょごにょして@resultに入れる 
     logger.debug @requested_equipments_items
-    @result = {:equipments => equipment_array, :items => item_array }
+    @result = {:equipments => @equipment_array, :items => @item_array }
     ######
 
     respond_to do |format|
