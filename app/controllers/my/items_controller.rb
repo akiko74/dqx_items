@@ -286,8 +286,9 @@ class My::ItemsController < MyController
     # 
     def parse_equipments_items_json
       @requested_equipments_items ||= begin
-        _equipments_items_hash = params.keys.each_with_object({}) { |key, hash|
+        _equipments_items_hash = ['items','equipments'].each_with_object({}) { |key, hash|
           hash[key.to_sym] = Array.new
+          next unless params[key] == Array
           params[key].each do |no,value|
             hash[key.to_sym][no.to_i] = value.each_with_object({}) { |set,hash|
               hash[set[0].to_sym] = set[0] == "name" ? set[1] : set[1].to_i

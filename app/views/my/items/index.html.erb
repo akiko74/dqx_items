@@ -11,6 +11,7 @@
             :class         => "span12",
             :autofocus     => "autofocus",
             "data-provide" => "typeahead"  %>
+            <span class="renkin_count_inputs">+</span><input type="number" value="0" class="span2 renkin_count_inputs">
         </td>
       </tr>
       <tr>
@@ -72,5 +73,30 @@
 <% end %>
 
 <div id="users_item_list">
+  <ul class="nav nav-tabs" id="myTab">
+    <li class="active"><a href="#my_item_list">アイテムリスト</a></li>
+    <li><a href="#my_equipment_list">装備品リスト</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="my_item_list">
+      <table class="table">
+        <thead>
+          <tr><th>アイテム名</th><th>在庫数</th><th>単価</th></tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane" id="my_equipment_list">
+      <table class="table">
+        <thead>
+          <tr><th>装備品名</th><th>在庫数</th><th>単価</th></tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 <div id="result">
 </div>

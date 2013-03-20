@@ -21,10 +21,45 @@ fetch_dictionaries = () ->
     console.log "Ajax Request => #{status}" if debug
     localStorage['dictionaries'] = JSON.stringify(data)
     if debug
-      console.log "--- data ----------------------------------------------------------------"
+      console.log "--- Dictionary data -----------------------------------------------------"
       console.log localStorage['dictionaries']
       console.log "-------------------------------------------------------------------------"
 
+updte_my_item_data = (submit_data) ->
+  console.log '-----------';
+  console.log submit_data;
+  console.log '-----------';
+  items = [submit_data];
+  equipments = [submit_data];
+  $.ajax({
+    type: "POST",
+    url: '/my/items.json',
+    data: { _method:'PUT', items: items, equipments: equipments },
+    dataType: 'json',
+    success: (msg) ->
+      if debug
+        console.log "Data Saved: "
+        console.log msg
+      for item in msg.items
+        if debug
+          console.log get_my_item_by_name(item.name);
+          console.log item;
+        _item = set_and_get_my_item(item);
+        add_my_item_list(_item);
+
+      for equipment in msg.equipments
+        if debug
+          console.log get_my_equipment_by_name(equipment.name);
+          console.log equipment;
+        _equipment = set_and_get_my_equipment(equipment);
+        add_my_equipment_list(_equipment);
+
+        
+#      console.log get_my_item_by_name(submit_data.name);
+
+
+
+  });
 
 bind_functions = () ->
   console.log "Set typeahead to #my_items_update_form input#keyword"
@@ -51,11 +86,17 @@ bind_functions = () ->
     console.log '-----------';
     console.log submit_data;
     console.log '-----------';
-    return false;
+    return updte_my_item_data(submit_data);
 
   $("#del-button").bind "click", ->
     console.log "Del Item !"
-    return false;
+    submit_data = { name: "", cost: 0, stock: 0 };
+    _input_stock  = parseInt($("#my_items_update_form input#del_stock").val())
+    submit_data.name   = $("#my_items_update_form input#keyword").val();
+    submit_data.stock += _input_stock if isFinite(_input_stock);
+    submit_data.stock *= -1 if submit_data.stock > 0
+    submit_data.cost  += get_my_item_by_name(submit_data.name).cost * submit_data.stock;
+    return updte_my_item_data(submit_data);
 
   $("#my_items_update_form input#keyword").typeahead({
 
@@ -80,11 +121,18 @@ bind_functions = () ->
     highlighter: (item) ->
       regex = new RegExp( '(' + this.query + ')', 'gi' );
       item_str = item.replace( regex, "<strong>$1</strong>" );
-      console.log item_str;
       return item_str;
 
     updater: (item) ->
+      console.log "updater";
+      if map[item].type == "recipe"
+        get_keyword_tag().removeClass("span12").addClass("span9");
+        $(".renkin_count_inputs").show();
+      else
+        get_keyword_tag().removeClass("span9").addClass("span12");
+        $(".renkin_count_inputs").hide();
       console.log JSON.stringify(map[item]);
+      console.log "updater";
       return item;
 
     items: 8;
@@ -94,6 +142,9 @@ bind_functions = () ->
   $("#del-button").attr("disabled", "disabled");
   $("#add-button").attr("disabled", "disabled");
 
+
+get_keyword_tag = (selector = "#my_items_update_form input#keyword") ->
+  return $(selector);
 
 calc_inputs = (e) ->
   if debug
@@ -160,7 +211,7 @@ fetch_my_items = () ->
   $.getJSON '/my/items.json', (data, status) ->
     if debug
       console.log "Ajax Request => #{status}"
-      console.log "--- data ----------------------------------------------------------------"
+      console.log "--- My Items and Equipments Data ----------------------------------------"
       console.log JSON.stringify(data)
       console.log "-------------------------------------------------------------------------"
       console.log "--- localStorage keys ---------------------------------------------------"
@@ -186,7 +237,7 @@ fetch_my_items = () ->
       console.log get_my_item_list();
       console.log "";
 
-    reload_my_items_tabs(get_my_item_list(), my_equipments)
+    reload_my_items_tabs(get_my_item_list(), get_my_equipment_list())
 
 
 my_equipment_key = (equipment_name) ->
@@ -292,33 +343,32 @@ get_my_item_list_with_data = () ->
   return _my_item_list_data;
  
 
-
-
 reload_my_items_tabs = (items, equipments) ->
-  console.log items;
-  console.log equipments;
   if items.length == 0 && equipments.length == 0
-    get_all_items_and_equipments()
+    console.log 'empty' 
   else
     for item of items
       key = uid + sha1.hex(item.name)
       console.log "#{item} => #{key}"
-      item['type'] = 'items'
+      item['type'] = 'item'
       if typeof localStorage[key] != "undefined"
         console.log localStorage[key] 
       localStorage[key] = item
     for equipment of equipments
       console.log equipment
-      equipment['type'] = 'equipments'
+      equipment['type'] = 'equipment'
       localStorage[uid + sha1.hex(equipment.name)] = equipment
 
+  console.log "Reload My Items tabs."
+  for item of items
+    console.log item
+    $("#users_item_listi #my_item_list tbody").append("<tr><td>#{item.name}</td><td>#{item.stock}</td><td>#{item.cost}</td></tr>");
 
-get_all_items_and_equipments = () ->
-  for item of JSON.parse(localStorage[uid + sha1.hex('items')] || "[]") 
-    items.push JSON.parse(localStorage[item])
-  for equipments of JSON.parse(localStorage[uid + sha1.hex('equipments')] || "[]") 
-    equipments.push JSON.parse(localStorage[equipments])
-  return { items: items, equipments: equipments }
+  console.log "Reload My Equipments tabs."
+  for equipment of equipments
+    console.log equipment
+    $("#users_item_listi #my_equipment_list tbody").append("<tr><td>#{equipment.name}</td><td>#{equipment.stock}</td><td>#{equipment.cost}</td></tr>");
+
 
 
 #  if items.length > 0 || equipments.length > 0
