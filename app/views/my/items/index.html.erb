@@ -1,9 +1,12 @@
+<div class="hero-unit" id="network_processing">
+  通信中・・・
+</div>
 <%= form_tag({}, { id: "my_items_update_form" }) do |f| %>
   <table class="">
     <tbody>
       <tr>
         <th>アイテム名</th>
-        <td>
+        <td class="span9">
           <%= text_field_tag :keyword,
             '',
             :autocomplete  => "off",
@@ -11,11 +14,13 @@
             :class         => "span12",
             :autofocus     => "autofocus",
             "data-provide" => "typeahead"  %>
-            <span class="renkin_count_inputs">+</span><input type="number" value="0" class="span2 renkin_count_inputs">
+        </td>
+        <td id="renkin_count_inputs" class="span3">
+            <span class="span2">+</span><input type="number" value="0" class="span10">
         </td>
       </tr>
       <tr>
-        <td colspan="2">
+        <td colspan="3">
           <div id="item_form" class="tabbable tabs-left">
             <ul class="nav nav-tabs">
               <li class="active">

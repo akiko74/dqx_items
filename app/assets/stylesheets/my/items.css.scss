@@ -118,6 +118,10 @@ tr.add_consoles > td, tr.del_consoles > td {
   border-top:none;
 }
 
-.renkin_count_inputs {
-  display:none !important;
+#renkin_count_inputs {
+  display:none;
+}
+
+#network_processing {
+  display:none;
 }
