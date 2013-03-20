@@ -150,18 +150,7 @@ class My::ItemsController < MyController
   #
   def updates
 
-
-    ##やること##
-    ##更新対象のitem_id,average_cost,stockを取得
-    ##更新対象のレコードを user_id && item_id で特定
-    ##在庫情報と追加情報をマージ
-    ## => params[:stock] > 0の場合
-    #       # => new_average_cost = param[total_cost] + Inventory[average_cost * stock] / params[stock]+Inventory[stock]
-    # 共通
-    ## => new_stock = params[stock] + Inventory[stock]
-    #  => new_stock < 0 の場合、delete_record && return 0 とする
-    # New
-    ##更新対象がなかった場合はnewを呼ぶ
+    ActiveRecord::Base.transaction do
 
     #input sample:
     #{:equipments => [{ :name => "初級魔法戦士服", :stock => 1, :renkin_count => 0, :cost => 1260 }],
@@ -190,7 +179,7 @@ class My::ItemsController < MyController
                  my_inventory.total_cost = 0
                  @item_result << [my_inventory.destroy, inventory[:name]]
                else
-                 my_inventory.save
+                 my_inventory.save!
                  @item_result << [my_inventory, inventory[:name]]
                end
            else
@@ -206,6 +195,7 @@ class My::ItemsController < MyController
         item_array << {:name => item[1], :stock => item[0].stock, :cost => (item[0].total_cost/item[0].stock rescue 0)}
       end
 
+    end
     ##FIXME @requested_equipments_itemsを、ごにょごにょして@resultに入れる 
     logger.debug @requested_equipments_items
     @result = {:equipments => equipment_array, :items => item_array }
@@ -305,6 +295,6 @@ class My::ItemsController < MyController
     end
 
     def my_equipments
-      my_equipmnets = Equipment.where(:user_id => current_user.id)
+      my_equipments = Equipment.where(:user_id => current_user.id)
     end
 end
