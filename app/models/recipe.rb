@@ -1,5 +1,5 @@
 class Recipe < ActiveRecord::Base
-  attr_accessible :level, :name, :job_id, :usage_count, :ingredients_attributes
+  attr_accessible :level, :name, :job_id, :usage_count, :kana, :ingredients_attributes
   belongs_to :job
   has_many :ingredients
   has_many :items, :through => :ingredients
