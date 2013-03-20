@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(:version => 20130319131126) do
     t.integer  "number"
   end
 
+  add_index "ingredients", ["item_id"], :name => "item_id"
+
   create_table "inventories", :force => true do |t|
     t.integer  "user_id"
     t.integer  "item_id"
