@@ -2,7 +2,7 @@
   通信中・・・
 </div>
 <%= form_tag({}, { id: "my_items_update_form" }) do |f| %>
-  <table class="">
+  <table>
     <tbody>
       <tr>
         <th>アイテム名</th>
@@ -15,62 +15,71 @@
             :autofocus     => "autofocus",
             "data-provide" => "typeahead"  %>
         </td>
-        <td id="renkin_count_inputs" class="span3">
-            <span class="span2">+</span><input type="number" value="0" class="span10">
-        </td>
       </tr>
-      <tr>
-        <td colspan="3">
-          <div id="item_form" class="tabbable tabs-left">
-            <ul class="nav nav-tabs">
-              <li class="active">
-                <%= link_to "#add", "data-toggle" => "tab" do %>
-                  <i class="icon-plus"></i>
-                <% end %>
-              </li>
-              <li>
-                <%= link_to "#del", "data-toggle" => "tab" do %>
-                  <i class="icon-minus"></i>
-                <% end %>
-              </li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="add">
-                <%= text_field_tag :cost,
-                      '',
-                      :autocomplete  => "off",
-                      :class         => "span3",
-                      :placeholder   => "単価",
-                      :type          => :number %>
-                ×
-                <%= text_field_tag :stock,
-                      '',
-                      :autocomplete  => "off",
-                      :class         => "span3",
-                      :placeholder   => "仕入数",
-                      :type          => :number %>
-                ＝
-                <%= text_field_tag :total,
-                      '',
-                      :autocomplete  => "off",
-                      :class         => "span3",
-                      :placeholder   => "合計価格",
-                      :type          => :number %>
-                <%= submit_tag "追加", class: "btn btn-block", id: 'add-button' %>
-              </div>
-              <div class="tab-pane" id="del">
-                <%= text_field_tag :stock,
-                      '',
-                      :autocomplete  => "off",
-                      :class         => "span3",
-                      :placeholder   => "削減数",
-                      :id            => "del_stock",
-                      :type          => :number %>
-                <%= submit_tag "削減", :class => "btn btn-block", :id => 'del-button' %>
-              </div>
+      <tr id="item_controlle_panel">
+        <th>操作</th>
+        <td id="item_form" class="tabbable tabs-left">
+          <ul class="nav nav-tabs">
+            <li class="active" id="add_tab">
+              <%= link_to "#add", "data-toggle" => "tab" do %>
+                <i class="icon-plus"></i>
+              <% end %>
+            </li>
+            <li id="del_tab">
+              <%= link_to "#del", "data-toggle" => "tab" do %>
+                <i class="icon-minus"></i>
+              <% end %>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="add">
+              <table id="item_inputs">
+                <thead>
+                  <tr><th>単価</th><th>演算子</th><th>個数</th><th>等号</th><th>合計金額</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="input-append span3">
+                      <%= text_field_tag :cost, '', placeholder: "単価", autocomplete: "off", type: :number %>
+                      <span class="add-on">G</span>
+                    </td>
+                    <td class="span1">×</td>
+                    <td class="input-append span3">
+                      <%= text_field_tag :stock, '', placeholder: "仕入数", autocomplete: "off", type: :number %>
+                      <span class="add-on">個</span>
+                    </td>
+                    <td class="span1">＝</td>
+                    <td class="input-append span4">
+                      <%= text_field_tag :total, '', placeholder: "合計価格", autocomplete: "off", type: :number %>
+                      <span class="add-on">G</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table id="renkin_count_inputs">
+                <thead>
+                  <tr><th>錬金回数</th><th>価格</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="input-prepend span6">
+                      <span class="add-on">+</span>
+                      <input id="renkin_count" placeholder="錬金回数" type="number" value="" autocomplete="off">
+                    </td>
+                    <td class="input-append span6">
+                      <input id="renkin_total" placeholder="価格" type="number" value="" autocomplete="off">
+                      <span class="add-on">G</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <%= submit_tag "追加", class: "btn btn-block", id: 'add-button' %>
+            </div>
+            <div class="tab-pane" id="del">
+              <%= text_field_tag :stock, '', placeholder: "削減数", autocomplete: "off", class: "span3", id: "del_stock", type: :number %>
+              <%= submit_tag "削減", :class => "btn btn-block", :id => 'del-button' %>
             </div>
           </div>
-
         </td>
       </tr>
     </tbody>

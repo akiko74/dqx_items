@@ -28,6 +28,14 @@ fetch_dictionaries = () ->
         console.log "--- Dictionary data -----------------------------------------------------"
         console.log localStorage['dictionaries']
         console.log "-------------------------------------------------------------------------"
+      for item_data in data
+        console.log item_data if debug
+        localStorage[sha1.hex('dictionaries') + sha1.hex(item_data.name)] = JSON.stringify(item_data);
+        if debug
+          console.log sha1.hex('dictionaries') + sha1.hex(item_data.name);
+          console.log localStorage[sha1.hex('dictionaries') + sha1.hex(item_data.name)];
+          console.log " - - - - - - - - - - - - - - - - "
+        
     error: ->
       console.log "[ERROR] Request to /dictionaries.json is failed!";
   });
@@ -77,6 +85,8 @@ updte_my_item_data = (submit_data) ->
       console.log "Complete Request."
       $("#network_processing").hide();
       $("#my_items_update_form").show();
+      $("#renkin_count_inputs").hide();
+      $("#item_controlle_panel").hide();
 
         
 #      console.log get_my_item_by_name(submit_data.name);
@@ -107,9 +117,8 @@ bind_functions = () ->
     submit_data.name   = $("#my_items_update_form input#keyword").val();
     submit_data.cost  += _input_cost if isFinite(_input_cost); 
     submit_data.stock += _input_stock if isFinite(_input_stock); 
-    console.log '-----------';
-    console.log submit_data;
-    console.log '-----------';
+    if $("#renkin_count_inputs input").css("display") != "none"
+      console.log "#### Recipe ####"
     return updte_my_item_data(submit_data);
 
   $("#del-button").bind "click", ->
@@ -120,6 +129,8 @@ bind_functions = () ->
     submit_data.stock += _input_stock if isFinite(_input_stock);
     submit_data.stock *= -1 if submit_data.stock > 0
     submit_data.cost  += get_my_item_by_name(submit_data.name).cost * submit_data.stock;
+    if $("#renkin_count_inputs input").css("display") != "none"
+      console.log "#### Recipe ####"
     return updte_my_item_data(submit_data);
 
   $("#my_items_update_form input#keyword").typeahead({
@@ -151,11 +162,16 @@ bind_functions = () ->
     updater: (item) ->
       console.log "updater";
       if map[item].type == "recipe"
-        #get_keyword_tag().removeClass("span12").addClass("span9");
+        $("#item_controlle_panel").show();
         $("#renkin_count_inputs").show();
-      else
-        #get_keyword_tag().removeClass("span9").addClass("span12");
+        $("#item_inputs").hide();
+      else if map[item].type == "item"
+        $("#item_controlle_panel").show();
         $("#renkin_count_inputs").hide();
+        $("#item_inputs").show();
+      else
+        $("#item_controlle_panel").hide();
+
       console.log JSON.stringify(map[item]);
       console.log "updater";
       return item;
@@ -228,10 +244,24 @@ check_keyword = () ->
   keyword_key = uid + sha1.hex(_input_keyword);
   console.log "keyword_key: #{keyword_key}" if debug
   if (typeof localStorage[keyword_key] != "undefined")
+    #$("#item_form .tab-pane").hide();
+    #$("#item_form ul, #item_form .tab-content, #item_form .tab-pane.active").show();
+    $("#item_form ul, #item_form .tab-content").show();
     if debug
       console.log "LocalStorage matched!!"
       console.log localStorage[keyword_key]
     #reload_my_items_tabs([], [ JSON.parse(localStorage[keyword_key]) ])
+  else if typeof localStorage[sha1.hex('dictionaries') + sha1.hex(_input_keyword)]  != "undefined"
+    $("#item_form ul").hide();
+    $("#item_form #add, #item_form #add_tab").addClass('active');
+    $("#item_form #del, #item_form #del_tab").removeClass('active');
+    #$("#item_form ul, #item_form .tab-pane").hide();
+    #$("#item_form #add").show();
+    if debug
+      console.log "Dictionary matched!!";
+      console.log localStorage[sha1.hex('dictionaries') + sha1.hex(_input_keyword)];
+  else
+    $("#item_controlle_panel").hide();
   check_inputs();
 
 

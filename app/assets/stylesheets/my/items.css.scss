@@ -76,7 +76,8 @@ form#my_items_update_form {
       display : none;
     }
     td {
-      line-height  : 30px;
+      height: 30px;
+      line-height  : 20px;
       vertical-align: middle;
       padding-bottom: 1em;
       input {
@@ -101,8 +102,14 @@ form#my_items_update_form {
         border: solid 1px #CCC;
         border-radius: 0px 8px 5px 0px;
         border-left: none;
-        padding: 15px;
+        padding: 11px 15px 17px;
         height   : 70px;
+        table {
+          .span1 {
+            padding-top: 12px;
+          }
+          td { height: 45px; }
+        }
        }
     }
   }
@@ -124,4 +131,39 @@ tr.add_consoles > td, tr.del_consoles > td {
 
 #network_processing {
   display:none;
+}
+
+input[type=number] {
+  ime-mode: disabled;
+}
+
+#item_inputs {
+  td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  input {
+    width: 4em;
+  }
+  input#total {
+    width: 6em;
+  }
+}
+
+#renkin_count_inputs {
+  td { text-align: center; }
+  input {
+    width: 6em;
+  }
+}
+
+#keyword {
+  font: {
+    size: 1.5em;
+  }
+  line-height: 2em;
+  height: 2em;
+}
+#item_controlle_panel {
+  display: none;
 }
