@@ -41,12 +41,13 @@ fetch_dictionaries = () ->
   });
 
 
-updte_my_item_data = (submit_data) ->
-  console.log '-----------';
-  console.log submit_data;
-  console.log '-----------';
-  items = [submit_data];
-  equipments = [submit_data];
+update_my_item_data = (items, equipments) ->
+  if debug
+    console.log '--- update_my_item_data()--------';
+    console.log items;
+    console.log ' - - - - - - - - - - - - - - - - ';
+    console.log equipments;
+    console.log '---------------------------------';
   $("#del-button").attr("disabled", "disabled");
   $("#add-button").attr("disabled", "disabled");
   $("#my_items_update_form").hide();
@@ -102,7 +103,7 @@ bind_functions = () ->
     e.preventDefault();
     return false;
 
-  $("#my_items_update_form #total, #my_items_update_form #cost, #my_items_update_form #stock, #my_items_update_form #del_stock")
+  $("#my_items_update_form #total, #my_items_update_form #cost, #my_items_update_form #stock, #my_items_update_form #del_stock, #my_items_update_form #renkin_count, #my_items_update_form #renkin_total")
      .bind("keyup", calc_inputs)
      .bind("change", calc_inputs)
   $("#my_items_update_form input#keyword")
@@ -111,15 +112,26 @@ bind_functions = () ->
 
   $("#add-button").bind "click", ->
     console.log "Add Item !"
-    submit_data = { name: "", cost: 0, stock: 0 };
-    _input_cost  = parseInt($("#my_items_update_form input#total").val())
-    _input_stock = parseInt($("#my_items_update_form input#stock").val())
-    submit_data.name   = $("#my_items_update_form input#keyword").val();
-    submit_data.cost  += _input_cost if isFinite(_input_cost); 
-    submit_data.stock += _input_stock if isFinite(_input_stock); 
-    if $("#renkin_count_inputs input").css("display") != "none"
-      console.log "#### Recipe ####"
-    return updte_my_item_data(submit_data);
+    if inputed_item()
+      submit_data = { name: inputed_item()['dictionary']['name'], cost: 0, stock: 0 };
+      switch inputed_item()['dictionary']['type']
+        when 'item'
+          _input_cost  = parseInt($("#my_items_update_form input#total").val())
+          _input_stock = parseInt($("#my_items_update_form input#stock").val())
+          submit_data.cost  += _input_cost if isFinite(_input_cost); 
+          submit_data.stock += _input_stock if isFinite(_input_stock); 
+          return update_my_item_data([submit_data], []);
+        when 'recipe'
+          _input_cost  = parseInt($("#my_items_update_form input#renkin_total").val())
+          _input_count = parseInt($("#my_items_update_form input#renkin_count").val())
+          submit_data.cost  += _input_cost if isFinite(_input_cost); 
+          submit_data.stock = 1
+          if isFinite(_input_count)
+            submit_data.renkin_count = _input_count
+          else
+            submit_data.renkin_count = 0
+          return update_my_item_data([], [submit_data]);
+    return false
 
   $("#del-button").bind "click", ->
     console.log "Del Item !"
@@ -131,7 +143,7 @@ bind_functions = () ->
     submit_data.cost  += get_my_item_by_name(submit_data.name).cost * submit_data.stock;
     if $("#renkin_count_inputs input").css("display") != "none"
       console.log "#### Recipe ####"
-    return updte_my_item_data(submit_data);
+    return update_my_item_data([submit_data],[submit_data]);
 
   $("#my_items_update_form input#keyword").typeahead({
 
@@ -222,41 +234,67 @@ calc_inputs = (e) ->
       $("#my_items_update_form input#cost").val(parseInt(_input_total / _input_stock));
   check_inputs();
 
-check_inputs = () ->
-  _input_keyword = $("#my_items_update_form input#keyword").val()
-  _input_cost  = parseInt($("#my_items_update_form input#cost").val())
-  _input_stock = parseInt($("#my_items_update_form input#stock").val())
-  _input_total = parseInt($("#my_items_update_form input#total").val())
-  _input_del_stock = parseInt($("#my_items_update_form input#del_stock").val())
-  if ( isFinite(_input_stock) && isFinite(_input_cost) && isFinite(_input_total) && _input_keyword && _input_stock > 0 && typeof map[_input_keyword] != "undefined")
-    $("#add-button").removeAttr("disabled");
-  else
-    $("#add-button").attr("disabled", "disabled");
+dictionaries_item_key = (item_key) ->
+  return "#{sha1.hex('dictionaries')}#{sha1.hex(item_key)}";
 
-  if ( isFinite(_input_del_stock) && _input_keyword && _input_del_stock != 0 && typeof map[_input_keyword] != "undefined" && typeof localStorage[uid + sha1.hex(_input_keyword)] != "undefined")
-    $("#del-button").removeAttr("disabled");
+inputed_item = (path_of_item_name_element="#my_items_update_form input#keyword") ->
+  _input_keyword = $(path_of_item_name_element).val();
+  _dictionaries_item = localStorage[dictionaries_item_key(_input_keyword)];
+  _my_item = get_my_item_by_name(_input_keyword);
+  _inputed_item = {};
+  if typeof _dictionaries_item == "undefined"
+    return null;
   else
-    $("#del-button").attr("disabled", "disabled");
- 
+    _inputed_item['dictionary'] = JSON.parse(_dictionaries_item);
+  if _my_item
+    _inputed_item['my'] = _my_item;
+  return _inputed_item;
+
+
+check_inputs = () ->
+  $("#add-button, #del-button").attr("disabled", "disabled")
+  _input_cost         = parseInt($("#my_items_update_form input#cost").val())
+  _input_stock        = parseInt($("#my_items_update_form input#stock").val())
+  _input_total        = parseInt($("#my_items_update_form input#total").val())
+  _input_del_stock    = parseInt($("#my_items_update_form input#del_stock").val())
+  _input_renkin_count = parseInt($("#my_items_update_form input#renkin_count").val())
+  _input_renkin_total = parseInt($("#my_items_update_form input#renkin_total").val())
+
+  if inputed_item()
+    switch inputed_item()['dictionary']['type']
+      when 'item'
+        console.log 'Input ITEM !!'
+        if ( isFinite(_input_stock) && isFinite(_input_cost) && isFinite(_input_total) && _input_stock > 0 )
+          $("#add-button").removeAttr("disabled")
+        if ( isFinite(_input_del_stock) && _input_del_stock != 0 && typeof inputed_item()['my'] != "undefined")
+          $("#del-button").removeAttr("disabled")
+      when 'recipe'
+        if ( isFinite(_input_renkin_total) )
+          $("#add-button").removeAttr("disabled")
+        if ( isFinite(_input_del_stock) && _input_del_stock != 0 && typeof inputed_item()['my'] != "undefined")
+          $("#del-button").removeAttr("disabled")
+      else
+        console.log 'INPUT??'
+    return true
+  return false
+
+
 
 check_keyword = () ->
   _input_keyword = $("#my_items_update_form input#keyword").val()
   keyword_key = uid + sha1.hex(_input_keyword);
   console.log "keyword_key: #{keyword_key}" if debug
   if (typeof localStorage[keyword_key] != "undefined")
-    #$("#item_form .tab-pane").hide();
-    #$("#item_form ul, #item_form .tab-content, #item_form .tab-pane.active").show();
-    $("#item_form ul, #item_form .tab-content").show();
+    $("#item_controlle_panel, #item_form #del_tab").show();
     if debug
       console.log "LocalStorage matched!!"
       console.log localStorage[keyword_key]
     #reload_my_items_tabs([], [ JSON.parse(localStorage[keyword_key]) ])
   else if typeof localStorage[sha1.hex('dictionaries') + sha1.hex(_input_keyword)]  != "undefined"
-    $("#item_form ul").hide();
+    $("#item_controlle_panel").show();
     $("#item_form #add, #item_form #add_tab").addClass('active');
     $("#item_form #del, #item_form #del_tab").removeClass('active');
-    #$("#item_form ul, #item_form .tab-pane").hide();
-    #$("#item_form #add").show();
+    $("#item_form #del_tab").hide();
     if debug
       console.log "Dictionary matched!!";
       console.log localStorage[sha1.hex('dictionaries') + sha1.hex(_input_keyword)];
@@ -302,9 +340,7 @@ my_equipment_key = (equipment_name) ->
   return uid + sha1.hex(equipment_name);
 
 get_my_equipment_by_name = (equipment_name) ->
-  return get_my_equipment_by_key(my_equipment_key(equipment_name));
-
-get_my_equipment_by_key = (equipment_key) ->
+  equipment_key = my_equipment_key(equipment_name);
   _equipment = localStorage[equipment_key];
   if typeof _equipment != "undefined"
     return JSON.parse(_equipment);

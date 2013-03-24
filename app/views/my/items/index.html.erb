@@ -76,7 +76,10 @@
               <%= submit_tag "追加", class: "btn btn-block", id: 'add-button' %>
             </div>
             <div class="tab-pane" id="del">
+              <div class="input-append">
               <%= text_field_tag :stock, '', placeholder: "削減数", autocomplete: "off", class: "span3", id: "del_stock", type: :number %>
+              <span class="add-on">個</span>
+              </div>
               <%= submit_tag "削減", :class => "btn btn-block", :id => 'del-button' %>
             </div>
           </div>
