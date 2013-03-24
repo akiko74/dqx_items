@@ -62,14 +62,18 @@ class My::ItemsController < MyController
 
     @uid = Digest::SHA1.hexdigest("user-#{current_user.id}")
 
-=begin
     @items = []
     resources.each do |item|
-      @items << {:id => item.item_id, :name => Item.find(item.item_id).name,  :kana => Item.find(item.item_id).kana, :cost => item.average_cost, :stock => item.stock }
+      i = Item.find(item.item_id)
+      @items << {:id => item.item_id, :name => i.name,  :kana => i.kana, :cost => item.total_cost, :stock => item.stock }
     end
-    @result = {:uid => @uid, :characters => @characters, :items => @items}
-=end
-    @result = { uid: @uid, equipments: [], items: [] }
+    @equipments = []
+    my_equipments.each do |equipment|
+      recipe = Recipe.find(equipment.recipe_id)
+      @equipments << {:recipe_name => recipe.name, :recipe_kana => recipe.kana, :cost => equipment.cost, :renkin_count => equipment.renkin_count }
+    end
+
+    @result = { uid: @uid, equipments: @equipments, items: @items }
 
     respond_to do |format|
       format.html
