@@ -163,7 +163,7 @@ class My::ItemsController < MyController
       if recipe.present?
         case
           when equipment[:stock] == -1
-            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND total_cost = ?", recipe.id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], 0 ]
+            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND cost = ?", recipe.id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], 0 ]
           when equipment[:stock] == 1
             @equipment_result << [my_equipments.create(:recipe_id => recipe.id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], recipe.usage_count, 1 ]
         end
