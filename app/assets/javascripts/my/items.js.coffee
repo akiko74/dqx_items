@@ -3,6 +3,7 @@ window.Application ||= {}
 debug = true
 map = {};
 uid = '';
+remote_keys = []
 
 jQuery ->
   bootstrap();
@@ -13,8 +14,11 @@ bootstrap = () ->
   fetch_dictionaries();
   bind_functions();
   fetch_my_items();
+
   console.log "bootstraped" if debug
 
+save = (key,value) ->
+  return localStorage[key] = JSON.stringify(value)
 
 fetch_dictionaries = () ->
   $.ajax({
@@ -23,14 +27,14 @@ fetch_dictionaries = () ->
     dataType: 'json',
     success: (data) ->
       console.log "Request to /dictionaries.json is success." if debug;
-      localStorage['dictionaries'] = JSON.stringify(data)
+      save('dictionaries',data);
       if debug
         console.log "--- Dictionary data -----------------------------------------------------"
         console.log localStorage['dictionaries']
         console.log "-------------------------------------------------------------------------"
       for item_data in data
         console.log item_data if debug
-        localStorage[sha1.hex('dictionaries') + sha1.hex(item_data.name)] = JSON.stringify(item_data);
+        save(sha1.hex('dictionaries') + sha1.hex(item_data.name), item_data);
         if debug
           console.log sha1.hex('dictionaries') + sha1.hex(item_data.name);
           console.log localStorage[sha1.hex('dictionaries') + sha1.hex(item_data.name)];
@@ -59,7 +63,8 @@ update_my_item_data = (items, equipments) ->
     dataType: 'json',
     success: (msg) ->
       if debug
-        console.log "Data Saved: "
+        console.log "Success for POST /my/items.json"
+        console.log "Response data: "
         console.log msg
 
       for item in msg.items
@@ -80,6 +85,7 @@ update_my_item_data = (items, equipments) ->
       $("#my_items_update_form input#cost, #my_items_update_form input#stock, #my_items_update_form input#total, #my_items_update_form input#del_stock, #my_items_update_form input#keyword").val('');
       $("#my_items_update_form input#keyword").focus();
     error: ->
+      console.log "ERROR! for POST /my/items.json"
       $("#del-button").removeAttr("disabled");
       $("#add-button").removeAttr("disabled");
     complete: ->
@@ -237,6 +243,9 @@ calc_inputs = (e) ->
 dictionaries_item_key = (item_key) ->
   return "#{sha1.hex('dictionaries')}#{sha1.hex(item_key)}";
 
+dictionaries_item = (item_name) ->
+  return localStorage[dictionaries_item_key(item_name)]
+
 inputed_item = (path_of_item_name_element="#my_items_update_form input#keyword") ->
   _input_keyword = $(path_of_item_name_element).val();
   _dictionaries_item = localStorage[dictionaries_item_key(_input_keyword)];
@@ -252,6 +261,7 @@ inputed_item = (path_of_item_name_element="#my_items_update_form input#keyword")
 
 
 check_inputs = () ->
+  console.log "/-- check_inputs() --------------------" if debug
   $("#add-button, #del-button").attr("disabled", "disabled")
   _input_cost         = parseInt($("#my_items_update_form input#cost").val())
   _input_stock        = parseInt($("#my_items_update_form input#stock").val())
@@ -275,12 +285,13 @@ check_inputs = () ->
           $("#del-button").removeAttr("disabled")
       else
         console.log 'INPUT??'
-    return true
-  return false
+  console.log "--- check_inputs() -------------------/" if debug
+  return true 
 
 
 
 check_keyword = () ->
+  console.log "/-- check_keyword() -------------------" if debug
   _input_keyword = $("#my_items_update_form input#keyword").val()
   keyword_key = uid + sha1.hex(_input_keyword);
   console.log "keyword_key: #{keyword_key}" if debug
@@ -301,9 +312,12 @@ check_keyword = () ->
   else
     $("#item_controlle_panel").hide();
   check_inputs();
+  console.log "--- check_keyword() ------------------/" if debug
+  return true
 
 
 fetch_my_items = () ->
+  console.log "/-- fetch_my_items() ------------------" if debug
   $.getJSON '/my/items.json', (data, status) ->
     if debug
       console.log "Ajax Request => #{status}"
@@ -333,7 +347,14 @@ fetch_my_items = () ->
       console.log get_my_item_list_with_data();
       console.log "";
 
+      _keys = []
+      for key of localStorage
+        _keys.push(key)
+      console.log(_keys - remote_keys)
+
     reload_my_items_tabs(get_my_item_list_with_data(), get_my_equipment_list_with_data());
+  console.log "--- fetch_my_items() -----------------/" if debug
+  return true;
 
 
 my_equipment_key = (equipment_name) ->
@@ -351,7 +372,7 @@ set_my_equipment = (equipment) ->
     console.log "set_my_equipment()"
     console.log "key: #{my_equipment_key(equipment.name)}"
     console.log equipment;
-  localStorage[my_equipment_key(equipment.name)] = JSON.stringify(equipment);
+  save(my_equipment_key(equipment.name), equipment)
 
 set_and_get_my_equipment = (equipment) ->
   set_my_equipment(equipment);
@@ -366,7 +387,7 @@ set_and_get_my_equipment_list = (my_equipment_list) ->
   return get_my_equipment_list();
 
 set_my_equipment_list = (my_equipment_list) ->
-  localStorage[my_equipment_list_key()] = JSON.stringify(my_equipment_list);
+  save(my_equipment_list_key(), my_equipment_list)
 
 get_my_equipment_list = () ->
   return JSON.parse(localStorage[my_equipment_list_key()] || "[]")
@@ -383,11 +404,13 @@ add_and_get_my_equipment_list = (equipment) ->
 
 
 get_my_equipment_list_with_data = () ->
+  console.log "/-- get_my_equipment_list_with_data() -" if debug
   _my_equipment_list_data = [];
   for _equipment_key in get_my_equipment_list()
     _my_equipment_list_data.push JSON.parse(localStorage[_equipment_key]);
+    console.log JSON.parse(localStorage[_equipment_key]) if debug
+  console.log "--- get_my_equipment_list_with_data() /" if debug
   return _my_equipment_list_data;
- 
 
 
 my_item_key = (item_name) ->
@@ -402,7 +425,7 @@ set_my_item = (item) ->
     console.log "set_my_item()"
     console.log "key: #{my_item_key(item.name)}"
     console.log item;
-  localStorage[my_item_key(item.name)] = JSON.stringify(item);
+  save(my_item_key(item.name), item)
 
 get_my_item_by_name = (item_name) ->
   item_key = my_item_key(item_name);
@@ -420,7 +443,7 @@ set_and_get_my_item_list = (my_item_list) ->
   return get_my_item_list();
 
 set_my_item_list = (my_item_list) ->
-  localStorage[my_item_list_key()] = JSON.stringify(my_item_list);
+  save(my_item_list_key(), my_item_list)
 
 get_my_item_list = () ->
   return JSON.parse(localStorage[my_item_list_key()] || "[]")
@@ -437,34 +460,45 @@ add_and_get_my_item_list = (item) ->
 
 
 get_my_item_list_with_data = () ->
-  console.log "get_my_item_list_with_data() - - - - -" if debug;
+  console.log "/-- get_my_item_list_with_data() ------" if debug;
   _my_item_list_data = new Array();
   for _item_key in get_my_item_list()
     _my_item_list_data.push JSON.parse(localStorage[_item_key]);
-  console.log _my_item_list_data if debug;
-  console.log "- - - - - - - - - - - - - - - - - - - -" if debug
+    console.log JSON.parse(localStorage[_item_key]) if debug;
+  console.log "--- get_my_item_list_with_data() -----/" if debug;
   return _my_item_list_data;
  
 
 reload_my_items_tabs = (items, equipments) ->
+  console.log "/-- reload_my_items_tabs() ------------" if debug
+  $("#users_item_list #my_item_list tbody, #users_item_listi #my_equipment_list tbody").html('');
 
-  console.log "Reload My Items tabs."
-  $("#users_item_list #my_item_list tbody").html('');
-  for num of items
-    item = items[num];
-    console.log item;
-    $("#users_item_list #my_item_list tbody").append("<tr><td>#{item.name}</td><td>#{item.stock}</td><td>#{item.cost}</td></tr>");
-    console.log "Append row  - - - - - - - -"
-    console.log item;
-    console.log "- - - - - - - - - - - - - -"
+  console.log " - - - My Items Tab - - - - - - - - - -" if debug
+  for item in items
+    console.log item if debug;
+    $("#users_item_list #my_item_list tbody").append("""
+<tr>
+<td>#{item.name}</td>
+<td>#{item.stock}</td>
+<td>#{item.cost}</td>
+</tr>
+""")
 
-  console.log "Reload My Equipments tabs."
-  $("#users_item_listi #my_equipment_list tbody").html();
-  for equipment of equipments
-    console.log equipment
-    $("#users_item_listi #my_equipment_list tbody").append("<tr><td>#{equipment.name}</td><td>#{equipment.stock}</td><td>#{equipment.cost}</td></tr>");
+  console.log " - - - My Equipments Tab - - - - - - -" if debug
+  for equipment in equipments
+    console.log equipment if debug;
+    _equipment_name = equipment.name
+    if equipment.renkin_count > 0
+      _equipment_name += " +#{equipment.renkin_count}"
+    $("#users_item_list #my_equipment_list tbody").append("""
+<tr>
+<td>#{_equipment_name}</td>
+<td>#{equipment.stock}</td>
+<td>#{equipment.cost}</td>
+</tr>
+""")
 
-
+  console.log "--- reload_my_items_tabs() -----------/" if debug
 
 
 update_all = (hash) ->
