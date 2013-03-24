@@ -153,7 +153,7 @@ class My::ItemsController < MyController
     ActiveRecord::Base.transaction do
 
     #input sample:
-    #{:equipments => [{ :name => "麻の服", :stock => 1, :renkin_count => 0, :cost => 1260 }],
+    #{:equipments => [{ :name => "麻の服", :stock => -1, :renkin_count => 0, :cost => 1260 }],
     # :items => [{ :name => "あやかしそう", :stock => 3, :cost => 300 },{ :name => "コットン草", :stock => 3, :cost => 600 }]}
     @equipment_result = []
     @item_result =[]
@@ -163,7 +163,7 @@ class My::ItemsController < MyController
       if recipe.present?
         case
           when equipment[:stock] == -1
-            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND cost = ?", recipe.id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], 0 ]
+            @equipment_result << [my_equipments.where("recipe_id = ? AND renkin_count = ? AND cost = ?", recipe.id, equipment[:renkin_count], equipment[:cost]).first.destroy, equipment[:name], recipe.usage_count, 0 ]
           when equipment[:stock] == 1
             @equipment_result << [my_equipments.create(:recipe_id => recipe.id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], recipe.usage_count, 1 ]
         end
