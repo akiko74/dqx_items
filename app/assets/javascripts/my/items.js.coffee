@@ -11,38 +11,15 @@ jQuery ->
 
 bootstrap = () ->
   console.log "bootstrap" if debug
-  fetch_dictionaries();
+  DqxItems.MyItemsFormBuilder.bind_functions()
   bind_functions();
+  DqxItems.Dictionary.reload()
   fetch_my_items();
 
   console.log "bootstraped" if debug
 
 save = (key,value) ->
-  return localStorage[key] = JSON.stringify(value)
-
-fetch_dictionaries = () ->
-  $.ajax({
-    type: "GET",
-    url: '/dictionaries.json',
-    dataType: 'json',
-    success: (data) ->
-      console.log "Request to /dictionaries.json is success." if debug;
-      save('dictionaries',data);
-      if debug
-        console.log "--- Dictionary data -----------------------------------------------------"
-        console.log localStorage['dictionaries']
-        console.log "-------------------------------------------------------------------------"
-      for item_data in data
-        console.log item_data if debug
-        save(sha1.hex('dictionaries') + sha1.hex(item_data.name), item_data);
-        if debug
-          console.log sha1.hex('dictionaries') + sha1.hex(item_data.name);
-          console.log localStorage[sha1.hex('dictionaries') + sha1.hex(item_data.name)];
-          console.log " - - - - - - - - - - - - - - - - "
-        
-    error: ->
-      console.log "[ERROR] Request to /dictionaries.json is failed!";
-  });
+  return DqxItems.DataStorage.set(key,value)
 
 
 update_my_item_data = (items, equipments) ->
@@ -154,9 +131,8 @@ bind_functions = () ->
   $("#my_items_update_form input#keyword").typeahead({
 
     source: (query, process) ->
-      JSON.parse(localStorage['dictionaries'])
       states = [];
-      data = JSON.parse(localStorage['dictionaries']);
+      data = DqxItems.Dictionary.all()
       $.each data, (i, item) ->
         map[item.name] = item;
         states.push(item.name);
@@ -240,23 +216,39 @@ calc_inputs = (e) ->
       $("#my_items_update_form input#cost").val(parseInt(_input_total / _input_stock));
   check_inputs();
 
+
 dictionaries_item_key = (item_key) ->
   return "#{sha1.hex('dictionaries')}#{sha1.hex(item_key)}";
 
+
 dictionaries_item = (item_name) ->
-  return localStorage[dictionaries_item_key(item_name)]
+  _dictionaries_item = null
+  _dictionaries_item_json = localStorage[dictionaries_item_key(item_name)]
+  if typeof _dictionaries_item_json != "undefined"
+    _dictionaries_item = JSON.parse(_dictionaries_item_json)
+  return _dictionaries_item
+
 
 inputed_item = (path_of_item_name_element="#my_items_update_form input#keyword") ->
+  console.log "/-- inputed_item() --------------------" if debug
+  _inputed_item = null
   _input_keyword = $(path_of_item_name_element).val();
-  _dictionaries_item = localStorage[dictionaries_item_key(_input_keyword)];
-  _my_item = get_my_item_by_name(_input_keyword);
-  _inputed_item = {};
-  if typeof _dictionaries_item == "undefined"
-    return null;
-  else
-    _inputed_item['dictionary'] = JSON.parse(_dictionaries_item);
-  if _my_item
-    _inputed_item['my'] = _my_item;
+  console.log _input_keyword if debug
+  _dictionaries_item = dictionaries_item(_input_keyword)
+  if _dictionaries_item
+    _inputed_item = {
+      dictionary: _dictionaries_item,
+      my: null
+    }
+    _my_item = get_my_item_by_name(_input_keyword);
+    if _my_item
+      _inputed_item['my'] = _my_item;
+    if debug
+      console.log " - - dictionary: - - - - - - - - - - - "
+      console.log _dictionaries_item
+      console.log " - - my: - - - - - - - - - - - - - - - "
+      console.log _inputed_item['my']
+  console.log "--- inputed_item() -------------------/" if debug
   return _inputed_item;
 
 
@@ -393,10 +385,16 @@ get_my_equipment_list = () ->
   return JSON.parse(localStorage[my_equipment_list_key()] || "[]")
   
 add_my_equipment_list = (equipment) ->
+  console.log "/-- add_my_equipment_list() -----------" if debug
   _my_equipment_list = get_my_equipment_list();
   _my_equipment_list.push(my_equipment_key(equipment.name));
+  console.log _my_equipment_list if debug
   _my_equipment_list = jQuery.unique(_my_equipment_list);
+  console.log _my_equipment_list if debug
+  console.log typeof _my_equipment_list
+  console.log jQuery.isArray(_my_equipment_list)
   set_my_equipment_list(_my_equipment_list);
+  console.log "--- add_my_equipment_list() ----------/" if debug
 
 add_and_get_my_equipment_list = (equipment) ->
   add_my_equipment_list(equipment);
@@ -422,10 +420,11 @@ set_and_get_my_item = (item) ->
 
 set_my_item = (item) ->
   if debug
-    console.log "set_my_item()"
+    console.log "/-- set_my_item() ---------------------"
     console.log "key: #{my_item_key(item.name)}"
     console.log item;
   save(my_item_key(item.name), item)
+  console.log "--- set_my_item() --------------------/" if debug
 
 get_my_item_by_name = (item_name) ->
   item_key = my_item_key(item_name);
@@ -449,10 +448,36 @@ get_my_item_list = () ->
   return JSON.parse(localStorage[my_item_list_key()] || "[]")
   
 add_my_item_list = (item) ->
+  console.log "/-- add_my_item_list() ---------------"  if debug
   _my_item_list = get_my_item_list();
+  console.log _my_item_list if debug
   _my_item_list.push(my_item_key(item.name));
-  _my_item_list = jQuery.unique(_my_item_list);
+  console.log _my_item_list if debug
+  _my_item_list = uniq_array(_my_item_list);
+  console.log _my_item_list if debug
+  console.log typeof _my_item_list;
+  console.log jQuery.isArray(_my_item_list)
   set_my_item_list(_my_item_list);
+  console.log "--- add_my_item_list() --------------/"  if debug
+
+
+uniq_array = (array) ->
+  console.log "/-- uniq_array() ---------------------" if debug
+  _new_array = new Array()
+  for it in array
+    _match_flag = false
+    for obj in _new_array
+      if it == obj
+        _match_flag = true
+        break
+    if _match_flag == false
+      _new_array.push it
+      console.log it
+  console.log _new_array
+  console.log "--- uniq_array() --------------------/" if debug
+  return _new_array
+   
+
 
 add_and_get_my_item_list = (item) ->
   add_my_item_list(item);

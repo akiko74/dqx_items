@@ -5,5 +5,6 @@ jQuery ->
   #$('#keyword').typeahead({source: itemList, items:5});
   $('#recipes_keyword').typeahead({source: recipesList, items:5});
   $('.dropdown-toggle').dropdown();
-
+  $("#my_items_update_form").dqxItems
+    debug: true
 
