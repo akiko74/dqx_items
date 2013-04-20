@@ -19,8 +19,10 @@
 //= require commons
 //= require my/items
 //= require dqx_items
+//= require dqx_items/my_items_form_data
 //= require dqx_items/data_storage
 //= require dqx_items/dictionary
 //= require dqx_items/jquery-extend
 //= require dqx_items/my_items_form_builder
 //= require dqx_items/logger
+//= require dqx_items/my_item

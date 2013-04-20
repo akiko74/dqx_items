@@ -4,7 +4,7 @@
     <div class="input-append">
       <%= text_field_tag :recipes_keyword,
                          '',
-                         :autocomplete  => "off", 
+                         :autocomplete  => "off",
                          :placeholder   => "レシピ名を入力",
                          :class         => "span12 search-query",
                          :autofocus     => "autofocus",
@@ -46,7 +46,7 @@
     <script>
       function recipes_callback() {
   <% unless admin_signed_in? %>
-       $(".recipes-action").append("<p>aaaa</p>");
+       $(".recipes-action").append("");
   <% end %>
     }
     </script>

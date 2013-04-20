@@ -69,3 +69,11 @@ window.DqxItems.Dictionary = class Dictionary
     debug_log ".all()", "--- End ---"
     return _dictionary;
 
+  @get = (item_name) ->
+    debug_log ".get()", "item_name: #{item_name}"
+    _key = Dictionary.dictionary_key + sha1.hex item_name
+    debug_log ".get()", "key:       #{_key}"
+    _item = DqxItems.DataStorage.get _key
+    debug_log ".get()", _item
+    return _item
+

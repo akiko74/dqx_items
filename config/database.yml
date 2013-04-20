@@ -9,7 +9,7 @@ development: &defaults
   reconnect: false
   username: root
   password:
-  database: dqx_items_development
+  database: dqx_items
   socket: /var/lib/mysql/mysql.sock
   pool: 5
 

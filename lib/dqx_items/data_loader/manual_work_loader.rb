@@ -33,7 +33,7 @@ module DqxItems
                 item = Item.new(:name => _item_name, :price => _item_price)
                 _insert_count += 1
               end
-              item.save
+              item.save(validate: false)
               p item
             end
             puts "update:#{_update_count}, insert:#{_insert_count}"
@@ -62,7 +62,7 @@ module DqxItems
                 item = Item.new(:name => _item_name, :kana => _item_kana)
                 _insert_count += 1
               end
-              item.save
+              item.save(validate: false)
               p item
             end
             puts "update:#{_update_count}, insert:#{_insert_count}"
@@ -99,13 +99,13 @@ module DqxItems
                 case i
                 when 1
                   recipe.level = hope[i]
-                  recipe.save!
+                  recipe.save!(validate: false)
                 when 2
                   "opps..."
                 when 3
                   if(hope[i].to_i > 0)
                     ingredient.number = hope[i]
-                    ingredient.save!
+                    ingredient.save!(validate: false)
                   else
                     ingredient.destroy
                   end

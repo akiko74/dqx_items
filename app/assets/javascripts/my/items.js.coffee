@@ -6,15 +6,18 @@ uid = '';
 remote_keys = []
 
 jQuery ->
-  bootstrap();
+  #  bootstrap();
 
 
 bootstrap = () ->
   console.log "bootstrap" if debug
+  console.log DqxItems.MyItemsFormBuilder.my_items_form_id
+  console.log jQuery(DqxItems.MyItemsFormBuilder.my_items_form_id)?
   DqxItems.MyItemsFormBuilder.bind_functions()
-  bind_functions();
+  #bind_functions();
   DqxItems.Dictionary.reload()
-  fetch_my_items();
+  DqxItems.MyItem.reload()
+  #fetch_my_items();
 
   console.log "bootstraped" if debug
 
@@ -72,7 +75,7 @@ update_my_item_data = (items, equipments) ->
       $("#renkin_count_inputs").hide();
       $("#item_controlle_panel").hide();
 
-        
+
 #      console.log get_my_item_by_name(submit_data.name);
 
 
@@ -101,13 +104,13 @@ bind_functions = () ->
         when 'item'
           _input_cost  = parseInt($("#my_items_update_form input#total").val())
           _input_stock = parseInt($("#my_items_update_form input#stock").val())
-          submit_data.cost  += _input_cost if isFinite(_input_cost); 
-          submit_data.stock += _input_stock if isFinite(_input_stock); 
+          submit_data.cost  += _input_cost if isFinite(_input_cost);
+          submit_data.stock += _input_stock if isFinite(_input_stock);
           return update_my_item_data([submit_data], []);
         when 'recipe'
           _input_cost  = parseInt($("#my_items_update_form input#renkin_total").val())
           _input_count = parseInt($("#my_items_update_form input#renkin_count").val())
-          submit_data.cost  += _input_cost if isFinite(_input_cost); 
+          submit_data.cost  += _input_cost if isFinite(_input_cost);
           submit_data.stock = 1
           if isFinite(_input_count)
             submit_data.renkin_count = _input_count
@@ -140,8 +143,8 @@ bind_functions = () ->
       return states;
 
     matcher: (item) ->
-      #if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) 
-      if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) == 0) 
+      #if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1)
+      if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) == 0)
         console.log "match!: " + item;
         return true;
 
@@ -278,7 +281,7 @@ check_inputs = () ->
       else
         console.log 'INPUT??'
   console.log "--- check_inputs() -------------------/" if debug
-  return true 
+  return true
 
 
 
@@ -374,7 +377,7 @@ set_and_get_my_equipment = (equipment) ->
 my_equipment_list_key = () ->
   return uid + sha1.hex('equipments');
 
-set_and_get_my_equipment_list = (my_equipment_list) ->
+see_and_get_my_equipment_list = (my_equipment_list) ->
   set_my_equipment_list(my_equipment_list);
   return get_my_equipment_list();
 
@@ -383,7 +386,7 @@ set_my_equipment_list = (my_equipment_list) ->
 
 get_my_equipment_list = () ->
   return JSON.parse(localStorage[my_equipment_list_key()] || "[]")
-  
+
 add_my_equipment_list = (equipment) ->
   console.log "/-- add_my_equipment_list() -----------" if debug
   _my_equipment_list = get_my_equipment_list();
@@ -412,7 +415,7 @@ get_my_equipment_list_with_data = () ->
 
 
 my_item_key = (item_name) ->
-  return uid + sha1.hex(item_name); 
+  return uid + sha1.hex(item_name);
 
 set_and_get_my_item = (item) ->
   set_my_item(item);
@@ -446,7 +449,7 @@ set_my_item_list = (my_item_list) ->
 
 get_my_item_list = () ->
   return JSON.parse(localStorage[my_item_list_key()] || "[]")
-  
+
 add_my_item_list = (item) ->
   console.log "/-- add_my_item_list() ---------------"  if debug
   _my_item_list = get_my_item_list();
@@ -476,7 +479,7 @@ uniq_array = (array) ->
   console.log _new_array
   console.log "--- uniq_array() --------------------/" if debug
   return _new_array
-   
+
 
 
 add_and_get_my_item_list = (item) ->
@@ -492,7 +495,7 @@ get_my_item_list_with_data = () ->
     console.log JSON.parse(localStorage[_item_key]) if debug;
   console.log "--- get_my_item_list_with_data() -----/" if debug;
   return _my_item_list_data;
- 
+
 
 reload_my_items_tabs = (items, equipments) ->
   console.log "/-- reload_my_items_tabs() ------------" if debug
@@ -607,7 +610,7 @@ renew_my_items_data = () ->
       for key of localStorage
         console.log key
       console.log "-------------------------------------------------------------------------"
-  
+
 tmp = () ->
     characters_items_hash = {}
     characters_items_hash[sha1.hex("characters-0-items")] = []
@@ -702,7 +705,7 @@ fetch_characters_items = (character_id) ->
   character_items.sort (a,b) ->
     item_a = a['kana']
     item_b = b['kana']
-    return -1 if( item_a < item_b ) 
+    return -1 if( item_a < item_b )
     return 1 if( item_a > item_b )
     return 0
   if debug
@@ -721,12 +724,12 @@ $ ->
     _stock = parseInt($("#del_stock").val());
     console.log _stock;
     _stock = -1 * _stock if _stock > 0
-    
+
     console.log "=====";
     console.log _stock;
     console.log "=====";
     return false;
-  
+
   renew_my_items_data()
   character_list = fetch_character_list()
   generate_character_tab_tags(character_list)
@@ -746,7 +749,7 @@ $ ->
                              '<a href="javascript:Application.display_stock_console(\'add\',\'' + chara_item_index + '\');" class="btn btn-mini plus">＋</a>' +
                              '<a href="javascript:Application.display_stock_console(\'del\',\'' + chara_item_index + '\');" class="btn btn-mini minus">−</a>' +
                            '</td>' +
-                         '</tr>' + 
+                         '</tr>' +
                          '<tr class="add_consoles">' +
                            '<td colspan="4">' +
                              '<table class="table table-striped">' +

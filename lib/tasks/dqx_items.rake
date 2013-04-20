@@ -38,10 +38,10 @@ namespace :dqx_items do
 
   desc "Load all recipes"
   task :load_all_recipes do
-    Rake::Task["dqx_items:load_recipes"].invoke
-    Rake::Task["dqx_items:modify_recipes"].invoke
-    Rake::Task["dqx_items:load_recipes2"].invoke
-    Rake::Task["dqx_items:load_recipes3"].invoke
+    %w(load_recipes modify_recipes load_recipes2 load_recipes3 add_item_kana add_item_pricess).each do |recipe|
+	    p recipe
+      #Rake::Task["dqx_items:#{recipe}"].invoke
+    end
   end
 
 
