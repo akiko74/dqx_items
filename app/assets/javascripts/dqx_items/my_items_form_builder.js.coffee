@@ -11,9 +11,34 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
   @my_items_stock_id: "#{@my_items_form_id} input#stock"
   @my_items_total_id: "#{@my_items_form_id} input#total"
   @my_items_del_stock_id: "#{@my_items_form_id} input#del_stock"
+  @my_items_add_button_id: "#{@my_items_form_id} input#add-button"
+  @my_items_del_button_id: "#{@my_items_form_id} input#del-button"
   @my_items_item_controlle_panel: "#item_controlle_panel"
   @my_items_renkin_count_inputs: "#renkin_count_inputs"
   @my_items_item_inputs: "#item_inputs"
+  @my_items_network_processing: "#network_processing"
+
+  @clear = () ->
+    jQuery(MyItemsFormBuilder.my_items_keyword_id).val("")
+    jQuery(MyItemsFormBuilder.my_items_cost_id).val("")
+    jQuery(MyItemsFormBuilder.my_items_stock_id).val("")
+    jQuery(MyItemsFormBuilder.my_items_total_id).val("")
+    jQuery(MyItemsFormBuilder.my_items_del_stock_id).val("")
+    jQuery(MyItemsFormBuilder.my_items_renkin_count_inputs).val("")
+    jQuery("#del-button").attr("disabled", "disabled")
+    jQuery("#add-button").attr("disabled", "disabled")
+
+  buildFormData = () ->
+    return new DqxItems.MyItemsFormData(
+      itemCost: parseInt(jQuery(MyItemsFormBuilder.my_items_cost_id).val()),
+      itemStock: parseInt(jQuery(MyItemsFormBuilder.my_items_stock_id).val()),
+      itemTotalCost: parseInt(jQuery(MyItemsFormBuilder.my_items_total_id).val()),
+      keyword: jQuery(MyItemsFormBuilder.my_items_keyword_id).val(),
+      deleteItemStock: parseInt(jQuery(MyItemsFormBuilder.my_items_del_stock_id).val()),
+      renkinCount: parseInt(jQuery(MyItemsFormBuilder.my_items_renkin_count_inputs))
+    )
+
+
 
   inputed = ->
     debug_log ".inputed()", "--- Start ---"
@@ -48,10 +73,18 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     bind_submit(@my_items_form_id)
     bind_calcurate(@my_items_calc_input_fields_class)
     bind_typeahead(@my_items_keyword_id)
-
+    bind_add_action(@my_items_add_button_id)
+    bind_del_action(@my_items_del_button_id)
     debug_log ".bind_functions()", DqxItems.Dictionary.all()
     debug_log ".bind_functions()", "--- End ---"
 
+
+
+  bind_add_action = (target) ->
+    jQuery(target).bind "click", add_my_item
+
+  bind_del_action = (target) ->
+    jQuery(target).bind "click", del_my_item
 
   bind_submit = (target) ->
     debug_log "#bind_submit()", "--- Start ---"
@@ -111,7 +144,9 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
 
   typeahead_updater = (item) ->
     _inputed = DqxItems.Dictionary.get(item)
+    _mine = DqxItems.MyItem.get(item)
     debug_log "#typeahead_updater()", _inputed
+    debug_log "#typeahead_updater()", _mine
     switch _inputed.type
       when "item"
         jQuery(MyItemsFormBuilder.my_items_item_controlle_panel).show()
@@ -130,18 +165,69 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
         debug_log "unknown type."
     return item
 
+  add_my_item = (e) ->
+    debug_log "#add_my_item()", e
+    e.preventDefault()
+    MyItemsFormBuilder.hidden_form()
+    req = { equipments: [], items: [] }
+    form_data = buildFormData()
+    switch form_data.dictionary().type
+      when 'item'
+        req.items.push form_data.toAddItemParam()
+      when 'recipe'
+        req.items.push form_data.toAddEquipmentParam()
+      else
+        debug_log "#add_my_item()", form_data.dictionary().type
+    debug_log "#add_my_item()", req
+    DqxItems.MyItem.update_my_items(req.items, req.equipments)
 
+  del_my_item = (e) ->
+    debug_log "#del_my_item()", e
+    e.preventDefault()
+    MyItemsFormBuilder.add_button_disable()
+    MyItemsFormBuilder.delete_button_disable()
+    req = { equipments: [], items: [] }
+    form_data = buildFormData()
+    switch form_data.dictionary().type
+      when 'item'
+        req.items.push form_data.toDeleteItemParam()
+      when 'recipe'
+        req.items.push form_data.toDeleteEquipmentParam()
+      else
+        debug_log "#del_my_item()", form_data.dictionary().type
+    debug_log "#del_my_item()", req
+    DqxItems.MyItem.update_my_items(req.items, req.equipments)
+
+
+  @hidden_form = () ->
+    jQuery(MyItemsFormBuilder.my_items_network_processing)
+      .css('height', jQuery(MyItemsFormBuilder.my_items_form_id).css("height"))
+    jQuery(MyItemsFormBuilder.my_items_network_processing).show()
+    jQuery(MyItemsFormBuilder.my_items_form_id).hide()
+
+  @show_form = () ->
+    jQuery(MyItemsFormBuilder.my_items_network_processing).hide()
+    jQuery(MyItemsFormBuilder.my_items_form_id).show()
 
 
   submit_at_my_items_form = (e) ->
     debug_log "#submit_at_my_items_form()", "--- Start ---"
-    e.preventDefault()
-    jQuery("#del-button").attr("disabled", "disabled")
-    jQuery("#add-button").attr("disabled", "disabled")
-    $('#item_controlle_panel .active').id()
-
-
     debug_log "#submit_at_my_items_form()", e
+    e.preventDefault()
+    MyItemsFormBuilder.add_button_disable()
+    MyItemsFormBuilder.delete_button_disable()
+    req = { equipments: [], items: [] }
+    debug_log "#submit_at_my_items_form()", jQuery(".tab-pane.active > table").attr("id")
+    switch jQuery(".tab-pane.active > table").attr("id")
+      when "item_inputs"
+        req.items.push "aaa"
+      when "renkin_count_inputs"
+      else
+        debug_log "#submit_at_my_items_form()", jQuery(".tab-pane.active > table").attr("id")
+    debug_log "#submit_at_my_items_form()", req
+    DqxItems.MyItem.update_my_items(req.items, req.equipments)
+#$('#item_controlle_panel .active').id()
+
     debug_log "#submit_at_my_items_form()", "--- End ---"
     return false
 
@@ -190,28 +276,38 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     return false
 
 
-  enable_submits = (inputed_data = inputed()) ->
-    debug_log "#enable_submits()", inputed_data
-    switch DqxItems.Dictionary.get(inputed_data.keyword).type
+  enable_submits = (form_data = buildFormData()) ->
+    debug_log "#enable_submits()", form_data
+    debug_log "#enable_submits()", form_data.dictionary()
+    MyItemsFormBuilder.add_button_disable()
+    MyItemsFormBuilder.delete_button_disable()
+    switch form_data.dictionary().type
       when 'item'
-        if ( isFinite(inputed_data.stock) && isFinite(inputed_data.cost) && isFinite(inputed_data.total) && inputed_data.stock > 0 )
-          $("#add-button").removeAttr("disabled")
-        if ( isFinite(inputed_data.delete) && inputed_data.delete != 0 && typeof inputed_item()['my'] != "undefined")
-          $("#del-button").removeAttr("disabled")
+        MyItemsFormBuilder.add_button_enable() if form_data.checkItemAddable()
+        MyItemsFormBuilder.delete_button_enable() if form_data.checkItemDeletable()
       when 'recipe'
-        if ( isFinite(_input_renkin_total) )
-          $("#add-button").removeAttr("disabled")
-        if ( isFinite(_input_del_stock) && _input_del_stock != 0 && typeof inputed_item()['my'] != "undefined")
-          $("#del-button").removeAttr("disabled")
+        MyItemsFormBuilder.add_button_enable() if form_data.checkRenkinAddable()
+        MyItemsFormBuilder.delete_button_enable() if form_data.checkRenkinDeletable()
       else
-        debug_log "#enable_submits()", "inputed type unknown! #{DqxItems.Dictionary.get(inputed_data.keyword).type}"
+        debug_log "#enable_submits()", "inputed type unknown! #{form_data.dictionary().type}"
     return true
+
+  @add_button_enable = () ->
+    jQuery("#add-button").removeAttr("disabled")
+
+  @add_button_disable = () ->
+    jQuery("#add-button").attr("disabled", "disabled")
+
+  @delete_button_enable = () ->
+    jQuery("#del-button").removeAttr("disabled")
+
+  @delete_button_disable = () ->
+    jQuery("#del-button").attr("disabled", "disabled")
 
   check_at_my_items_form = ->
     debug_log "#check_at_my_items_form()", "--- Start ---"
     debug_log "#check_at_my_items_form()", inputed().keyword
     debug_log "#check_at_my_items_form()", "--- End ---"
     return false
-
 
 

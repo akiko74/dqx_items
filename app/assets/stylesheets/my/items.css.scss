@@ -131,6 +131,10 @@ tr.add_consoles > td, tr.del_consoles > td {
 
 #network_processing {
   display:none;
+  padding: 0px;
+  div {
+    padding: 10px;
+  }
 }
 
 input[type=number] {
@@ -166,4 +170,7 @@ input[type=number] {
 }
 #item_controlle_panel {
   display: none;
+  input[type=number] {
+    text-align:right;
+  }
 }

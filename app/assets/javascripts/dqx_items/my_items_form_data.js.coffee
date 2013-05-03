@@ -54,4 +54,40 @@ window.DqxItems.MyItemsFormData = class MyItemsFormData
     #isFinite(_input_del_stock) && _input_del_stock != 0 && typeof inputed_item()['my'] != "undefined")
     return (isFinite(@deleteRenkinStock))
 
+  dictionary: ->
+    DqxItems.Dictionary.get @keyword
+
+  toAddItemParam: ->
+    return {
+      name: @keyword,
+      stock: @itemStock,
+      cost: @itemTotalCost
+    }
+
+  toDeleteItemParam: ->
+    del_stock = @deleteItemStock
+    if (@deleteItemStock > 0)
+      del_stock = @deleteItemStock * -1
+    return {
+      name: @keyword,
+      stock: del_stock
+    }
+
+  toAddEquipmentParam: ->
+    return {
+      name: @keyword,
+      stock: 1,
+      renkin_count: @renkinCount,
+      cost: @renkinTotalCost
+    }
+
+  toDeleteEquipmentParam: ->
+    return {
+      name: @keyword,
+      stock: -1,
+      renkin_count: @renkinCount,
+      cost: @renkinTotalCost
+    }
+
+
 
