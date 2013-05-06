@@ -5,6 +5,6 @@ FactoryGirl.define do
     user
     item
     stock 32
-    average_cost 120
+    total_cost 120
   end
 end

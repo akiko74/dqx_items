@@ -37,12 +37,7 @@ namespace :dqx_items do
 
 
   desc "Load all recipes"
-  task :load_all_recipes do
-    %w(load_recipes modify_recipes load_recipes2 load_recipes3 add_item_kana add_item_pricess).each do |recipe|
-	    p recipe
-      #Rake::Task["dqx_items:#{recipe}"].invoke
-    end
-  end
+  task :load_all_recipes => %w(load_recipes modify_recipes load_recipes2 load_recipes3 add_item_kana add_item_pricess)
 
 
   desc "Load Demo Data"
