@@ -6,6 +6,7 @@
 # @since 2.0.0
 #
 class My::ItemsController < MyController
+  include My::ItemsHelper
 
   before_filter :parse_equipments_items_json, :only => [:updates]
 
@@ -65,7 +66,7 @@ class My::ItemsController < MyController
     @items = []
     resources.each do |item|
       i = Item.find(item.item_id)
-      @items << {:id => item.item_id, :name => i.name,  :kana => i.kana, :cost => item.total_cost, :stock => item.stock }
+      @items << {:name => i.name,  :kana => i.kana, :stock => item.stock, :cost => (item.total_cost/item.stock rescue 0)}
     end
     @equipments = []
     my_equipments.each do |equipment|
@@ -159,63 +160,55 @@ class My::ItemsController < MyController
     #input sample:
     #{:equipments => [{ :name => "麻の服", :stock => 1, :renkin_count => 0, :cost => 1260 }],
     # :items => [{ :name => "あやかしそう", :stock => 3, :cost => 300 },{ :name => "コットン草", :stock => 3, :cost => 600 }]}
-    @equipment_result = []
-    @item_result =[]
-    @equipments = @requested_equipments_items[:equipments]
-    unless @equipments.nil?
-    @equipments.each do |equipment|
-      recipe = Recipe.find_by_name(equipment[:name])
-      if recipe.present?
-        case
-          when equipment[:stock] == -1
-            @equipment_result << [my_equipments.registered(equipment, recipe.id).destroy, equipment[:name], recipe.usage_count, 0 ]
-          when equipment[:stock] == 1
-            @equipment_result << [my_equipments.create(:recipe_id => recipe.id, :renkin_count => equipment[:renkin_count], :cost => equipment[:cost]), equipment[:name], recipe.usage_count, 1 ]
+    #
+    equipment_result = []
+    equipments = partialize_equipments(@requested_equipments_items[:equipments])
+    equipments[:add].each do |equipment|
+      equipment_result << equipment if Equipment.create(:user_id => current_user.id, :recipe_id => equipment[:recipe_id], :cost => equipment[:cost], :renkin_count => equipment[:renkin_count])
+    end
+
+    equipments[:delete].each do |equipment|
+      equipment_del = Equipment.registered(equipment, current_user.id).first
+        if equipment_del.present?
+          equipment_del.destroy
+          equipment_result << equipment
+        end
+    end
+
+    item_result = []
+    inventories = partialize_items(@requested_equipments_items[:items])
+    inventories[:add].each do |inventory|
+      add_item = resources.where(:item_id => inventory[:item_id]).first_or_create
+      add_item.stock += inventory[:stock]
+      add_item.total_cost += inventory[:cost]
+      add_item.save
+    end
+
+    inventories[:delete].each do |inventory|
+      delete_item = resources.where(:item_id => inventory[:item_id]).first
+      next unless delete_item.present?
+        delete_item.stock += inventory[:stock]
+        delete_item.total_cost += inventory[:cost]
+          if delete_item.stock <= 0
+            delete_item.destroy
+          else delete_item.save
         end
       end
-    end
-    end
-    @inventories = @requested_equipments_items[:items]
-    unless @inventories.nil?
-      @inventories.each do |inventory|
-        item = Item.find_by_name(inventory[:name])
-        if item.present?
-          if resources.where(:item_id => item.id).present?
-           my_inventory = resources.find_by_item_id(item.id)
-           my_inventory.stock += inventory[:stock]
-           my_inventory.total_cost += inventory[:cost]
-             if my_inventory.stock <= 0
-               my_inventory.stock = 0
-               my_inventory.total_cost = 0
-               @item_result << [my_inventory.destroy, inventory[:name]]
-             else
-               my_inventory.save!
-               @item_result << [my_inventory, inventory[:name]]
-             end
-           else
-             @item_result << resources.create(:item_id => item.id, :total_cost => inventory[:cost], :stock => inventory[:stock]) if inventory[:stock] > 0
-           end
-         end
-       end
-      end
-      @equipment_array = []
-      unless @equipment_result.blank?
-      @equipment_result.each do |equipment|
-        @equipment_array << {:name => equipment[1], :stock => equipment[3], :renkin_count => equipment[0].renkin_count, :cost => (equipment[0].cost/equipment[2] rescue 0)}
-      end
-      end
-      @item_array = []
-      unless @item_result.blank?
-      @item_result.each do |item|
-        @item_array << {:name => item[1], :stock => item[0].stock, :cost => (item[0].total_cost/item[0].stock rescue 0)}
-      end
-     end
 
+    (inventories[:add]+inventories[:delete]).each do |inventory|
+      item = resources.where(:item_id => inventory[:item_id]).first
+        if item.present?
+          item_result << {name: inventory[:name], stock: item.stock, total_cost: item.total_cost }
+        else
+          item_result << {name: inventory[:name], stock: 0, total_cost: 0}
+        end
     end
+
     ##FIXME @requested_equipments_itemsを、ごにょごにょして@resultに入れる 
     logger.debug @requested_equipments_items
-    @result = {:equipments => @equipment_array, :items => @item_array }
+    @result = {:equipments => equipment_result, :items => item_result }
     ######
+    end
 
     respond_to do |format|
       format.json { render json: @result }
@@ -303,8 +296,6 @@ class My::ItemsController < MyController
         }
       end
     end
-
-
 
     def resources
       resources = Inventory.where(:user_id => current_user.id)

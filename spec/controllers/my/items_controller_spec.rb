@@ -78,6 +78,29 @@ describe My::ItemsController do
       end
     end
     it_behaves_like "Respond to JSON"
+
+    context "transaction" do
+      let(:mock){ mock(Array) }
+      before do
+        controller.stub!(:partialize_equipment).and_return({add: [], delete: [] })
+        controller.stub!(:parse_equipments_items_json)
+        controller.instance_variable_set(:@requested_equipments_items, {equipments: mock})
+      end
+      context "ActiveRecord::Base" do
+        pending
+      end
+      context "equipments_update" do
+        subject {controller}
+        it "should call controller#partialize_equipment" do
+          should_recieve(:partialize_equipment).with(mock)
+          req
+          #partialize_equipment(@requested_equipments_items[:equipments])
+          #@requested_equipments_items[:equipments] == mock
+        end
+      end
+      context "items_update" do
+      end
+    end
   end
 
   context "#parse_equipments_items_json" do
