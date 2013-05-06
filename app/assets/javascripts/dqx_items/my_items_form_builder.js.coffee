@@ -69,14 +69,11 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     return { cost: _inputed_cost, stock: _inputed_stock, total: _inputed_total, delete: _inputed_delete, keyword:_inputed_keyword  }
 
   @bind_functions = () ->
-    debug_log ".bind_functions()", "--- Start ---"
     bind_submit(@my_items_form_id)
     bind_calcurate(@my_items_calc_input_fields_class)
     bind_typeahead(@my_items_keyword_id)
     bind_add_action(@my_items_add_button_id)
     bind_del_action(@my_items_del_button_id)
-    debug_log ".bind_functions()", DqxItems.Dictionary.all()
-    debug_log ".bind_functions()", "--- End ---"
 
 
 
@@ -87,24 +84,19 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     jQuery(target).bind "click", del_my_item
 
   bind_submit = (target) ->
-    debug_log "#bind_submit()", "--- Start ---"
     jQuery(target)
       .bind "submit", submit_at_my_items_form
     debug_log "#bind_submit()", "Bind to #{target}"
-    debug_log "#bind_submit()", "--- End ---"
     return true
 
   bind_calcurate = (target) ->
-    debug_log "#bind_calcurate()", "--- Start ---"
     jQuery(target)
       .bind("keyup", calculate_at_my_items_form)
       .bind("change", calculate_at_my_items_form)
     debug_log "#bind_calcurate()", "Bind to #{target}"
-    debug_log "#bind_calcurate()", "--- End ---"
     return true
 
   bind_typeahead = (target) ->
-    debug_log "#bind_check()", "--- Start ---"
     jQuery(target).typeahead
       source:      typeahead_source,
       matcher:     typeahead_matcher,
@@ -114,28 +106,30 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
       items:       8
 
     debug_log "#bind_check()", "Bind to #{target}"
-    debug_log "#bind_check()", "--- End ---"
 
   typeahead_source = (query, process) ->
     _source_data = jQuery.map DqxItems.Dictionary.all(), (item) ->
       item.name
-    debug_log "#typeahead_source()", _source_data
+    debug_log "#typeahead_source()", "fetch #{_source_data.length} items."
     return _source_data
 
   typeahead_matcher = (item) ->
-    if (DqxItems.Dictionary.get(item).kana.indexOf(this.query.trim()) == 0)
-      debug_log "#typeahead_matcher()", "macth: #{item}"
+    return false if this.query.trim().length < 3
+    target_item = DqxItems.Dictionary.get(item)
+    if (target_item.kana.indexOf(this.query.trim()) == 0)
+      debug_log "#typeahead_matcher()", "macth:  #{item} (#{target_item.kana})"
       return true
 
   typeahead_sorter = (items) ->
-    debug_log "#typeahead_sorter()", items
     item_list = []
     for item in items
       item_list.push DqxItems.Dictionary.get item
     item_list = item_list.sort (a,b) ->
       (a.kana < b.kana) ?  1 : -1
-    debug_log "#typeahead_sorter()", item_list
-    return items.sort()
+    _data = jQuery.map item_list, (item) ->
+      item.name
+    debug_log "#typeahead_sorter()", '["' + _data.join('", "') + '"]'
+    return _data
 
   typeahead_highlighter = (item) ->
     regex = new RegExp( '(' + this.query + ')', 'gi' )

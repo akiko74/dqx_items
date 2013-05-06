@@ -12,7 +12,6 @@ window.DqxItems.MyItem = class MyItem
     DqxItems.Logger.debug("[DqxItems.MyItem#{method_name}] ", message)
 
   @reload = (@force=true) ->
-    debug_log ".reload()", "--- start ------------------------------------"
     if @force
       destroy_my_items()
       jQuery.ajax
@@ -22,7 +21,6 @@ window.DqxItems.MyItem = class MyItem
         success:  MyItem.fetch_my_items_api_success
         error:    MyItem.fetch_my_items_api_error
         complete: MyItem.fetch_my_items_api_complete
-    debug_log ".reload()", "--- end --------------------------------------"
 
   @fetch_my_items_api_success: (data) ->
     debug_log ".fetch_my_items_api_success()", data
@@ -42,12 +40,10 @@ window.DqxItems.MyItem = class MyItem
     console.log "--- DqxItems.MyItem.fetch_my_items_api_complete() ----------/"
 
   destroy_my_items = () ->
-    debug_log "#destroy_my_items()", "--- Start ---"
     for row in DqxItems.DataStorage.keys()
       continue unless row.indexOf(MyItem.my_key()) == 0
       DqxItems.DataStorage.destroy(row)
-      debug_log "#destroy_my_items()", row
-    debug_log "#destroy_my_items()", "--- End ---"
+      debug_log "#destroy_my_items()", "Destroied key: #{row}"
 
   save_my_item = (item_data) ->
     debug_log "#save_my_item()", item_data
