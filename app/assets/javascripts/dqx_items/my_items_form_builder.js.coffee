@@ -13,6 +13,8 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
   @my_items_del_stock_id: "#{@my_items_form_id} input#del_stock"
   @my_items_add_button_id: "#{@my_items_form_id} input#add-button"
   @my_items_del_button_id: "#{@my_items_form_id} input#del-button"
+  @my_items_add_tab_id: "#{@my_items_form_id} #add_tab"
+  @my_items_del_tab_id: "#{@my_items_form_id} #del_tab"
   @my_items_item_controlle_panel: "#item_controlle_panel"
   @my_items_renkin_count_inputs: "#renkin_count_inputs"
   @my_items_item_inputs: "#item_inputs"
@@ -114,21 +116,26 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     return _source_data
 
   typeahead_matcher = (item) ->
-    return false if this.query.trim().length < 3
+    _query = this.query.trim()
+    return false if _query.length < 3
     target_item = DqxItems.Dictionary.get(item)
-    if (target_item.kana.indexOf(this.query.trim()) == 0)
+    if (target_item.kana.indexOf(_query) == 0)
       debug_log "#typeahead_matcher()", "macth:  #{item} (#{target_item.kana})"
       return true
 
   typeahead_sorter = (items) ->
+    return [] if items.length < 1
+    debug_log "typeahead_sorter()", 'before: ["' + items.join('", "') + '"]'
     item_list = []
     for item in items
       item_list.push DqxItems.Dictionary.get item
     item_list = item_list.sort (a,b) ->
-      (a.kana < b.kana) ?  1 : -1
+      return -1 if (a.kana < b.kana)
+      return 1 if (a.kana > b.kana)
+      return 0
     _data = jQuery.map item_list, (item) ->
       item.name
-    debug_log "#typeahead_sorter()", '["' + _data.join('", "') + '"]'
+    debug_log "#typeahead_sorter()", 'after: ["' + _data.join('", "') + '"]'
     return _data
 
   typeahead_highlighter = (item) ->
@@ -141,6 +148,10 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     _mine = DqxItems.MyItem.get(item)
     debug_log "#typeahead_updater()", _inputed
     debug_log "#typeahead_updater()", _mine
+    if _mine
+      jQuery(MyItemsFormBuilder.my_items_del_tab_id).show()
+    else
+      jQuery(MyItemsFormBuilder.my_items_del_tab_id).hide()
     switch _inputed.type
       when "item"
         jQuery(MyItemsFormBuilder.my_items_item_controlle_panel).show()
