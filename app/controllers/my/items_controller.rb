@@ -57,7 +57,7 @@ class My::ItemsController < MyController
   # +++}
   # ++]
   # +}
-  # 
+  #
   # @todo resultの中身作る
   def index
 
@@ -98,11 +98,11 @@ class My::ItemsController < MyController
   # @option /\d+/ [String] stock 在庫の変動数
   # @option /\d+/ [String] cost アイテムのコスト
   # @return [String] 変更されたデータの情報を含むJSONオブジェクト（例参照）
-  # 
+  #
   # @note before_filter :parse_equipments_items_jsonにより、パラメータは@requested_equipments_itemsに解析され、格納される。
   # @see #parse_equipments_items_json
   #
-  # @todo parse_equipments_items_jsonが処理した@requested_equipments_itemsを、ごにょごにょして@resultに入れる 
+  # @todo parse_equipments_items_jsonが処理した@requested_equipments_itemsを、ごにょごにょして@resultに入れる
   #
   # @example sd1 裁縫職人が初級魔法戦士服を作って登録する。コットン草は使い切る。
   # +RequestParams:
@@ -163,6 +163,7 @@ class My::ItemsController < MyController
     #
     equipment_result = []
     equipments = partialize_equipments(@requested_equipments_items[:equipments])
+    if equipments.key? :add
     equipments[:add].each do |equipment|
       equipment_result << equipment if Equipment.create(:user_id => current_user.id, :recipe_id => equipment[:recipe_id], :cost => equipment[:cost], :renkin_count => equipment[:renkin_count])
     end
@@ -174,19 +175,22 @@ class My::ItemsController < MyController
           equipment_result << equipment
         end
     end
+    end
 
     item_result = []
     inventories = partialize_items(@requested_equipments_items[:items])
-    inventories[:add].each do |inventory|
-      add_item = resources.where(:item_id => inventory[:item_id]).first_or_create
-      add_item.stock += inventory[:stock]
-      add_item.total_cost += inventory[:cost]
-      add_item.save
+    if inventories.key? :add
+      inventories[:add].each do |inventory|
+        add_item = resources.where(:item_id => inventory[:item_id]).first_or_create
+        add_item.stock += inventory[:stock]
+        add_item.total_cost += inventory[:cost]
+        add_item.save
+      end
     end
-
-    inventories[:delete].each do |inventory|
-      delete_item = resources.where(:item_id => inventory[:item_id]).first
-      next unless delete_item.present?
+    if inventories.key? :delete
+      inventories[:delete].each do |inventory|
+        delete_item = resources.where(:item_id => inventory[:item_id]).first
+        next unless delete_item.present?
         delete_item.stock += inventory[:stock]
         delete_item.total_cost += inventory[:cost]
           if delete_item.stock <= 0
@@ -194,32 +198,33 @@ class My::ItemsController < MyController
           else delete_item.save
         end
       end
+    end
 
-    (inventories[:add]+inventories[:delete]).each do |inventory|
-      item = resources.where(:item_id => inventory[:item_id]).first
+    if inventories.key?(:delete) && inventories.key?(:add)
+      (inventories[:add]+inventories[:delete]).each do |inventory|
+        item = resources.where(:item_id => inventory[:item_id]).first
         if item.present?
           item_result << {name: inventory[:name], stock: item.stock, total_cost: item.total_cost }
         else
           item_result << {name: inventory[:name], stock: 0, total_cost: 0}
         end
+      end
     end
 
-    ##FIXME @requested_equipments_itemsを、ごにょごにょして@resultに入れる 
     logger.debug @requested_equipments_items
     @result = {:equipments => equipment_result, :items => item_result }
-    ######
-    end
 
     respond_to do |format|
       format.json { render json: @result }
+    end
     end
   end
 
 
   private
-    
+
     # リクエストパラメータを最適化し、@requested_equipments_itemsへ格納する
-    # 
+    #
     # @param [Hash] params リクエストパラメータ
     # @option params [Hash] equipments 装備品の変更情報を含んだ配列もどき
     # @option equipments [Hash] /\d+/ 変更順をキーとする装備品の在庫変更情報
@@ -233,7 +238,7 @@ class My::ItemsController < MyController
     # @option /\d+/ [String] stock 在庫の変動数
     # @option /\d+/ [String] cost アイテムのコスト
     # @return [Hash] 最適化されたHashオブジェクト（例参照）
-    # 
+    #
     # @example sd1 裁縫職人が初級魔法戦士服を作って登録する。コットン草は使い切る。
     # +RequestParams:
     # ++{
@@ -282,7 +287,7 @@ class My::ItemsController < MyController
     # +++]
     # ++}
     #
-    # 
+    #
     def parse_equipments_items_json
       @requested_equipments_items ||= begin
         _equipments_items_hash = ['items','equipments'].each_with_object({}) { |key, hash|

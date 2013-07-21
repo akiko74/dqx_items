@@ -17,6 +17,8 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
   @my_items_del_tab_id: "#{@my_items_form_id} #del_tab"
   @my_items_item_controlle_panel: "#item_controlle_panel"
   @my_items_renkin_count_inputs: "#renkin_count_inputs"
+  @my_items_renkin_count: "#renkin_count"
+  @my_items_renkin_total_cost: "#renkin_total"
   @my_items_item_inputs: "#item_inputs"
   @my_items_network_processing: "#network_processing"
 
@@ -26,19 +28,22 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     jQuery(MyItemsFormBuilder.my_items_stock_id).val("")
     jQuery(MyItemsFormBuilder.my_items_total_id).val("")
     jQuery(MyItemsFormBuilder.my_items_del_stock_id).val("")
-    jQuery(MyItemsFormBuilder.my_items_renkin_count_inputs).val("")
+    jQuery(MyItemsFormBuilder.my_items_renkin_count).val("")
+    jQuery(MyItemsFormBuilder.my_items_renkin_total_cost).val("")
     jQuery("#del-button").attr("disabled", "disabled")
     jQuery("#add-button").attr("disabled", "disabled")
 
   buildFormData = () ->
-    return new DqxItems.MyItemsFormData(
+    my_items_form_data = new DqxItems.MyItemsFormData(
       itemCost: parseInt(jQuery(MyItemsFormBuilder.my_items_cost_id).val()),
       itemStock: parseInt(jQuery(MyItemsFormBuilder.my_items_stock_id).val()),
       itemTotalCost: parseInt(jQuery(MyItemsFormBuilder.my_items_total_id).val()),
       keyword: jQuery(MyItemsFormBuilder.my_items_keyword_id).val(),
       deleteItemStock: parseInt(jQuery(MyItemsFormBuilder.my_items_del_stock_id).val()),
-      renkinCount: parseInt(jQuery(MyItemsFormBuilder.my_items_renkin_count_inputs))
+      renkinCount: parseInt(jQuery(MyItemsFormBuilder.my_items_renkin_count).val())
+      renkinTotalCost: parseInt(jQuery(MyItemsFormBuilder.my_items_renkin_total_cost).val())
     )
+    return my_items_form_data
 
 
 
@@ -119,7 +124,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     _query = this.query.trim()
     return false if _query.length < 3
     target_item = DqxItems.Dictionary.get(item)
-    if (target_item.kana.indexOf(_query) == 0)
+    if ((target_item.kana? ) && (target_item.kana.indexOf(_query) == 0))
       debug_log "#typeahead_matcher()", "macth:  #{item} (#{target_item.kana})"
       return true
 
@@ -180,7 +185,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
       when 'item'
         req.items.push form_data.toAddItemParam()
       when 'recipe'
-        req.items.push form_data.toAddEquipmentParam()
+        req.equipments.push form_data.toAddEquipmentParam()
       else
         debug_log "#add_my_item()", form_data.dictionary().type
     debug_log "#add_my_item()", req
@@ -197,7 +202,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
       when 'item'
         req.items.push form_data.toDeleteItemParam()
       when 'recipe'
-        req.items.push form_data.toDeleteEquipmentParam()
+        req.equipments.push form_data.toDeleteEquipmentParam()
       else
         debug_log "#del_my_item()", form_data.dictionary().type
     debug_log "#del_my_item()", req

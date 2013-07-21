@@ -81,8 +81,8 @@ ActiveRecord::Schema.define(:version => 20130319131126) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
     t.integer  "job_id"
-    t.integer  "usage_count", :default => 1, :null => false
     t.string   "kana"
+    t.integer  "usage_count", :default => 1, :null => false
   end
 
   create_table "users", :force => true do |t|

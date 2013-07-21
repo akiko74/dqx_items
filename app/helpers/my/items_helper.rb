@@ -3,21 +3,22 @@ module My::ItemsHelper
   def partialize_equipments(equipments)
     delete = []
     add = []
+    return {} unless equipments
     equipments.each do |equipment|
       recipe = Recipe.find_by_name(equipment[:name])
       next unless recipe.present?
-        equipment[:recipe_id] = recipe.id
-        equipment[:usage_count] = recipe.usage_count
-        case
-          when equipment[:stock] == -1
-            equipment[:stock] = 0
-            delete << equipment
-          when equipment[:stock] == 1
-            add << equipment
-        end
+      equipment[:recipe_id] = recipe.id
+      equipment[:usage_count] = recipe.usage_count
+      case
+      when equipment[:stock] == -1
+        equipment[:stock] = 0
+        delete << equipment
+      when equipment[:stock] == 1
+        add << equipment
       end
-      result = {add: add, delete: delete}
-      result
+    end
+    result = {add: add, delete: delete}
+    result
   end
 
   def objectize_item(inventories, user_id)
@@ -32,6 +33,7 @@ module My::ItemsHelper
   def partialize_items(inventories)
     add = []
     delete = []
+    return {}
       inventories.each do |inventory|
         item = Item.find_by_name(inventory[:name])
         next unless item.present?
