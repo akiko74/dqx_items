@@ -33,7 +33,7 @@ module My::ItemsHelper
   def partialize_items(inventories)
     add = []
     delete = []
-    return {}
+    return {} unless inventories
       inventories.each do |inventory|
         item = Item.find_by_name(inventory[:name])
         next unless item.present?

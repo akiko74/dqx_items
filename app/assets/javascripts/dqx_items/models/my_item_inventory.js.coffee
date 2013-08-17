@@ -9,6 +9,8 @@ window.DqxItems.MyItemInventory = class MyItemInventory extends Backbone.Model
   initialize: (params) ->
     @set kana: DqxItems.Dictionary.get(@get 'name').kana
     @set key: (DqxItems.MyItem.my_key() + sha1.hex(@get 'name')) unless key?
+    @set cost: (@get('total_cost') / @get('stock')) if @get('total_cost')?
+
 
   save: ->
     DqxItems.DataStorage.set(

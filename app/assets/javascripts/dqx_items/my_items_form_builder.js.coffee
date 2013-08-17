@@ -158,11 +158,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
       jQuery(MyItemsFormBuilder.my_items_del_tab_id).hide()
     switch _inputed.type
       when "item"
-        jQuery(MyItemsFormBuilder.my_items_item_controlle_panel).show()
-        jQuery(MyItemsFormBuilder.my_items_renkin_count_inputs).hide()
-        jQuery("#del-button").attr("disabled", "disabled")
-        jQuery("#add-button").attr("disabled", "disabled")
-        jQuery(MyItemsFormBuilder.my_items_item_inputs).show()
+        MyItemsFormBuilder.init_my_item_inventory_controll_panel()
       when "recipe"
         jQuery(MyItemsFormBuilder.my_items_item_controlle_panel).show()
         jQuery("#del-button").attr("disabled", "disabled")
@@ -173,6 +169,14 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
         jQuery(MyItemsFormBuilder.my_items_item_controlle_panel).hide()
         debug_log "unknown type."
     return item
+
+  @init_my_item_inventory_controll_panel = () ->
+    jQuery(MyItemsFormBuilder.my_items_item_controlle_panel).show()
+    jQuery(MyItemsFormBuilder.my_items_renkin_count_inputs).hide()
+    jQuery("#del-button").attr("disabled", "disabled")
+    jQuery("#add-button").attr("disabled", "disabled")
+    jQuery(MyItemsFormBuilder.my_items_item_inputs).show()
+
 
   add_my_item = (e) ->
     debug_log "#add_my_item()", e
