@@ -36,6 +36,7 @@ group :test,:development do
   gem 'simplecov'
   gem 'debugger'
   gem 'thin'
+  gem 'capybara'
 end
 
 

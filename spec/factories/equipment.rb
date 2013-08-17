@@ -1,6 +1,10 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
-  factory :equipment do
+
+  factory :nusutto_ware, parent: :equipment do
+    association :user
+    association :recipe, factory: :nusutto_ware_recipe
+    cost 300
+    renkin_count 0
   end
+
 end

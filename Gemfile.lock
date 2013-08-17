@@ -241,6 +241,7 @@ PLATFORMS
 
 DEPENDENCIES
   astrails-safe
+  capybara
   coffee-rails
   cucumber-rails
   database_cleaner

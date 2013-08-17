@@ -3,7 +3,9 @@
 FactoryGirl.define do
   factory :recipe do
     name { Faker::Lorem.words(1).first }
-    association :job
     level (1..30).to_a.sample
+    association :job
+    usage_count {rand(50)}
+    kana { Faker::Lorem.words(1).first }
   end
 end

@@ -46,7 +46,6 @@ window.DqxItems.MyItemsFormData = class MyItemsFormData
   checkRenkinAddable: ->
     if @debug
       @debugLog "#checkRenkinAddable()", "isFinite(@renkinTotalCost) = #{(isFinite(@renkinTotalCost))}"
-      @debugLog "#checkRenkinAddable()", @renkinTotalCost
     return ( isFinite(@renkinTotalCost) )
 
   checkRenkinDeletable: ->

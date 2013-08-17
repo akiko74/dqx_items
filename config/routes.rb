@@ -13,9 +13,8 @@ DqxItems::Application.routes.draw do
   resources :dictionaries, only: [:index]
 
   namespace :my do
-    resources :items, :only => [ :index ]
-    put 'items' => "items#updates" 
-    resources :characters
+    resources :items, only: [ :index ]
+    put 'items' => "items#updates"
   end
 
   # The priority is based upon order of creation:

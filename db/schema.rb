@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130319131126) do
+ActiveRecord::Schema.define(:version => 20130811110256) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(:version => 20130319131126) do
     t.integer  "number"
   end
 
+  add_index "ingredients", ["recipe_id", "item_id"], :name => "index_ingredients_on_recipe_id_and_item_id", :unique => true
+
   create_table "inventories", :force => true do |t|
     t.integer  "user_id"
     t.integer  "item_id"
@@ -69,11 +71,15 @@ ActiveRecord::Schema.define(:version => 20130319131126) do
     t.string   "kana"
   end
 
+  add_index "items", ["name"], :name => "index_items_on_name", :unique => true
+
   create_table "jobs", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "jobs", ["name"], :name => "index_jobs_on_name", :unique => true
 
   create_table "recipes", :force => true do |t|
     t.string   "name"
@@ -81,9 +87,11 @@ ActiveRecord::Schema.define(:version => 20130319131126) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
     t.integer  "job_id"
-    t.string   "kana"
     t.integer  "usage_count", :default => 1, :null => false
+    t.string   "kana"
   end
+
+  add_index "recipes", ["name"], :name => "index_recipes_on_name", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
