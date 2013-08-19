@@ -191,8 +191,8 @@ class My::ItemsController < MyController
       inventories[:delete].each do |inventory|
         delete_item = resources.where(:item_id => inventory[:item_id]).first
         next unless delete_item.present?
+        delete_item.total_cost += (inventory[:stock] * (delete_item.total_cost / delete_item.stock))
         delete_item.stock += inventory[:stock]
-        delete_item.total_cost += inventory[:cost]
           if delete_item.stock <= 0
             delete_item.destroy
           else delete_item.save
