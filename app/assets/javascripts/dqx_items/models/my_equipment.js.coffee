@@ -9,7 +9,8 @@ window.DqxItems.MyEquipment = class MyEquipment extends Backbone.Model
 
   initialize: (params) ->
     @set name: @get 'recipe_name' if @get 'recipe_name'
-    @set kana: DqxItems.Dictionary.get(@get 'name').kana
+    dictionaryItem = (new DqxItems.DictionaryItemList()).where({name:@get('name')})[0]
+    @set kana: dictionaryItem.get('kana') if dictionaryItem
     @set key: (DqxItems.MyItem.my_key()+ sha1.hex(
       "#{@get('name')}+#{@get('renkin_count')}+#{@get('cost')}"
     )) unless key?

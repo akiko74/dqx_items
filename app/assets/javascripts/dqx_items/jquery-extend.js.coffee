@@ -3,6 +3,7 @@ jQuery.fn.extend
   dqxItems: (options) ->
     settings =
       debug: false
+      dictionary: new DqxItems.DictionaryItemList()
 
     settings = jQuery.extend settings, options
 
@@ -11,6 +12,6 @@ jQuery.fn.extend
 
     return @each ()->
       DqxItems.MyItemsFormBuilder.bind_functions()
-      DqxItems.Dictionary.reload()
       DqxItems.MyItem.reload()
+
 

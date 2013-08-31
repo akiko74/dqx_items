@@ -115,16 +115,14 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     debug_log "#bind_check()", "Bind to #{target}"
 
   typeahead_source = (query, process) ->
-    _source_data = jQuery.map DqxItems.Dictionary.all(), (item) ->
-      item.name
-    return _source_data
+    return (new DqxItems.DictionaryItemList()).pluck("name")
 
   typeahead_matcher = (item) ->
     _query = this.query.trim()
     return false if _query.length < 3
-    target_item = DqxItems.Dictionary.get(item)
-    if ((target_item.kana? ) && (target_item.kana.indexOf(_query) == 0))
-      debug_log "#typeahead_matcher()", "macth:  #{item} (#{target_item.kana})"
+    target_item = (new DqxItems.DictionaryItemList()).where({name:item})[0]
+    if ((target_item.get('kana')? ) && (target_item.get('kana').indexOf(_query) == 0))
+      debug_log "#typeahead_matcher()", "macth:  #{item} (#{target_item.get('kana')})"
       return true
 
   typeahead_sorter = (items) ->
@@ -132,13 +130,13 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     debug_log "typeahead_sorter()", 'before: ["' + items.join('", "') + '"]'
     item_list = []
     for item in items
-      item_list.push DqxItems.Dictionary.get item
+      item_list.push (new DqxItems.DictionaryItemList()).where({name:item})[0]
     item_list = item_list.sort (a,b) ->
-      return -1 if (a.kana < b.kana)
-      return 1 if (a.kana > b.kana)
+      return -1 if (a.get('kana') < b.get('kana'))
+      return 1 if (a.get('kana') > b.get('kana'))
       return 0
     _data = jQuery.map item_list, (item) ->
-      item.name
+      item.get('name')
     debug_log "#typeahead_sorter()", 'after: ["' + _data.join('", "') + '"]'
     return _data
 
@@ -148,7 +146,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     return item_str
 
   typeahead_updater = (item) ->
-    _inputed = DqxItems.Dictionary.get(item)
+    _inputed = (new DqxItems.DictionaryItemList()).where({name:item})[0]
     _mine = DqxItems.MyItem.get(item)
     debug_log "#typeahead_updater()", _inputed
     debug_log "#typeahead_updater()", _mine
@@ -156,7 +154,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
       jQuery(MyItemsFormBuilder.my_items_del_tab_id).show()
     else
       jQuery(MyItemsFormBuilder.my_items_del_tab_id).hide()
-    switch _inputed.type
+    switch _inputed.get('type')
       when "item"
         MyItemsFormBuilder.init_my_item_inventory_controll_panel()
       when "recipe"
@@ -184,13 +182,13 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     MyItemsFormBuilder.hidden_form()
     req = { equipments: [], items: [] }
     form_data = buildFormData()
-    switch form_data.dictionary().type
+    switch form_data.dictionary().get('type')
       when 'item'
         req.items.push form_data.toAddItemParam()
       when 'recipe'
         req.equipments.push form_data.toAddEquipmentParam()
       else
-        debug_log "#add_my_item()", form_data.dictionary().type
+        debug_log "#add_my_item()", form_data.dictionary().get('type')
     debug_log "#add_my_item()", req
     DqxItems.MyItem.update_my_items(req.items, req.equipments)
 
@@ -201,13 +199,13 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     MyItemsFormBuilder.delete_button_disable()
     req = { equipments: [], items: [] }
     form_data = buildFormData()
-    switch form_data.dictionary().type
+    switch form_data.dictionary().get('type')
       when 'item'
         req.items.push form_data.toDeleteItemParam()
       when 'recipe'
         req.equipments.push form_data.toDeleteEquipmentParam()
       else
-        debug_log "#del_my_item()", form_data.dictionary().type
+        debug_log "#del_my_item()", form_data.dictionary().get('type')
     debug_log "#del_my_item()", req
     DqxItems.MyItem.update_my_items(req.items, req.equipments)
 
@@ -294,7 +292,8 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     debug_log "#enable_submits()", form_data.dictionary()
     MyItemsFormBuilder.add_button_disable()
     MyItemsFormBuilder.delete_button_disable()
-    switch form_data.dictionary().type
+    return false unless form_data.dictionary()?
+    switch form_data.dictionary().get('type')
       when 'item'
         MyItemsFormBuilder.add_button_enable() if form_data.checkItemAddable()
         MyItemsFormBuilder.delete_button_enable() if form_data.checkItemDeletable()
@@ -302,7 +301,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
         MyItemsFormBuilder.add_button_enable() if form_data.checkRenkinAddable()
         MyItemsFormBuilder.delete_button_enable() if form_data.checkRenkinDeletable()
       else
-        debug_log "#enable_submits()", "inputed type unknown! #{form_data.dictionary().type}"
+        debug_log "#enable_submits()", "inputed type unknown! #{form_data.dictionary().get('type')}"
     return true
 
   @add_button_enable = () ->
