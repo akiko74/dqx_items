@@ -83,7 +83,7 @@ describe "Update my item from API" do
               it "should include my items" do
                 expect(subject.length).to eq 2
                 expect(subject.map(&:to_json)).to include "{\"name\":\"#{inventory1.item.name}\",\"stock\":7,\"cost\":290}"
-                expect(subject.map(&:to_json)).to include "{\"name\":\"#{inventory2.item.name}\",\"stock\":0,\"cost\":120}"
+                expect(subject.map(&:to_json)).to include "{\"name\":\"#{inventory2.item.name}\",\"stock\":0,\"cost\":0}"
               end
             end
             context "equipments" do
@@ -125,7 +125,7 @@ describe "Update my item from API" do
             :name => 'ぬすっとの服',
             :stock => '1',
             :renkin_count => "2",
-            :cost => "1000"
+            :cost => "1050"
           },
         },
         :items => {
@@ -208,8 +208,11 @@ describe "Update my item from API" do
         it 'should be updated' do
           expect(Equipment.where(recipe_id:equipment1.recipe.id,user_id:user.id,cost:1050,renkin_count:2)).to_not be_empty
           expect(Equipment.where(recipe_id:equipment1.recipe.id,user_id:user.id,cost:700,renkin_count:1)).to be_empty
-          expect(Inventory.where(item_id:inventory1.item.id,user_id:user.id).first.stock).to eq 9
-          expect(Inventory.where(item_id:inventory2.item.id,user_id:user.id)).to be_empty
+#          expect(Inventory.where(item_id:inventory1.item.id,user_id:user.id).first.stock).to eq 9
+#          expect(Inventory.where(item_id:inventory2.item.id,user_id:user.id)).to be_empty
+expect(Inventory.where(item_id:inventory1.item.id,user_id:user.id).first.stock).to eq 2
+expect(Inventory.where(item_id:inventory2.item.id,user_id:user.id).first.stock).to eq 3
+
         end
 
       end
@@ -505,7 +508,7 @@ describe "Update my item from API" do
               it { expect(subject).to be_instance_of Array }
               it "should include my equipments" do
                 expect(subject.length).to eq 1
-                expect(subject.map(&:to_json)).to include "{\"name\":\"#{recipe1.name}\",\"renkin_count\":1,\"stock\":1,\"cost\":700}"
+                expect(subject.map(&:to_json)).to include "{\"name\":\"#{recipe1.name}\",\"stock\":1,\"renkin_count\":1,\"cost\":700}"
               end
             end
           end

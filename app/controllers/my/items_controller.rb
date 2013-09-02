@@ -176,6 +176,10 @@ class My::ItemsController < MyController
         end
     end
     end
+    equipment_result.each do |equipment|
+      equipment.delete(:recipe_id)
+      equipment.delete(:usage_count)
+    end
 
     item_result = []
     inventories = partialize_items(@requested_equipments_items[:items])
@@ -204,9 +208,9 @@ class My::ItemsController < MyController
       (inventories[:add]+inventories[:delete]).each do |inventory|
         item = resources.where(:item_id => inventory[:item_id]).first
         if item.present?
-          item_result << {name: inventory[:name], stock: item.stock, total_cost: item.total_cost }
+          item_result << {name: inventory[:name], stock: item.stock, cost: (item.total_cost / item.stock rescue 0) }
         else
-          item_result << {name: inventory[:name], stock: 0, total_cost: 0}
+          item_result << {name: inventory[:name], stock: 0, cost: 0}
         end
       end
     end
