@@ -1,6 +1,6 @@
 #= require dqx_items/models/dictionary_item
 
-describe 'Tests for DqxItems.DictionaryItem', ->
+describe 'DqxItems.DictionaryItem', ->
 
 
   describe '@dictionary_key', ->

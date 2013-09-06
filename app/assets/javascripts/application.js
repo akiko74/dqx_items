@@ -17,7 +17,6 @@
 //= require underscore
 //= require backbone
 // require_tree 
-//= require jsSHA/sha1
 //= require crypto-js/sha1
 //= require sha1
 //= require commons
