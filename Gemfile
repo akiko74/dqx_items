@@ -19,6 +19,11 @@ gem 'therubyracer', '~> 0.10.2'
 gem "less-rails"
 gem "twitter-bootstrap-rails"
 
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+end
+
 group :test,:development do
   gem 'mysql2'
   # Net::HTTPデバック用 環境変数HTTP_SPY=1を設定すると有効化
@@ -37,6 +42,9 @@ group :test,:development do
   gem 'debugger'
   gem 'thin'
   gem 'capybara'
+  gem 'jasmine'
+  gem 'jasminerice'
+  gem 'guard-jasmine'
 end
 
 

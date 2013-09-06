@@ -39,3 +39,7 @@ vendor/bundler
 .ruby-gemset.*
 .ruby-version.*
 
+
+app/assets/javascripts/jasmine_examples
+spec/javascripts/jasmine_examples
+
