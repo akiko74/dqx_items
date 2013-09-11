@@ -10,6 +10,8 @@ DqxItems::Application.routes.draw do
 
   resources :tools
 
+  resources :categories
+
   resources :dictionaries, only: [:index]
 
   namespace :my do

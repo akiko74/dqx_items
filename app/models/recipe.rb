@@ -1,11 +1,14 @@
 class Recipe < ActiveRecord::Base
-  attr_accessible :level, :name, :job_id, :usage_count, :kana, :ingredients_attributes
+  attr_accessible :level, :name, :job_id, :usage_count, :kana, :ingredients_attributes, :category_ids
   belongs_to :job
   has_many :ingredients
   has_many :items, :through => :ingredients
 
   has_many :equipments, :dependent => :destroy
   has_many :users, :through => :equipments
+
+  has_many :eq_categories
+  has_many :categories, :through => :eq_categories
 
   accepts_nested_attributes_for :ingredients, :reject_if => proc {|attributes| attributes['item_id'].blank?}, :allow_destroy => true
 
