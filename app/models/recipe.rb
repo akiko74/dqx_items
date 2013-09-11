@@ -24,6 +24,7 @@ class Recipe < ActiveRecord::Base
     {
       name: name,
       kana: kana,
+      category: categories.map(&:name),
       type: 'recipe'
     }
   end
