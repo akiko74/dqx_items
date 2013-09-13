@@ -40,6 +40,10 @@ namespace :dqx_items do
     DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipe_kana.csv", :action => :add_recipe_kana)
   end
 
+  desc "Load recipe category from misc/recipe_category.csv"
+  task :add_recipe_category do
+    DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipe_category.csv", :action => :add_recipe_category)
+  end
 
   desc "Load all recipes"
   task :load_all_recipes => %w(load_recipes modify_recipes load_recipes2 load_recipes3 add_item_kana add_item_pricess add_recipe_kana)

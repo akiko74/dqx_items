@@ -144,6 +144,32 @@ module DqxItems
               end
             end
 
+          when :add_recipe_category
+            require 'csv'
+            label = true
+            label_name = ['recipe_name', 'category_name']
+            _insert_count = 0
+           ::CSV.foreach(file_path) do |row|
+             if(label)
+               label = false
+               next
+             end
+             _recipe_name = row[0].strip
+             _category_name = row[1].strip
+             unless recipe = Recipe.find_by_name(_recipe_name)
+               raise "Recipe not found ! #{_recipe_name}"
+             end
+             unless category = Category.find_by_name(_category_name)
+               raise "Category not found ! #{_category_name}"
+             end
+             unless recipe.categories.include?(category)
+               cat = recipe.eq_categories.new(:category_id => category.id)
+               if cat.save
+                _insert_count += 1
+               end
+             end
+           end
+           p _insert_count
           else
             raise ArgumentError
           end
