@@ -161,24 +161,22 @@ class My::ItemsController < MyController
     #{:equipments => [{ :name => "麻の服", :stock => 1, :renkin_count => 0, :cost => 1260 }],
     # :items => [{ :name => "あやかしそう", :stock => 3, :cost => 300 },{ :name => "コットン草", :stock => 3, :cost => 600 }]}
     #
-    equipment_result = []
-    equipments = partialize_equipments(@requested_equipments_items[:equipments])
-    if equipments.key? :add
-    equipments[:add].each do |equipment|
-      equipment_result << equipment if Equipment.create(:user_id => current_user.id, :recipe_id => equipment[:recipe_id], :cost => equipment[:cost], :renkin_count => equipment[:renkin_count])
-    end
+    #
 
-    equipments[:delete].each do |equipment|
-      equipment_del = Equipment.registered(equipment, current_user.id).first
-        if equipment_del.present?
-          equipment_del.destroy
-          equipment_result << equipment
+    equipment_result = []
+    if @requested_equipments_items[:equipments].present?
+      @requested_equipments_items[:equipments].each do |equipment|
+        case equipment[:stock]
+          when 1
+            my_equipments.create(:recipe_id => Recipe.find_by_name(equipment[:name]).id, 
+                                 :cost => equipment[:cost],
+                                 :renkin_count => equipment[:renkin_count])
+          when -1
+            my_equipments.find_by_recipe_id_and_cost_and_renkin_count(Recipe.find_by_name(equipment[:name]),equipment[:cost], equipment[:renkin_count]).destroy
+            equipment[:stock] = 0
         end
-    end
-    end
-    equipment_result.each do |equipment|
-      equipment.delete(:recipe_id)
-      equipment.delete(:usage_count)
+        equipment_result << equipment
+      end
     end
 
     item_result = []

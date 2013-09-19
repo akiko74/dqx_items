@@ -1,26 +1,5 @@
 module My::ItemsHelper
 
-  def partialize_equipments(equipments)
-    delete = []
-    add = []
-    return {} unless equipments
-    equipments.each do |equipment|
-      recipe = Recipe.find_by_name(equipment[:name])
-      next unless recipe.present?
-      equipment[:recipe_id] = recipe.id
-      equipment[:usage_count] = recipe.usage_count
-      case
-      when equipment[:stock] == -1
-        equipment[:stock] = 0
-        delete << equipment
-      when equipment[:stock] == 1
-        add << equipment
-      end
-    end
-    result = {add: add, delete: delete}
-    result
-  end
-
   def objectize_item(inventories, user_id)
     result = []
     inventories.each do |inventory|
