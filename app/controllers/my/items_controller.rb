@@ -6,7 +6,6 @@
 # @since 2.0.0
 #
 class My::ItemsController < MyController
-  include My::ItemsHelper
 
   before_filter :parse_equipments_items_json, :only => [:updates]
 
@@ -180,36 +179,18 @@ class My::ItemsController < MyController
     end
 
     item_result = []
-    inventories = partialize_items(@requested_equipments_items[:items])
-    if inventories.key? :add
-      inventories[:add].each do |inventory|
-        add_item = resources.where(:item_id => inventory[:item_id]).first_or_create
-        add_item.stock += inventory[:stock]
-        add_item.total_cost += inventory[:cost]
-        add_item.save
-      end
-    end
-    if inventories.key? :delete
-      inventories[:delete].each do |inventory|
-        delete_item = resources.where(:item_id => inventory[:item_id]).first
-        next unless delete_item.present?
-        delete_item.total_cost += (inventory[:stock] * (delete_item.total_cost / delete_item.stock))
-        delete_item.stock += inventory[:stock]
-          if delete_item.stock <= 0
-            delete_item.destroy
-          else delete_item.save
-        end
-      end
-    end
-
-    if inventories.key?(:delete) && inventories.key?(:add)
-      (inventories[:add]+inventories[:delete]).each do |inventory|
-        item = resources.where(:item_id => inventory[:item_id]).first
-        if item.present?
-          item_result << {name: inventory[:name], stock: item.stock, cost: (item.total_cost / item.stock rescue 0) }
-        else
-          item_result << {name: inventory[:name], stock: 0, cost: 0}
-        end
+    if @requested_equipments_items[:items].present?
+      @requested_equipments_items[:items].each do |item|
+        update_item = resources.where(:item_id => Item.find_by_name(item[:name]).id).first_or_create
+        update_item.total_cost += item[:cost] || ((update_item.total_cost / update_item.stock) rescue 0) * item[:stock]
+        update_item.stock += item[:stock]
+          if update_item.stock > 0
+            update_item.save
+          else
+            update_item.destroy
+          end
+        update_item = resources.try(:find_by_item_id, Item.find_by_name(item[:name]).id)
+        item_result << {:name => item[:name], :stock => update_item.try(:stock) || 0, :cost => ((update_item.try(:total_cost) || 0) / (update_item.try(:stock) || 0) rescue 0 )}
       end
     end
 
@@ -219,9 +200,8 @@ class My::ItemsController < MyController
     respond_to do |format|
       format.json { render json: @result }
     end
-    end
   end
-
+end
 
   private
 
