@@ -233,6 +233,8 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
+    sinon-rails (1.7.3)
+      railties (>= 3.1)
     slop (3.4.4)
     spork (0.9.2)
     sprockets (2.2.2)
@@ -302,6 +304,7 @@ DEPENDENCIES
   rspec-rails (>= 2.13.0)
   sass-rails
   simplecov
+  sinon-rails
   spork
   therubyracer (~> 0.10.2)
   thin

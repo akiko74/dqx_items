@@ -1,4 +1,4 @@
-window.DqxItems.MyTableItemInventoryRow = class MyTableItemInventoryRow extends DqxItems.MyTableRow
+window.DqxItems.MyTableItemInventoryRow = class MyTableItemInventoryRow extends Backbone.View
 
   tagName: "tr"
 

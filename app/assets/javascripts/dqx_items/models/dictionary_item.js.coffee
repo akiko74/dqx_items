@@ -1,14 +1,20 @@
 window.DqxItems.DictionaryItem = class DictionaryItem extends Backbone.Model
 
-  @dictionary_key: CryptoJS.SHA1("dictionaries").toString()
+  @dictionary_key: DqxItems.CodeGenerator.generate("dictionaries")
+
+  idAttribute: "key"
 
   defaults:
     name: null
     kana: null
     type: null
+    key:  null
 
   initialize: (params) ->
-    @set key: (DqxItems.DictionaryItem.dictionary_key + CryptoJS.SHA1(@get('name')).toString()) unless key?
+    @set key: (
+      DqxItems.DictionaryItem.dictionary_key +
+        DqxItems.CodeGenerator.generate(@get('name'))
+    ) unless params?.key?
 
 
   save: ->
@@ -27,6 +33,7 @@ window.DqxItems.DictionaryItem = class DictionaryItem extends Backbone.Model
     return new DqxItems.DictionaryItem(DqxItems.DataStorage.get(key))
 
   @findByName: (item_name) ->
-    _key = DqxItems.DictionaryItem.dictionary_key + CryptoJS.SHA1(item_name).toString()
+    _key = DqxItems.DictionaryItem.dictionary_key +
+      DqxItems.CodeGenerator.generate(item_name)
     return DqxItems.DictionaryItem.findByKey(_key)
 

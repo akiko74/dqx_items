@@ -15,4 +15,5 @@
  *= require 'sidebar'
  *= require 'jobtab'
  *= require 'my/items'
+ *= require 'dqx_items/recipe_finder'
  */

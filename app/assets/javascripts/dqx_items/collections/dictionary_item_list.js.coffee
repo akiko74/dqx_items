@@ -3,53 +3,67 @@ window.DqxItems.DictionaryItemList = class DictionaryItemList extends Backbone.C
   model: DqxItems.DictionaryItem
 
   url: '/dictionaries.json'
+  version: undefined
 
-  dictionaryKey: sha1.hex('dictionaries')
+  dictionaryKey: undefined
 
-  parse: (response,xhr) ->
-    if xhr.xhr.status == 200
-      console.log response
-      @fetchItemsFromStorage().map (item) ->
-        item.destroy()
-      response.map (item) ->
-        (new DqxItems.DictionaryItem(item)).save()
-      return response.data
-    else if xhr.xhr.status == 304
-      if this.models.length == 0
-        return @fetchItemsFromStorage()
-      else
-        return this.models
-    else
-      return @fetchItemsFromStorage()
+  comparator: (item) ->
+    return item.get('kana')
+
+  fetch: (options = {}) ->
+    options.beforeSend = @beforeSend
+    options.parse      = $.proxy(@parse,@)
+    options.complete   = @complete
+    Backbone.Collection.prototype.fetch.call(@,options)
 
 
   beforeSend: (xhr, settings) ->
-    etag = DqxItems.DataStorage.raw_get(@dictionaryKey)
-    if etag
-      xhr.setRequestHeader('if-none-match', etag);
+    dictionaryKey = DqxItems.CodeGenerator.generate('dictionaries')
+    @version = (DqxItems.DataStorage.raw_get(dictionaryKey)).replace(/['"]/gi,'')
+    xhr.setRequestHeader('if-none-match', @version) if @version
 
   complete: (xhr, textStatus) ->
-    if (textStatus == 'success')
-      DqxItems.DataStorage.raw_set(
-        @dictionaryKey,
-        xhr.getResponseHeader('ETag')
-      )
+    DqxItems.DataStorage.raw_set(
+      DqxItems.CodeGenerator.generate('dictionaries'),
+      xhr.getResponseHeader('ETag').replace(/['"]/gi,'')
+    ) if (textStatus == 'success')
+
+
+  parse: (response,options) ->
+    @reset(response)
+
+
+  reset: (models) ->
+    DqxItems.DictionaryItemList.instance = undefined
+    dictionary_key = DqxItems.DictionaryItem.dictionary_key
+    for row in DqxItems.DataStorage.keys()
+      continue if ( !(row.indexOf(dictionary_key) == 0) || (row.length != 80) )
+      DqxItems.DataStorage.destroy(row)
+
+    dictionaryItemList = new DqxItems.DictionaryItemList()
+
+    _.each models, (model) ->
+      dictionaryItem = new DqxItems.DictionaryItem(model)
+      dictionaryItem.save()
+      dictionaryItemList.add dictionaryItem
+
+    return dictionaryItemList
+
+
+
 
   constructor: () ->
+    @dictionaryKey = DqxItems.CodeGenerator.generate('dictionaries')
     if !DqxItems.DictionaryItemList.instance
-      this.fetch({
-        beforeSend : this.beforeSend.bind(this),
-        complete : this.complete.bind(this)
-      })
       DqxItems.DictionaryItemList.instance = this
       Backbone.Collection.apply(DqxItems.DictionaryItemList.instance, arguments)
     return DqxItems.DictionaryItemList.instance
 
+
   fetchItemsFromStorage: () ->
-    models = []
     dictionary_key = DqxItems.DictionaryItem.dictionary_key
     for row in DqxItems.DataStorage.keys()
       continue if ( !(row.indexOf(dictionary_key) == 0) || (row.length != 80) )
-      models.push (new DqxItems.DictionaryItem(DqxItems.DataStorage.get(row)))
-    return models
+      @add DqxItems.DataStorage.get(row)
+    return @
 

@@ -29,16 +29,9 @@
 //= require dqx_items/my_item
 //= require dqx_items/my_items_table_builder
 //= require dqx_items/my_item_factory
-//= require dqx_items/models/dictionary_item
-//= require dqx_items/models/my_equipment
-//= require dqx_items/models/my_item_inventory
-//= require dqx_items/views/my_table_row
-//= require dqx_items/views/my_equipments_table
-//= require dqx_items/views/my_item_inventory_table
-//= require dqx_items/views/my_table_equipment_row
-//= require dqx_items/views/my_table_item_inventory_row
-//= require dqx_items/collections/dictionary_item_list
-//= require dqx_items/collections/my_equipment_list
-//= require dqx_items/collections/my_item_inventory_list
-//= require dqx_items/my_item_list
+//= require dqx_items/code_generator
+//= require_tree ./dqx_items/models/
+//= require_tree ./dqx_items/views/
+//= require_tree ./dqx_items/collections/
+//= require dqx_items/initializer
 //

@@ -1,4 +1,4 @@
-window.DqxItems.MyTableEquipmentRow = class MyTableEquipmentRow extends DqxItems.MyTableRow
+window.DqxItems.MyTableEquipmentRow = class MyTableEquipmentRow extends Backbone.View
 
   events:
     'click .equipment_destroy_button':'destroy'
