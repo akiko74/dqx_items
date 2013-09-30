@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(:version => 20130910011323) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
     t.integer  "job_id"
-    t.integer  "usage_count", :default => 1, :null => false
     t.string   "kana"
+    t.integer  "usage_count", :default => 1, :null => false
   end
 
   add_index "recipes", ["name"], :name => "index_recipes_on_name", :unique => true
