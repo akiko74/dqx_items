@@ -8,7 +8,7 @@
 class DictionariesController < ApplicationController
 
   def index
-    @result = Item.all.map(&:to_dictionary_hash) + Recipe.all.map(&:to_dictionary_hash)
+    @result = Item.all.map(&:to_dictionary_hash) + Recipe.includes(:categories).map(&:to_dictionary_hash)
     respond_to do |format|
       format.json { render json: @result }
     end
