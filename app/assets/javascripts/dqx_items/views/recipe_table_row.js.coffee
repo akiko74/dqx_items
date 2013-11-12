@@ -23,8 +23,17 @@ window.DqxItems.RecipeTableRow = class RecipeTableRow extends Backbone.View
       )
 
   appendElm: () ->
+    recipe_category = ''
+    if @model.dictionary.get('category').length
+      recipe_category += '<ul class="recipe_category">'
+      _.each @model.dictionary.get('category'), (category) ->
+        recipe_category += "<li>#{category}</li>"
+      recipe_category += '</ul>'
+
     html = """
-      <th>#{@popoverRecipeElm(@model)} #{@model.name}</th>
+      <th>
+        #{@popoverRecipeElm(@model)} #{@model.name}
+      </th>
       <td class="recipe_cost">#{@unitPrice(@model)}</td>
       <td class="recipes-action"><a href="#" class=\"btn btn-small btn-danger remove_button\" style=\"color:white\"><i class="icon-minus"></i><span class="recipe_remove_button_text"> 削除</span></a></td>
     """

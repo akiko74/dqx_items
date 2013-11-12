@@ -9,7 +9,11 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
 
   initialize: () ->
     if !DqxItems.RecipeFinder.instance
-      @dictionary = new DqxItems.DictionaryItemList()
+
+      unless @dictionary = DqxItems.DictionaryItemList.instance
+        DqxItems.DictionaryItemList.build()
+        @dictionary = DqxItems.DictionaryItemList.instance
+
       @typeaheadSourceList  = @dictionary.pluck.call({models:@dictionary.where({type:'recipe'}).sort()}, "name")
       @typeaheadMathcerList = _.inject(
         @dictionary.where({type:'recipe'}),
@@ -35,9 +39,9 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
     return @typeaheadSourceList
 
   typeaheadMatcher: (item) ->
-    _query = @query.trim()
-    return false if _query.length < 3
-    return DqxItems.RecipeFinder.typeaheadMatcher(_query,item)
+    itemKana = @typeaheadMathcerList[item]
+    return false unless itemKana
+    return (itemKana.indexOf(@$el.find('#recipe_keyword').val()) == 0)
 
 
   render: () ->
@@ -64,8 +68,7 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
       .typeahead({
         source: $.proxy(@typeaheadSource, @)
         items:8
-        #matcher: $.proxy(@typeaheadUpdater, @)
-        matcher: @typeaheadMatcher
+        matcher: $.proxy(@typeaheadMatcher, @)
         highlighter: (item) ->
           regex = new RegExp( '(' + @query + ')', 'gi' )
           item_str = item.replace( regex, "<strong>$1</strong>" )

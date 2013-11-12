@@ -21,23 +21,23 @@ do (jQuery) ->
       debug: false
       recipeFinder: new DqxItems.RecipeFinder()
 
-
     options = $.extend(defaultConfig, config)
 
     @each () ->
-      console.log 'Recipe Finder'
+      console?.log "Setup recipeFinder to ##{@.id}"
       options.recipeFinder.render()
       return @
 
   $.fn.myItemsOrganizer = (config) ->
     defaultConfig =
       debug: false
-#      dictionary: new DqxItems.DictionaryItemList()
 
     options = $.extend(defaultConfig, config)
 
     @each () ->
       console.log 'My Items Organizer'
       console.log options
+      DqxItems.MyItemsFormBuilder.bind_functions()
+      DqxItems.MyItem.reload()
       return @
 

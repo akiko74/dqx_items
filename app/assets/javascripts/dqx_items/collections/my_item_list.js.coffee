@@ -1,59 +1,70 @@
 window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
 
-  #model: DqxItems.DictionaryItem
-
   url: '/my/items.json'
 
   equipments: null
   items: null
   myKey: null
+  version: undefined
 
   constructor: () ->
-    @equipments = new DqxItems.MyEquipmentList()
-    @items      = new DqxItems.MyItemInventoryList()
-    @myKey      = DqxItems.DataStorage.raw_get("my_key")
+    if !DqxItems.MyItemList.instance
+      @equipments = new DqxItems.MyEquipmentList()
+      @items      = new DqxItems.MyItemInventoryList()
+      @myKey      = DqxItems.DataStorage.raw_get("my_key")
+      DqxItems.MyItemList.instance = @
+      Backbone.Collection.apply(DqxItems.MyItemList.instance, arguments)
+    return DqxItems.MyItemList.instance
+
 
   fetch: (options = {}) ->
-    options.beforeSend = @beforeSend
-    options.parse      = @parse
+    options.beforeSend = $.proxy(@beforeSend)
+    options.parse      = $.proxy(@parse,@)
+    options.complete   = $.proxy(@complete,@)
     Backbone.Collection.prototype.fetch.call(@,options)
 
   beforeSend: (xhr, settings) ->
-    console.log 'beforeSend'
-    console.log xhr
-    etag = DqxItems.DataStorage.raw_get(@myKey)
-    console.log etag
-    xhr.setRequestHeader('if-none-match', etag) if etag
+    @myKey = DqxItems.DataStorage.raw_get("my_key")
+    if etag = DqxItems.DataStorage.raw_get(@myKey)
+      @version = etag.replace(/['"]/gi,'')
+      xhr.setRequestHeader('if-none-match', '"' + etag + '"')
+
+  complete: (xhr, textStatus) ->
+    DqxItems.DataStorage.raw_set(
+      @myKey,
+      xhr.getResponseHeader('ETag').replace(/['"]/gi,'')
+    ) if (textStatus == 'success')
 
   parse: (response, options) ->
-    console.log 'parse!!!!'
-    if options.xhr.status == 200
-      console.log 'return 200'
-      DqxItems.DataStorage.raw_set("my_key", response.uid)
-      @myKey = DqxItems.DataStorage.raw_get("my_key")
-      DqxItems.DataStorage.raw_set(@myKey, options.xhr.getResponseHeader('ETag'))
-
-      @fetchItemsFromStorage().map (item) ->
-        item.destroy()
-
-      _models = []
-      for item in response.equipments
-        _models.push item
-        @equipments.add (new DqxItems.MyEquipment(item)).save()
-      for item in response.items
-        _models.push item
-        @items.add (new DqxItems.MyItemInventory(item)).save()
-      return _models
-
-    else if options.xhr.status == 304
-      if @models.length == 0
-        return @fetchItemsFromStorage()
-      else
-        return @models
+    if response
+      @reset(response)
     else
-      return @fetchItemsFromStorage()
+      @fetchItemsFromStorage()
 
 
+  reset: (response) ->
+    DqxItems.MyItemList.instance          = undefined
+    DqxItems.MyItemInventoryList.instance = undefined
+    DqxItems.MyEquipmentList.instance     = undefined
+    DqxItems.DataStorage.raw_set("my_key", response.uid)
+    @myKey = DqxItems.DataStorage.raw_get("my_key")
+    for row in DqxItems.DataStorage.keys()
+      continue if ( !(row.indexOf(@myKey) == 0) || (row.length != 80) )
+      DqxItems.DataStorage.destroy(row)
+
+    myItemList = new DqxItems.MyItemList()
+
+    _.each response.equipments, (equipment) ->
+      myEquipment = new DqxItems.MyEquipment(equipment)
+      myEquipment.save()
+      myItemList.equipments.add myEquipment
+
+    _.each response.items, (item) ->
+      myItemInventory = new DqxItems.MyItemInventory(item)
+      myItemInventory.save()
+      myItemList.items.add myItemInventory
+
+    return []
 
 
   tmpFunc: () ->
@@ -96,10 +107,12 @@ window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
   fetchItemsFromStorage: () ->
     console.log '@fetchItemsFromStorage'
     models = []
-    dictionary_key = DqxItems.DictionaryItem.dictionary_key
+    @myKey = DqxItems.MyItem.my_key()
+    console.log "@mKey : #{@myKey}"
     for row in DqxItems.DataStorage.keys()
-      continue if ( !(row.indexOf(dictionary_key) == 0) || (row.length != 80) )
-      my_item = DqxItems.MyItemFactory.findByKey(val)
+      continue if ( !(row.indexOf(@myKey) == 0) || (row.length != 80) )
+      my_item = DqxItems.MyItemFactory.findByKey(row)
+      console.log "row: #{row}"
       switch my_item.constructor.name
         when 'MyEquipment'
           @equipments.add(my_item)

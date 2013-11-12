@@ -9,9 +9,9 @@ window.DqxItems.MyItemsTableBuilder = class MyItemsTableBuilder
 
   constructor: () ->
 
-    @my_items = new DqxItems.MyItemList()
-    @my_items.fetchFromStorage()
-
+    @my_items = DqxItems.MyItemList.instance
+    #@my_items = new DqxItems.MyItemList()
+    #@my_items.fetchFromStorage()
     (new DqxItems.MyEquipmentsTable({collection:@my_items.equipments})).render()
     (new DqxItems.MyItemInventoryTable({collection:@my_items.items})).render()
 

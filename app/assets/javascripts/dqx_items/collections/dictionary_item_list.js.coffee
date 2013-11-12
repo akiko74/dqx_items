@@ -19,8 +19,9 @@ window.DqxItems.DictionaryItemList = class DictionaryItemList extends Backbone.C
 
   beforeSend: (xhr, settings) ->
     dictionaryKey = DqxItems.CodeGenerator.generate('dictionaries')
-    @version = (DqxItems.DataStorage.raw_get(dictionaryKey)).replace(/['"]/gi,'')
-    xhr.setRequestHeader('if-none-match', @version) if @version
+    if versionRaw = DqxItems.DataStorage.raw_get(dictionaryKey)
+      @version = versionRaw.replace(/['"]/gi,'')
+      xhr.setRequestHeader('if-none-match', '"' + @version + '"') if @version
 
   complete: (xhr, textStatus) ->
     DqxItems.DataStorage.raw_set(
@@ -30,11 +31,14 @@ window.DqxItems.DictionaryItemList = class DictionaryItemList extends Backbone.C
 
 
   parse: (response,options) ->
-    @reset(response)
+    DqxItems.DictionaryItemList.instance = undefined
+    if response
+      return @reset(response)
+    else
+      return @fetchItemsFromStorage()
 
 
   reset: (models) ->
-    DqxItems.DictionaryItemList.instance = undefined
     dictionary_key = DqxItems.DictionaryItem.dictionary_key
     for row in DqxItems.DataStorage.keys()
       continue if ( !(row.indexOf(dictionary_key) == 0) || (row.length != 80) )
@@ -50,6 +54,15 @@ window.DqxItems.DictionaryItemList = class DictionaryItemList extends Backbone.C
     return dictionaryItemList
 
 
+  fetchItemsFromStorage: () ->
+    dictionary_key = DqxItems.DictionaryItem.dictionary_key
+    dictionaryItemList = new DqxItems.DictionaryItemList()
+
+    for row in DqxItems.DataStorage.keys()
+      continue if ( !(row.indexOf(dictionary_key) == 0) || (row.length != 80) )
+      dictionaryItemList.add DqxItems.DataStorage.get(row)
+
+    return dictionaryItemList
 
 
   constructor: () ->
@@ -60,10 +73,11 @@ window.DqxItems.DictionaryItemList = class DictionaryItemList extends Backbone.C
     return DqxItems.DictionaryItemList.instance
 
 
-  fetchItemsFromStorage: () ->
-    dictionary_key = DqxItems.DictionaryItem.dictionary_key
-    for row in DqxItems.DataStorage.keys()
-      continue if ( !(row.indexOf(dictionary_key) == 0) || (row.length != 80) )
-      @add DqxItems.DataStorage.get(row)
-    return @
+  @build: (options={}) ->
+    DqxItems.DictionaryItemList.instance = undefined
+    new DqxItems.DictionaryItemList()
+    DqxItems.DictionaryItemList.instance.fetch({async:false})
+    return DqxItems.DictionaryItemList.instance
+
+
 

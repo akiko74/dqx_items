@@ -9,6 +9,11 @@ jQuery ->
 
   new DqxItems.Initializer()
   $('#recipe_finder').recipeFinder()
+  $('#my_items_organizer').myItemsOrganizer()
+
+  DqxItems.Initializer.appendAffiliate()
+
+
 
 
 
