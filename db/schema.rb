@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130120064932) do
+ActiveRecord::Schema.define(:version => 20131117092424) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -45,10 +45,11 @@ ActiveRecord::Schema.define(:version => 20130120064932) do
 
   create_table "items", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-    t.integer  "price",      :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "price",        :default => 0
     t.string   "kana"
+    t.integer  "bazzar_price"
   end
 
   create_table "jobs", :force => true do |t|
@@ -63,6 +64,28 @@ ActiveRecord::Schema.define(:version => 20130120064932) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "job_id"
+    t.integer  "usage_count", :default => 1, :null => false
+    t.string   "kana"
+  end
+
+  add_index "recipes", ["name"], :name => "index_recipes_on_name", :unique => true
+
+  create_table "users", :force => true do |t|
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.integer  "failed_attempts",        :default => 0
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
 end

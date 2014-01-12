@@ -5,6 +5,9 @@ gem 'rails', '3.2.12'
 gem 'mysql2'
 gem 'nokogiri'
 gem 'devise'
+gem 'mechanize'
+gem 'headless'
+gem 'selenium-webdriver'
 
 group :assets do
   gem 'sass-rails'
