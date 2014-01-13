@@ -176,7 +176,7 @@ module DqxItems
         else
         DqxItems::ManualWork::Parser.parse(file_path).each do |recipe_data|
           job = ::Job.find_or_create_by_name(recipe_data.craftsperson.name)
-          recipe = ::Recipe.find_or_create_by_name(recipe_data.name, :level => recipe_data.craftsperson.level, :job_id => job.id)
+          recipe = ::Recipe.find_or_create_by_name(recipe_data.name, :level => recipe_data.craftsperson.level, :job_id => job.id, :kana => recipe_data.kana)
           recipe_data.materials.each do |material|
             item = ::Item.find_or_create_by_name(material.name)
             if ::Ingredient.where(:recipe_id => recipe.id, :item_id => item.id).empty?

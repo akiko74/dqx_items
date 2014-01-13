@@ -27,16 +27,18 @@ recipes_array.keep_if do |array|
   end
 end
 
-file = File.new("new_recipe.xml", "wb")
+file = File.new("#{Rails.root}/misc/new_recipes.xml", "wb")
 xml = Builder::XmlMarkup.new(:indent => 2, :target => file)
 xml.instruct!
 xml.recipes {
   recipes_array.each do |array|
     xml.recipe {
       xml.name(array[:name])
-      xml.craftperson {
+      xml.kana(array[:kana])
+      xml.craftsperson {
         xml.name(job_name)
         xml.level(array[:level])
+      }
       xml.materials {
         array[:ingredients].each do |ingredient|
           xml.material {
@@ -46,7 +48,6 @@ xml.recipes {
         end
       }
       }
-    }
   end
 }
 file.close

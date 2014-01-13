@@ -5,7 +5,7 @@ module DqxItems
   module ManualWork
 
     class Recipe
-      attr_accessor :name, :materials, :craftsperson
+      attr_accessor :name, :materials, :craftsperson, :kana
     end
 
   end
