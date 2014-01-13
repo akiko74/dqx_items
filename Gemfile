@@ -27,8 +27,9 @@ group :development do
   gem 'binding_of_caller'
 end
 
+gem 'mysql2'
+
 group :test,:development do
-  gem 'mysql2'
   # Net::HTTPデバック用 環境変数HTTP_SPY=1を設定すると有効化
   gem 'cucumber-rails', require: false
   gem 'rspec-rails','>= 2.13.0'
@@ -56,6 +57,5 @@ group :production do
   gem 'unicorn'              ,:require => false
   gem 'astrails-safe'        ,:require => false
   gem 'request-log-analyzer' ,:require => false
-  gem "pg"
 end
 
