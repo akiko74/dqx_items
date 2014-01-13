@@ -1,11 +1,5 @@
 <% content_for :head do %>
 <% end %>
-<% content_for :javascripts do %>
-    <script>
-      var itemList    = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
-      var recipesList = <%= Recipe.all.map(&:name).sort.to_s.html_safe %>;
-    </script>
-<% end %>
 <% content_for :contents do %>
 <%=  content_for?(:content) ? yield(:content) : yield %>
 <%= render "commons/global_footer" %>

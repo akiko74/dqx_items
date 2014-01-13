@@ -34,4 +34,7 @@ DqxItems::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.logger = Logger.new(File.join('log','test.log'), 1, 10 * 1024 * 1024)
+
 end

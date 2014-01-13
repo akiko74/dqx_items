@@ -1,0 +1,16 @@
+#account_menu {
+  .btn-primary {
+    color:white;
+  }
+  .visible-phone {
+    text-align:right;
+  }
+  #tiny_login_form {
+    clear: both;
+  }
+  @media (max-width: 450px) {
+    .signup_button_text, .login_button_text {
+      display:none;
+    }
+  }
+}

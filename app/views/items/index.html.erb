@@ -1,3 +1,10 @@
+<% content_for :javascripts do %>
+      <script>
+              var itemList    = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
+                    var recipesList = <%= Recipe.all.map(&:name).sort.to_s.html_safe %>;
+                        </script>
+                      <% end %>
+
 <% content_for :content do %>
 <%= form_for(Item.new, :method => :get, :html => { :class => "form-search" }) do |f| %>
   <div class="input-append">
@@ -13,20 +20,23 @@
 <% end %>
 <style>
 h1 {
-	font-size	 : 20px;
-	line-height	 : 20px;
-	margin		 : 30px 0px 5px;
+  font-size   : 20px;
+  line-height   : 20px;
+  margin     : 30px 0px 5px;
 }
 
 .item-list li {
-	font-size	 : 20px;
-	line-height	 : 30px;
+  font-size   : 20px;
+  line-height   : 30px;
 
+}
+#keyword {
+  font-size: 14px;
 }
 </style>
 <% if @item %>
 <h1><%= @item.name %>を含むレシピ</h1>
-<div class="tabbable job_tabs"> 
+<div class="tabbable job_tabs">
   <ul class="nav nav-pills">
 <%   Job.all.each_with_index do |job,i| %>
 <%     @job_classes = ["job_tab#{i}"] %>

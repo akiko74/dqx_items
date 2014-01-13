@@ -1,7 +1,11 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
-  factory :job do
-    name { Faker::Lorem.words(1).first }
+
+  factory :saihou, parent: :job do
+    name '裁縫'
   end
+
+  factory :weapon_blacksmith, parent: :job do
+    name '武器'
+  end
+
 end

@@ -1,49 +1,16 @@
 <% content_for :content do %>
-
-  <%= form_for(Recipe.new, :method => :get, :html => { :class => "form-search", :onsubmit => 'add_recipes();return false;' }) do |f| %>
-    <div class="input-append">
-      <%= text_field_tag :recipes_keyword,
-                         '',
-                         :autocomplete  => "off", 
-                         :placeholder   => "レシピ名を入力",
-                         :class         => "span12 search-query",
-                         :autofocus     => "autofocus",
-                         "data-provide" => "typeahead"  %>
-      <%= f.submit "追加", :class => "btn" %>
-    </div>
-  <% end %>
-<div id="default_contents">
-  レシピを検索して必要な素材とお店で素材を買った時の値段をチェック！<br>
-  レシピを続けて検索すると、必要な素材の合計数も出るので職人の依頼に便利です。<br>
-</div>
-  <div id="added_contents">
-  <section>
-  <h2>レシピリスト</h2>
-  <table id="recipe_list" class="table">
-    <thead>
-      <tr><th>レシピ名</th><th>原価合計（バザー除く）</th><th></th></tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-  </section>
-
-  <section>
-  <h2>必要素材</h2>
-  <table id="item_list" class="table">
-    <thead>
-      <tr><th>アイテム名</th><th>合計必要数</th><th>購入金額</th></tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-  </section>
-</div>
+  <div id="recipe_finder"></div>
 <% end %>
 
 <% content_for :javascripts do %>
-    <% @admin_flag = admin_signed_in? %>
-    <%= javascript_include_tag "recipes" %>
+    <%#= javascript_include_tag "recipes" %>
+    <script>
+      function recipes_callback() {
+  <% unless admin_signed_in? %>
+       $(".recipes-action").append("");
+  <% end %>
+    }
+    </script>
 <% end %>
 
 <% content_for :head do %>

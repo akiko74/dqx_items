@@ -1,3 +1,50 @@
+# encoding: utf-8
+
+
+shared_context 'http-request' do
+  let(:required_params) { {} }
+  let(:append_params) { {} }
+  let(:params) { required_params.merge(append_params) }
+end
+
+shared_examples_for 'Respond to JSON' do
+  context 'with :format => "json"' do
+    before { req }
+    subject { response }
+    let(:append_params) { { :format => "json" } }
+    its(:content_type) { should == "application/json" }
+  end
+end
+
+shared_examples_for 'Respond to HTML and JSON' do
+  context "without :format" do
+    before { req }
+    subject { response }
+    its(:content_type) { should == "text/html" }
+  end
+  context 'with :format => "json"' do
+    before { req }
+    subject { response }
+    let(:append_params) { { :format => "json" } }
+    its(:content_type) { should == "application/json" }
+  end
+  context 'with :format => "html"' do
+    before { req }
+    subject { response }
+    let(:append_params) { { :format => "html" } }
+    its(:content_type) { should == "text/html" }
+  end
+end
+
+shared_examples 'the Routing that is routable with:' do |condition|
+  it { expect(subject).to route_to(condition) }
+  it { expect(subject).to be_routable }
+end
+
+
+
+
+
 share_examples_for 'the Request that is returned "HTTP OK"' do
   it { should be_success }
   its(:status) { should equal 200 }

@@ -18,6 +18,12 @@
     </div>
   </div>
   <div class="control-group">
+    <%= f.label :kana, :class => "control-label" %>
+    <div class="controls">
+      <%= f.text_field :kana %>
+    </div>
+  </div>
+  <div class="control-group">
     <%= f.label :level, :class => "control-label" %>
     <div class="controls">
       <%= f.number_field :level, :min => 1 %>
@@ -52,6 +58,12 @@
       </tr>
     </table>
   </div>
+
+  <% Category.all.each do |category| %>
+  <label>
+  <%=f.check_box :category_ids, {:checked => @recipe.categories.include?(category), :name => "recipe[category_ids][]"}, category.id, "" %>
+  <%= category.name %><br/></label>
+  <% end %>
 
   <div class="actions">
     <%= f.submit %>
