@@ -5,6 +5,7 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
   target: undefined
   typeaheadSourceList:  undefined
   typeaheadMathcerList: undefined
+  recipeList: undefined
 
 
   initialize: () ->
@@ -24,6 +25,7 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
 
       DqxItems.RecipeFinder.instance = @
       Backbone.View.apply(DqxItems.RecipeFinder.instance, arguments)
+      @recipeList = new DqxItems.RecipeList()
     return DqxItems.RecipeFinder.instance
 
 
@@ -76,7 +78,7 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
         updater: $.proxy(@typeaheadUpdater, @)
       })
 
-    (new DqxItems.RecipeTable()).render()
+    (new DqxItems.RecipeTable({collection:@recipeList})).render()
     return @
 
   typeaheadUpdater: (item) ->
@@ -93,8 +95,7 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
     return false unless @target
     e.preventDefault()
 
-    recipe = new DqxItems.Recipe({name:@target.get('name'), dictionary:@target})
-    DqxItems.RecipeList.addRecipe recipe
+    @recipeList.add({name:@target.get('name')})
 
     @target = undefined
 

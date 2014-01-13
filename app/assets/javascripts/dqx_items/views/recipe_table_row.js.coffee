@@ -5,6 +5,9 @@ window.DqxItems.RecipeTableRow = class RecipeTableRow extends Backbone.View
   recipeList: undefined
   model: undefined
 
+
+  events:'click .remove_button':'clickRemoveButton'
+
   initialize: (options) ->
     @model = options.model
     @model.on('destroy', $.proxy(@removeElm,@))
@@ -39,14 +42,13 @@ window.DqxItems.RecipeTableRow = class RecipeTableRow extends Backbone.View
     """
     @$el.append(html)
 
-    @$el.find('.remove_button')
-      .on('click', $.proxy(@clickRemoveButton, @))
 
     @$el.find('a[rel=popover]')
       .popover()
 
   clickRemoveButton: () ->
-    @model.trigger('destroy')
+    @collection.remove @model
+    @$el.html('').slideUp(300,$.proxy(@removeElm,@))
 
 
   unitPrice: (model) ->
@@ -54,7 +56,7 @@ window.DqxItems.RecipeTableRow = class RecipeTableRow extends Backbone.View
     while(formattedPrice != (formattedPrice = formattedPrice.replace(/^(-?\d+)(\d{3})/, "$1,$2")))
       formattedPrice
     formattedPrice += " G"
-    if $.inArray(0,_.pluck(model.items,'unitprice')) == 1
+    if $.inArray(0,_.pluck(model.items,'unitprice')) >= 0
       formattedPrice += ' + <span class="label label-warning">バザー品</span>'
     return formattedPrice
 
@@ -72,7 +74,5 @@ window.DqxItems.RecipeTableRow = class RecipeTableRow extends Backbone.View
     """
 
   removeElm: () ->
-    _.each @model.items, (item) ->
-      DqxItems.MaterialList.removeMaterial(item)
-    @remove()
+    @$el.remove()
     return @

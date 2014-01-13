@@ -2,18 +2,35 @@ window.DqxItems.RecipeList = class RecipeList extends Backbone.Collection
 
   model: DqxItems.Recipe
 
-  comparator: (item) ->
-    return item.get('kana')
-
-  constructor: () ->
-    if !DqxItems.RecipeList.instance
-      DqxItems.RecipeList.instance = this
-      Backbone.Collection.apply(DqxItems.RecipeList.instance, arguments)
-    return DqxItems.RecipeList.instance
+  materialList: undefined
 
 
-  @addRecipe: (recipe) ->
-    (new DqxItems.RecipeList()).trigger('add', recipe)
+  initialize: () ->
+    @materialList = new DqxItems.MaterialList()
+    @on('remove', @removeItem, @)
+    @on('add',    @addItem, @)
 
-  @removeRecipe: (recipe) ->
-    (new DqxItems.RecipeList()).remove recipe
+
+  removeItem: (model) ->
+    for item in model.items
+      material = @materialList.findWhere(name: item.name)
+      material.count -= item.count
+      if item.unitprice > 0
+        material.unitprice -= (item.unitprice * item.count)
+      else
+        material.unitprice = -1
+      material.trigger('change')
+
+
+  addItem: (model) ->
+    for item in model.items
+      if material = @materialList.findWhere(name: item.name)
+        if item.unitprice > 0
+          material.unitprice += (item.unitprice * item.count)
+        else
+          material.unitprice = -1
+        material.count += item.count
+        material.trigger('change')
+      else
+        @materialList.add(item)
+    return @

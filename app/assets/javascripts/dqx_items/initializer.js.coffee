@@ -7,7 +7,6 @@ window.DqxItems.Initializer = class Initializer
     DqxItems.Initializer.adjustWindow(jQuery('body').css('width'))
     DqxItems.DictionaryItemList.build()
 
-
     if @isSignedIn()
       console.log 'User signed in.'
       myItemList = new DqxItems.MyItemList()

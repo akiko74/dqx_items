@@ -14,8 +14,8 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require bootstrap
-//= require underscore
-//= require backbone
+//= require underscore-min
+//= require backbone-min
 // require_tree 
 //= require crypto-js/sha1
 //= require sha1
