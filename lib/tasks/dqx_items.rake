@@ -35,13 +35,32 @@ namespace :dqx_items do
     DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/item_kana.csv", :action => :add_kana)
   end
 
+  desc "Load recipe kana from misc/recipe_kana.csv"
+  task :add_recipe_kana do
+    DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipe_kana.csv", :action => :add_recipe_kana)
+  end
+
+  desc "Load recipe category from misc/recipe_category.csv"
+  task :add_recipe_category do
+    DqxItems::DataLoader::ManualWorkLoader.execute("#{Rails.root}/misc/recipe_category.csv", :action => :add_recipe_category)
+  end
 
   desc "Load all recipes"
-  task :load_all_recipes do
-    Rake::Task["dqx_items:load_recipes"].invoke
-    Rake::Task["dqx_items:modify_recipes"].invoke
-    Rake::Task["dqx_items:load_recipes2"].invoke
-    Rake::Task["dqx_items:load_recipes3"].invoke
+  task :load_all_recipes => %w(load_recipes modify_recipes load_recipes2 load_recipes3 add_item_kana add_item_pricess add_recipe_kana)
+
+
+  desc "Load Demo Data"
+  task :load_demo_data do
+    require 'factory_girl'
+    #Dir::glob("factories/*.rb") do |file|
+    #  load File.expand_path(file)
+    #end
+    User.delete_all(:email => "testuser@localhost.localdomain")
+
+    _user = FactoryGirl.create(:user, :email => "testuser@localhost.localdomain")
+    FactoryGirl.create(:inventory, user: _user, item_id: 1)
+    FactoryGirl.create(:inventory, user: _user, item_id: 2)
+    FactoryGirl.create(:inventory, user: _user, item_id: 3)
   end
 
 end

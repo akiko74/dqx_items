@@ -35,12 +35,46 @@ ActiveRecord::Schema.define(:version => 20131117092424) do
   add_index "admins", ["reset_password_token"], :name => "index_admins_on_reset_password_token", :unique => true
   add_index "admins", ["unlock_token"], :name => "index_admins_on_unlock_token", :unique => true
 
+  create_table "categories", :force => true do |t|
+    t.string   "name"
+    t.string   "kana"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "eq_categories", :force => true do |t|
+    t.integer  "category_id"
+    t.integer  "recipe_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "equipment", :force => true do |t|
+    t.integer  "user_id",                     :null => false
+    t.integer  "recipe_id",                   :null => false
+    t.integer  "cost",         :default => 0
+    t.integer  "renkin_count", :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
   create_table "ingredients", :force => true do |t|
     t.integer  "recipe_id"
     t.integer  "item_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "number"
+  end
+
+  add_index "ingredients", ["recipe_id", "item_id"], :name => "index_ingredients_on_recipe_id_and_item_id", :unique => true
+
+  create_table "inventories", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "item_id"
+    t.integer  "stock",      :default => 0
+    t.integer  "total_cost", :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "items", :force => true do |t|
@@ -52,17 +86,21 @@ ActiveRecord::Schema.define(:version => 20131117092424) do
     t.integer  "bazzar_price"
   end
 
+  add_index "items", ["name"], :name => "index_items_on_name", :unique => true
+
   create_table "jobs", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "jobs", ["name"], :name => "index_jobs_on_name", :unique => true
+
   create_table "recipes", :force => true do |t|
     t.string   "name"
     t.integer  "level"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.integer  "job_id"
     t.integer  "usage_count", :default => 1, :null => false
     t.string   "kana"
@@ -87,5 +125,9 @@ ActiveRecord::Schema.define(:version => 20131117092424) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
   end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
 end

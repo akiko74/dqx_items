@@ -1,12 +1,5 @@
-.bundle
-*.swp
-*.swo
+*~
 lbase.ymlog/**/*
-log/*
-/db/*.sqlite3
-/tmp/**/*
-*.log
-*.DS_Store
 config/unicorn.conf
 config/database.yml
 /config/global.yml
@@ -15,13 +8,38 @@ config/database.yml
 /config/thin.yml
 /db/*_structure.sql
 /db/structure.sql
-Thumbs.db
 /misc/deploy/config/host.rb
 /data
+
+
+# For editors
+*.swp
+*.swo
+
+# For Rails
+log/*
+/db/*.sqlite3
+/tmp/**/*
+*.log
+
+# For Mac
+Thumbs.db
+*.DS_Store
+
+# For bundler
+.bundle
 vendor/bundle
 vendor/bundler
 
+# For NetBeans projects.
 /nbproject/private/
-/features/find_productURL.feature
-/features/see_recent_project.feature
-/features/watch_project.feature
+
+# For Ruby Version Managers' archives.
+.rvmrc.*
+.ruby-gemset.*
+.ruby-version.*
+
+
+app/assets/javascripts/jasmine_examples
+spec/javascripts/jasmine_examples
+

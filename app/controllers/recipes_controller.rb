@@ -56,6 +56,7 @@ class RecipesController < PageController
     @recipe = Recipe.new
     @ingredients = Array.new(5) {Ingredient.new}
     @items = Item.scoped.map{|item| [item.name, item.id]}.sort
+    @categories = Category.scoped.map{|category| [category.name, category.id]}.sort
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @recipe }

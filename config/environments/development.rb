@@ -34,4 +34,6 @@ DqxItems::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  config.logger = Logger.new(File.join('log','development.log'), 1, 1 * 1024 * 1024)
 end

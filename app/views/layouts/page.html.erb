@@ -9,29 +9,25 @@
     </style>
   <% end %>
 <% end %>
-<% content_for :javascripts do %>
-    <script>
-      var itemList    = <%= Item.order("kana asc", nil).all.map(&:name).to_s.html_safe %>;
-      var recipesList = <%= Recipe.all.map(&:name).sort.to_s.html_safe %>;
-    </script>
-<% end %>
 <% content_for :contents do %>
     <div class="navbar sub">
       <div class="navbar-inner">
         <ul class="nav">
-<% if params[:controller] == 'items' %>
-  <li class="active">
-<% else %>
-  <li>
+
+<%= content_tag(:li,class:(params[:controller] == "items") ? 'active' : nil) do %>
+<%=   link_to items_path do %><i class="icon-leaf"></i> 素材辞典<% end %>
+<%  end %>
+
+<%= content_tag(:li,class:(params[:controller] == "recipes") ? 'active' : nil) do %>
+<%=   link_to recipes_path do %><i class="icon-book"></i> レシピ帳<% end %>
+<%  end %>
+
+<% if user_signed_in? %>
+<%=  content_tag(:li,class:(params[:controller] == "my/items") ? 'active' : nil) do %>
+<%=   link_to my_items_path do %><i class="icon-th-list"></i> 在庫管理<% end %>
+<%   end %>
 <% end %>
-  <%= link_to "素材 → 職人＋レシピ", items_path %>
-  </li>
-<% if params[:controller] == "recipes" %>
-  <li class="active">
-<% else %>
-  <li>
-<% end %>
-<a href="/recipes">レシピ → 素材＋コスト</a></li>
+
         </ul>
       </div>
     </div>
@@ -43,9 +39,11 @@
 <%= content_for?(:content) ? yield(:content) : yield %>
           </div>
           <div class="span4">
+<% if content_for?(:sidebar) %>
             <div class="well sidebar-nav">
 <%= yield(:sidebar) %>
             </div>
+<% end %>
 <%= render "commons/amazon_affiliate" %>
           </div>
         </div><!--/row-->

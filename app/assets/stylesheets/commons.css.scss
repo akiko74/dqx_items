@@ -1,5 +1,14 @@
 a:hover {
-	background-color: transparent;
+  background-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .navbar.sub i {
+    display:block;
+    font-size: 30px;
+    margin: 0px auto;
+
+  }
 }
 
 @media (min-width:768px) {
@@ -43,3 +52,8 @@ footer {
       }
     }
   }
+
+form.login-form {
+  //display : none;
+
+}

@@ -1,0 +1,109 @@
+#recipe_finder {
+  #recipe_finder_form {
+    text-align:center;
+    input {
+      font: {
+        size: 20px;
+      }
+      line-height: 2em;
+      height: 2em;
+    }
+    input[type=submit]:focus {
+      outline: 0;
+    }
+    input[type=submit] {
+      height: 50px;
+      color: #666;
+      font-size: 15px;
+      width: 5em;
+    }
+    input[type=submit].btn-primary {
+      color: white;
+      font-weight: bold;
+    }
+    ul.typeahead li {
+      text-align: left;
+    }
+  }
+  #recipe_list_table {
+    thead {
+      .recipe_cost {
+        text-align: center;
+        width:13em;
+      }
+      th {
+        vertical-align:middle;
+      }
+      .recipe_buttons {
+        width:6em;
+        span.label {
+          margin-left:0px;
+        }
+        text-align: right;
+      }
+    }
+    tbody {
+      .recipe_cost {
+        text-align: right;
+        padding-right: 2em;
+        span.label {
+          margin-left:0px;
+        }
+      }
+      .recipes-action {
+        text-align: right;
+      }
+    }
+  }
+  #material_list_table {
+    thead {
+      .material_price {
+        width:4em;
+        text-align:right;
+      }
+      .material_count {
+        width:5em;
+      }
+      .material_button {
+        width: 6em;
+      }
+    }
+    .material_count {
+      text-align: center;
+    }
+    .material_price {
+      text-align: right;
+    }
+    .material_button {
+      text-align:right;
+    }
+  }
+  @media (max-width: 400px) {
+    .material_action_text, .recipes_all_remove_button_text, .recipe_remove_button_text {
+      display: none;
+    }
+    #recipe_list_table {
+      thead {
+        .recipe_cost {
+          width: 7em;
+          small {
+            display:block;
+          }
+        }
+        .recipe_buttons {
+          width:2em;
+        }
+      }
+      tbody .recipe_cost {
+        padding-right: 1em;
+      }
+    }
+    #material_list_table {
+      thead {
+        .material_button {
+          width: 2em;
+        }
+      }
+    }
+  }
+}

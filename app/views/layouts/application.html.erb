@@ -17,11 +17,6 @@
 
     <%= stylesheet_link_tag "application", :media => "all" %>
 
-<script>
-	var itemList = <%= Item.all.map(&:name).sort.to_s.html_safe %>;
-	var recipesList = <%= Recipe.all.map(&:name).sort.to_s.html_safe %>;
-</script>
-
     <%= yield(:head) if content_for?(:head) %>
 
   </head>

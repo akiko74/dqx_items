@@ -1,6 +1,11 @@
     <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
-        <div class="container"><a class="brand" href="/"><%= t("app_name") %></a></div>
+        <div class="container">
+          <a class="brand" href="/"><%= t("app_name") %></a>
+          <div class="pull-right">
+            <%#= render "commons/account_menu" %>
+          </div>
+        </div>
 <% if admin_signed_in? %>
         <ul class="nav">
           <li class="dropdown">
