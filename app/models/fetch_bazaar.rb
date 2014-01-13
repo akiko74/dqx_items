@@ -56,6 +56,6 @@ class FetchBazaar
           ary_test << [item, item_price]
         end
       end
+    end
   end
 end
-
