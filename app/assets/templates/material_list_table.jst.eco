@@ -1,0 +1,12 @@
+    <table>
+      <thead>
+        <tr>
+          <th class="recipe_name">レシピ名</th>
+          <th class="recipe_cost">原価合計 <small>（バザー除く）</small></th>
+          <th class="recipe_buttons"><a href="/recipes" class="btn btn-small btn-inverse all_remove_button" style="color:white"><i class="icon-remove"></i><span class="recipes_all_remove_button_text"> 全削除</span></a></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+

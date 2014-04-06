@@ -16,7 +16,7 @@ window.DqxItems.Initializer = class Initializer
   isSignedIn: (judgementId = "#login_button") ->
     (jQuery(judgementId).length == 0 )
 
-  @adjustWindow: (width, brandElm=jQuery('.brand')) ->
+  @adjustWindow: (width, brandElm=jQuery('.navbar-brand')) ->
     if parseInt(width) < 480
       brandElm.html('DQ10 逆引きレシピβ')
     else if parseInt(width) < 520

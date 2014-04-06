@@ -1,6 +1,7 @@
 window.DqxItems.RecipeTable = class RecipeTable extends Backbone.View
 
   el:"#recipe_table"
+###
   template: _.template($("#tmpl-recipe_table").html())
 
 
@@ -28,7 +29,7 @@ window.DqxItems.RecipeTable = class RecipeTable extends Backbone.View
     (new DqxItems.RecipeListTable({
       collection:@collection
     })).render()
-    (new DqxItems.MaterialListTable({
+    (new DqxItems.Views.MaterialListTable({
       collection:@collection.materialList
     })).render()
-
+###

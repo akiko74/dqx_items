@@ -1,0 +1,16 @@
+ja:
+  app_name: "ドラゴンクエスト10 逆引きレシピβ"
+  sign_in: 'ログイン'
+  sign_up: '新規登録'
+  sign_out: 'ログアウト'
+  edit_user_registration: 'ユーザー設定'
+  commons:
+    global_header:
+      recipe_control_menu:
+        title: レシピ管理
+        add: レシピ追加
+      item_control_menu:
+        title: 素材アイテム管理
+        add: 素材アイテム追加
+
+
