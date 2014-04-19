@@ -17,5 +17,6 @@
  *= require 'dqx_items/recipe_finder'
  *= require 'account_menu'
  *= require 'amazon_affiliate'
+ *= require 'recipes'
  *= require_self
  */
