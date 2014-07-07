@@ -15,6 +15,7 @@ module DqxItems
         doc.xpath("/recipes/recipe").each do |recipe_elm|
           recipe = Recipe.new
           recipe.name = recipe_elm.xpath("name").text
+          recipe.kana = recipe_elm.xpath("kana").text
           recipe.materials = []
           recipe_elm.xpath("materials/material").each do |material_elm|
             material = Material.new
