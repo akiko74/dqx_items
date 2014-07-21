@@ -38,6 +38,9 @@ GEM
       builder
       mime-types
       xml-simple
+    aws-sdk (1.48.1)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     bcrypt (3.1.7)
     builder (3.0.4)
     capybara (2.4.1)
@@ -97,6 +100,9 @@ GEM
       i18n (~> 0.5)
     faker-japanese (0.0.1)
     ffi (1.9.3)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
     font-awesome-sass (4.1.0)
       sass (~> 3.2)
     formatador (0.2.5)
@@ -268,6 +274,7 @@ PLATFORMS
 
 DEPENDENCIES
   astrails-safe
+  aws-sdk (~> 1.0)
   coffee-rails
   cucumber-rails
   database_cleaner
@@ -276,6 +283,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   faker-japanese
+  figaro
   font-awesome-sass
   guard-spork
   heroku
