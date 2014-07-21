@@ -5,8 +5,8 @@ application.js: application-b48aa99443df20e1b4b4d891e6486825.js
 application/index.js: application-b48aa99443df20e1b4b4d891e6486825.js
 recipes.js: recipes-c69e48c98f5783dd177f50551fa643ef.js
 recipes/index.js: recipes-c69e48c98f5783dd177f50551fa643ef.js
-application.css: application-42da1e62d751ebbdfb2d128a9385ce72.css
-application/index.css: application-42da1e62d751ebbdfb2d128a9385ce72.css
+application.css: application-9e75ba0862ef835e3d819fbeb1e16898.css
+application/index.css: application-9e75ba0862ef835e3d819fbeb1e16898.css
 recipes.css: recipes-7b99c15e71642e9b3af312a1741b7774.css
 recipes/index.css: recipes-7b99c15e71642e9b3af312a1741b7774.css
 fontawesome-webfont.eot: fontawesome-webfont-667e7e347d5a415c4741d1a9ad045772.eot
