@@ -2,85 +2,89 @@
 
 .sidebar-nav {
 
-	ul {
-		margin-left	 : 0px !important;
-	}
+  ul {
+    margin-left   : 0px !important;
+  }
 
-	.histories {
-		a {
-			display		 : block;
-		}
-		li {
-			list-style	 : none;
-		}
+  .histories {
+    a {
+      display     : block;
+    }
+    li {
+      list-style   : none;
+    }
 
-		a:hover {
-			text-decoration	 : none;
-		}
-		a > li {
-			h2 {
-				font: {
-					size	 : 15px;
-				}
-				line-height	 : 16px;
-				height		 : auto;
-				margin		 : 2px 0px;
-			}
-			padding-bottom	 : 12px;
-			margin-bottom	 : 10px;
-			color		 : #333;
-			border-bottom	 : dotted 1px #999;
+    a:hover {
+      text-decoration   : none;
+    }
+    a > li {
+      h2 {
+        font: {
+          size   : 15px;
+        }
+        line-height   : 16px;
+        height     : auto;
+        margin     : 2px 0px;
+      }
+      padding-bottom   : 12px;
+      margin-bottom   : 10px;
+      color     : #333;
+      border-bottom   : dotted 1px #999;
 
-		}
+    }
 
-		.job_markers {
-			li {
-				margin		 : 1px;
-				border		 : solid 1px #999;
-        			float		 : left;
-			}
-			.job_marker0 {
-				border-color	 : orangered;
-				background-color : #ff7f7f;
-			}
-			.job_marker1 {
-				border-color	 : tomato;
-				background-color : #ffaf5f;
-			}
-			.job_marker2 {
-				border-color	 : orange;
-				background-color : #efff7f;
-			}
-			.job_marker3 {
-				border-color	 : limegreen;
-				background-color : #afff6f;
-			}
-			.job_marker4 {
-				border-color	 : mediumseagreen;
-				background-color : #7fff7f;
-			}
-			.job_marker5 {
-				border-color	 : lightskyblue;
-				background-color : #7fffff;
-			}
-			.job_marker6 {
-				border-color	 : blue;
-				background-color : #7f7fff;
-			}
-			
-			.disabled {
-				border-color	 : #CCC;
-				background-color : #EEE;
-			}
+    .job_markers {
+      li {
+        margin     : 1px;
+        border     : solid 1px #999;
+              float     : left;
+      }
+      .job_marker0 {
+        border-color   : orangered;
+        background-color : #ff7f7f;
+      }
+      .job_marker1 {
+        border-color   : tomato;
+        background-color : #ffaf5f;
+      }
+      .job_marker2 {
+        border-color   : orange;
+        background-color : #efff7f;
+      }
+      .job_marker3 {
+        border-color   : limegreen;
+        background-color : #afff6f;
+      }
+      .job_marker4 {
+        border-color   : mediumseagreen;
+        background-color : #7fff7f;
+      }
+      .job_marker5 {
+        border-color   : lightskyblue;
+        background-color : #7fffff;
+      }
+      .job_marker6 {
+        border-color   : blue;
+        background-color : #7f7fff;
+      }
+      .job_marker7 {
+        border-color   : purple;
+        background-color : #7fff7f;
+      }
 
-		}
-	}
+      .disabled {
+        border-color   : #CCC;
+        background-color : #EEE;
+      }
+
+    }
+  }
 
 
-	.histories a:last-child > li {
-		border-bottom	 : none;
-		margin-bottom	 : 0px;
-		padding-bottom	 : 0px;
-	}
+  .histories a:last-child > li {
+    border-bottom   : none;
+    margin-bottom   : 0px;
+    padding-bottom   : 0px;
+  }
 }
 
