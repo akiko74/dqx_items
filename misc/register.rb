@@ -21,16 +21,17 @@ doc.xpath('//recipes/recipe').each do |recipe_elm|
   recipe.name = recipe_elm.xpath("name").text
   recipe.kana = recipe_elm.xpath("kana").text
   recipe.level = recipe_elm.xpath("craftsperson/level").text.to_i
+  recipe.job_id = job_id
     recipe_elm.xpath("materials/material").each do |mat|
       unless Item.find_by_name(mat.xpath("name").text).present?
         item = Item.new(:name => mat.xpath("name").text)
-        put "アイテム#{mat.xpath("name").text}を登録します。"
-        put "かなを入れてください"
+        puts "アイテム#{mat.xpath("name").text}を登録します。"
+        puts "かなを入れてください"
         item.kana = gets.chomp
-        put "価格を入れてください。(バザーのみの場合は0)"
+        puts "価格を入れてください。(バザーのみの場合は0)"
         item.price = gets.chomp
-        put "この内容で登録します。アイテム名#{mat.xpath("name").text},かな#{item.kana},価格#{item.price}  Y/N"
-        return if gets.chomp!="N"
+        puts "この内容で登録します。アイテム名#{mat.xpath("name").text},かな#{item.kana},価格#{item.price}  Y/N"
+        next if gets.chomp == "N"
         item.save
       end
     ingredient = recipe.ingredients.build(:item_id => Item.find_by_name(mat.xpath("name").text).id, :number => mat.xpath("number").text.to_i)

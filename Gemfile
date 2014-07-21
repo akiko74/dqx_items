@@ -21,6 +21,9 @@ group :assets do
   gem 'font-awesome-sass'
 end
 
+  gem 'figaro'
+  gem 'aws-sdk', '~> 1.0'
+
 
 group :test,:development do
   gem 'cucumber-rails', require: false
