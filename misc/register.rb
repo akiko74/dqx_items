@@ -34,7 +34,7 @@ doc.xpath('//recipes/recipe').each do |recipe_elm|
         next if gets.chomp == "N"
         item.save
       end
-    ingredient = recipe.ingredients.build(:item_id => Item.find_by_name(mat.xpath("name").text).id, :number => mat.xpath("number").text.to_i)
+    ingredient = recipe.ingredients.build(:item_id => Item.find_by_name(mat.xpath("name").text).id, :number => mat.xpath("num").text.to_i)
     end
   recipe.save
 end
