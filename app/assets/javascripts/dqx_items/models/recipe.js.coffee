@@ -1,6 +1,6 @@
 window.DqxItems.Recipe = class Recipe extends Backbone.Model
 
-  @recipe_key: DqxItems.CodeGenerator.generate("recipes")
+  @recipe_key: DqxItems.Utils.CodeGenerator.generate("recipes")
 
   defaults: {
     'name': undefined
@@ -13,10 +13,10 @@ window.DqxItems.Recipe = class Recipe extends Backbone.Model
 
   constructor: (params) ->
     @id = DqxItems.Recipe.recipe_key +
-      DqxItems.CodeGenerator.generate(params.name)
+      DqxItems.Utils.CodeGenerator.generate(params.name)
     @name = params.name
     unless @dictionary = params.dictionary
-      @dictionary = (new DqxItems.DictionaryItemList()).where({name:params.name})[0]
+      @dictionary = (new DqxItems.Collections.DictionaryItemList()).where({name:params.name})[0]
     $.ajax({
       url: "/recipes.json",
       dataType: 'json',

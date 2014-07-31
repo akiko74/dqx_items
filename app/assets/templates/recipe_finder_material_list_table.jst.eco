@@ -1,0 +1,23 @@
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        必要素材リスト
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="material_name">
+              素材アイテム名
+            </th>
+            <th class="text-right material_count">
+              合計必要数
+            </th>
+            <th class="text-right material_cost">
+              購入金額
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+

@@ -2,10 +2,10 @@
 window.DqxItems.MyItem = class MyItem
 
   @my_key = () ->
-    return DqxItems.DataStorage.raw_get("my_key")
+    return DqxItems.Utils.DataStorage.raw_get("my_key")
 
   constructor: (key) ->
-    DqxItems.DataStorage.raw_set("my_key", key)
+    DqxItems.Utils.DataStorage.raw_set("my_key", key)
 
 
   debug_log = (method_name='',message) ->
@@ -25,14 +25,14 @@ window.DqxItems.MyItem = class MyItem
   @fetch_my_items_api_success: (data) ->
     debug_log ".fetch_my_items_api_success()", data
     debug_log ".fetch_my_items_api_success()", "my_key: #{data.uid}"
-    DqxItems.DataStorage.raw_set("my_key", data.uid)
+    DqxItems.Utils.DataStorage.raw_set("my_key", data.uid)
 
     for item_data in data.equipments
       save_my_equipment item_data
     for item_data in data.items
       save_my_item item_data
 
-    DqxItems.DataStorage.set(data.uid, data)
+    DqxItems.Utils.DataStorage.set(data.uid, data)
     table = new DqxItems.MyItemsTableBuilder()
 
   @fetch_my_items_api_error: ->
@@ -44,20 +44,20 @@ window.DqxItems.MyItem = class MyItem
     console.log "--- DqxItems.MyItem.fetch_my_items_api_complete() ----------/"
 
   destroy_my_items = () ->
-    for row in DqxItems.DataStorage.keys()
+    for row in DqxItems.Utils.DataStorage.keys()
       continue unless row.indexOf(MyItem.my_key()) == 0
-      DqxItems.DataStorage.destroy(row)
+      DqxItems.Utils.DataStorage.destroy(row)
       debug_log "#destroy_my_items()", "Destroied key: #{row}"
 
   save_my_item = (item_data) ->
     debug_log "#save_my_item()", item_data
     console.log (new DqxItems.MyItemInventory(item_data)).save()
-    #debug_log "#save_my_item()", DqxItems.DataStorage.set(MyItem.my_key() + sha1.hex(item_data.name), item_data)
+    #debug_log "#save_my_item()", DqxItems.Utils.DataStorage.set(MyItem.my_key() + sha1.hex(item_data.name), item_data)
 
   save_my_equipment = (equipment_data) ->
     debug_log "#save_my_equipment()", equipment_data
     #debug_log "#save_my_equipment()", "#{equipment_data.name}+#{equipment_data.renkin_count}+#{equipment_data.cost}"
-    #debug_log "#save_my_equipment()", DqxItems.DataStorage.set(MyItem.my_key() + sha1.hex("#{equipment_data.name}+#{equipment_data.renkin_count}+#{equipment_data.cost}"), equipment_data)
+    #debug_log "#save_my_equipment()", DqxItems.Utils.DataStorage.set(MyItem.my_key() + sha1.hex("#{equipment_data.name}+#{equipment_data.renkin_count}+#{equipment_data.cost}"), equipment_data)
     console.log (new DqxItems.MyEquipment(equipment_data)).save()
 
   destroy_my_equipment = (equipment_data) ->
@@ -65,17 +65,17 @@ window.DqxItems.MyItem = class MyItem
     debug_log "#destroy_my_equipment()", "#{equipment_data.name}+#{equipment_data.renkin_count}+#{equipment_data.cost}"
     _my_equipment_key = MyItem.my_key() + sha1.hex("#{equipment_data.name}+#{equipment_data.renkin_count}+#{equipment_data.cost}")
     debug_log "#destroy_my_equipment()", _my_equipment_key
-    debug_log "#destroy_my_equipment()", DqxItems.DataStorage.get(_my_equipment_key)
+    debug_log "#destroy_my_equipment()", DqxItems.Utils.DataStorage.get(_my_equipment_key)
 
-    DqxItems.DataStorage.destroy(MyItem.my_key() + sha1.hex("#{equipment_data.name}+#{equipment_data.renkin_count}+#{equipment_data.cost}"))
+    DqxItems.Utils.DataStorage.destroy(MyItem.my_key() + sha1.hex("#{equipment_data.name}+#{equipment_data.renkin_count}+#{equipment_data.cost}"))
 
 
   @get = (item_name) ->
     debug_log ".get()", "item_name: #{item_name}"
     _key = MyItem.my_key() + sha1.hex item_name
     debug_log ".get()", "key:       #{_key}"
-    if DqxItems.DataStorage.raw_get _key
-      _item = DqxItems.DataStorage.get _key
+    if DqxItems.Utils.DataStorage.raw_get _key
+      _item = DqxItems.Utils.DataStorage.get _key
       debug_log ".get()", _item
       return _item
     else

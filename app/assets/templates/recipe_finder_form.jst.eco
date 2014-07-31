@@ -1,0 +1,10 @@
+      <form class="form-inline" id="recipe_finder_form" role="form">
+        <button type="button" class="btn btn-default btn-lg" id="recipe_keyword_button" style="width:241px; text-align:left">
+          <i class="fa fa-times-circle"></i> <span id="recipe_keyword_name"></span>
+        </button>
+        <div class="form-group" id="recipe_keyword_fields">
+          <label class="sr-only" for="recipe_keyword">検索レシピ名</label>
+          <input autocomplete="off" placeholder="レシピ名を入力" autofocus="autofocus" data-provide="typeahead" type="text" class="form-control input-lg" id="recipe_keyword">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">追加</button>
+      </form>

@@ -11,7 +11,7 @@ window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
     if !DqxItems.MyItemList.instance
       @equipments = new DqxItems.MyEquipmentList()
       @items      = new DqxItems.MyItemInventoryList()
-      @myKey      = DqxItems.DataStorage.raw_get("my_key")
+      @myKey      = DqxItems.Utils.DataStorage.raw_get("my_key")
       DqxItems.MyItemList.instance = @
       Backbone.Collection.apply(DqxItems.MyItemList.instance, arguments)
     return DqxItems.MyItemList.instance
@@ -24,13 +24,13 @@ window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
     Backbone.Collection.prototype.fetch.call(@,options)
 
   beforeSend: (xhr, settings) ->
-    @myKey = DqxItems.DataStorage.raw_get("my_key")
-    if etag = DqxItems.DataStorage.raw_get(@myKey)
+    @myKey = DqxItems.Utils.DataStorage.raw_get("my_key")
+    if etag = DqxItems.Utils.DataStorage.raw_get(@myKey)
       @version = etag.replace(/['"]/gi,'')
       xhr.setRequestHeader('if-none-match', '"' + etag + '"')
 
   complete: (xhr, textStatus) ->
-    DqxItems.DataStorage.raw_set(
+    DqxItems.Utils.DataStorage.raw_set(
       @myKey,
       xhr.getResponseHeader('ETag').replace(/['"]/gi,'')
     ) if (textStatus == 'success')
@@ -46,11 +46,11 @@ window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
     DqxItems.MyItemList.instance          = undefined
     DqxItems.MyItemInventoryList.instance = undefined
     DqxItems.MyEquipmentList.instance     = undefined
-    DqxItems.DataStorage.raw_set("my_key", response.uid)
-    @myKey = DqxItems.DataStorage.raw_get("my_key")
-    for row in DqxItems.DataStorage.keys()
+    DqxItems.Utils.DataStorage.raw_set("my_key", response.uid)
+    @myKey = DqxItems.Utils.DataStorage.raw_get("my_key")
+    for row in DqxItems.Utils.DataStorage.keys()
       continue if ( !(row.indexOf(@myKey) == 0) || (row.length != 80) )
-      DqxItems.DataStorage.destroy(row)
+      DqxItems.Utils.DataStorage.destroy(row)
 
     myItemList = new DqxItems.MyItemList()
 
@@ -70,7 +70,7 @@ window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
   tmpFunc: () ->
     if !DqxItems.MyItemList.instance
       console.log 'instance undefined.'
-      dictionary  = new DqxItems.DictionaryItemList()
+      dictionary  = new DqxItems.Collections.DictionaryItemList()
       @equipments = new DqxItems.MyEquipmentList()
       @items      = new DqxItems.MyItemInventoryList()
       @myKey     = DqxItems.MyItem.my_key()
@@ -84,14 +84,14 @@ window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
         beforeSend: (xhr, settings) ->
           console.log 'beforeSend'
           console.log xhr
-          #etag = DqxItems.DataStorage.raw_get(@dictionaryKey)
+          #etag = DqxItems.Utils.DataStorage.raw_get(@dictionaryKey)
           #if etag
           #  xhr.setRequestHeader('if-none-match', etag);
         complete: (xhr, textStatus) ->
           console.log 'complete'
           console.log textStatus
           #if (textStatus == 'success')
-          #  DqxItems.DataStorage.raw_set(
+          #  DqxItems.Utils.DataStorage.raw_set(
           #    @dictionaryKey,
           #    xhr.getResponseHeader('ETag')
           #  )
@@ -109,7 +109,7 @@ window.DqxItems.MyItemList = class MyItemList extends Backbone.Collection
     models = []
     @myKey = DqxItems.MyItem.my_key()
     console.log "@mKey : #{@myKey}"
-    for row in DqxItems.DataStorage.keys()
+    for row in DqxItems.Utils.DataStorage.keys()
       continue if ( !(row.indexOf(@myKey) == 0) || (row.length != 80) )
       my_item = DqxItems.MyItemFactory.findByKey(row)
       console.log "row: #{row}"

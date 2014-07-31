@@ -11,9 +11,9 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
   initialize: () ->
     if !DqxItems.RecipeFinder.instance
 
-      unless @dictionary = DqxItems.DictionaryItemList.instance
-        DqxItems.DictionaryItemList.build()
-        @dictionary = DqxItems.DictionaryItemList.instance
+      unless @dictionary = DqxItems.Collections.DictionaryItemList.instance
+        DqxItems.Collections.DictionaryItemList.build()
+        @dictionary = DqxItems.Collections.DictionaryItemList.instance
 
       @typeaheadSourceList  = @dictionary.pluck.call({models:@dictionary.where({type:'recipe'}).sort()}, "name")
       @typeaheadMathcerList = _.inject(
@@ -82,7 +82,7 @@ window.DqxItems.RecipeFinder = class RecipeFinder extends Backbone.View
     return @
 
   typeaheadUpdater: (item) ->
-    if @target = (new DqxItems.DictionaryItemList()).where({name:item})[0]
+    if @target = (new DqxItems.Collections.DictionaryItemList()).where({name:item})[0]
       @$el.find('[type=submit]')
         .attr('disabled', false)
         .addClass('btn-primary')

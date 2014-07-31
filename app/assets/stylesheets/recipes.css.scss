@@ -1,22 +1,56 @@
-h2 {
-  font: {
-    size   : 1.2em;
+.tt-dropdown-menu {
+  text-align: left;
+  width: 230px;
+  background-color: white;
+  border-radius: 0px 0px 5px 5px;
+  border: solid 1px gray;
+  border-top: none;
+  padding: 5px 0px;
+  margin-left: 5px;
+  color: #333;
+  * {
+    font-size: 18px;
+    line-height: 45px;
+    margin-bottom: 0px;
   }
-  margin-bottom  : 0px;
-  line-height    : 1.3em;
-  margin-top     : 1em;
-}
-
-table {
-  border-radius  : 15px;
-  background-color :lightyellow;
-  .label {
-    font-size  : 10px;
-    margin-left  : 1.4em;
+  .tt-suggestions {
+    solor:blue;
+    .tt-suggestion {
+      padding-left: 15px;
+    }
+    .tt-cursor {
+      color: white;
+      background-color: #428bca;
+    }
   }
 }
 
-#added_contents {
-  display : none;
+#recipe_finder {
+  #recipe_finder_form {
+    margin-bottom: 20px;
+  }
+  #recipe_keyword_fields {
+    background-color: white;
+    margin-bottom: 0px;
+    * {
+      vertical-align: middle;
+    }
+  }
+  #recipe_table {
+    td.recipe_name, td.recipe_cost {
+      font-size: 16px;
+      line-height: 30px;
+    }
+    @media (max-width:480px) {
+      button {
+        * {
+          display:block;
+        }
+        span {
+          font-size: 8px;
+          line-height: 11px;
+        }
+      }
+    }
+  }
 }
-

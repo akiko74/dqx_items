@@ -1,0 +1,12 @@
+  <td class="recipe_name"><%= @name %></td>
+  <td class="text-right recipe_cost">
+    <% if @bazaar: %>
+      <span class="label label-warning">バザー品</span><small> ＋</small>
+    <% end %>
+    <%= @price.toString().replace(/(\d)(?=(\d\d\d)+$)/g , '$1,') %><small>G</small>
+  </td>
+  <td class="text-right">
+    <button class="btn btn-danger btn-sm">
+      <i class="fa fa-times"></i><span>削除</span>
+    </button>
+  </td>

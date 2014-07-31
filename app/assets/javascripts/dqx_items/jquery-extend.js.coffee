@@ -2,7 +2,7 @@
 #  dqxItems: (options) ->
 #    settings =
 #      debug: false
-#      dictionary: new DqxItems.DictionaryItemList()
+#      dictionary: new DqxItems.Collections.DictionaryItemList()
 #
 #    settings = jQuery.extend settings, options
 #

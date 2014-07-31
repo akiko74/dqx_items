@@ -1,0 +1,11 @@
+  <td class="material_name"><%= @name %></td>
+  <td class="text-right recipe_cost">
+    <%= @count %>
+  </td>
+  <td class="text-right">
+<% if @unitprice == 0: %>
+    <span class="label label-warning">バザーのみ</span>
+<% else: %>
+    <%= (@unitprice * @count).toString().replace(/(\d)(?=(\d\d\d)+$)/g , '$1,') %><small>G</small>
+<% end %>
+  </td>

@@ -1,6 +1,6 @@
 window.DqxItems.Material = class Material extends Backbone.Model
 
-  @material_key: DqxItems.CodeGenerator.generate("materials")
+  @material_key: DqxItems.Utils.CodeGenerator.generate("materials")
 
   defaults: {
     'name': undefined
@@ -12,10 +12,10 @@ window.DqxItems.Material = class Material extends Backbone.Model
 
   constructor: (params) ->
     @id   = DqxItems.Material.material_key +
-      DqxItems.CodeGenerator.generate(params.name)
+      DqxItems.Utils.CodeGenerator.generate(params.name)
     @name = params.name
     unless @dictionary = params.dictionary
-      @dictionary = (new DqxItems.DictionaryItemList()).where({name:params.name})[0]
+      @dictionary = (new DqxItems.Collections.DictionaryItemList()).where({name:params.name})[0]
     if params.unitprice && params.count
       @unitprice = params.unitprice * params.count
     else

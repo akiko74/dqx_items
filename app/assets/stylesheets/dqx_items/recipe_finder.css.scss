@@ -1,26 +1,6 @@
 #recipe_finder {
   #recipe_finder_form {
     text-align:center;
-    input {
-      font: {
-        size: 20px;
-      }
-      line-height: 2em;
-      height: 2em;
-    }
-    input[type=submit]:focus {
-      outline: 0;
-    }
-    input[type=submit] {
-      height: 50px;
-      color: #666;
-      font-size: 15px;
-      width: 5em;
-    }
-    input[type=submit].btn-primary {
-      color: white;
-      font-weight: bold;
-    }
     ul.typeahead li {
       text-align: left;
     }

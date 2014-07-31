@@ -115,12 +115,12 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     debug_log "#bind_check()", "Bind to #{target}"
 
   typeahead_source = (query, process) ->
-    return (new DqxItems.DictionaryItemList()).pluck("name")
+    return (new DqxItems.Collections.DictionaryItemList()).pluck("name")
 
   typeahead_matcher = (item) ->
     _query = this.query.trim()
     return false if _query.length < 3
-    target_item = (new DqxItems.DictionaryItemList()).where({name:item})[0]
+    target_item = (new DqxItems.Collections.DictionaryItemList()).where({name:item})[0]
     if ((target_item.get('kana')? ) && (target_item.get('kana').indexOf(_query) == 0))
       debug_log "#typeahead_matcher()", "macth:  #{item} (#{target_item.get('kana')})"
       return true
@@ -130,7 +130,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     debug_log "typeahead_sorter()", 'before: ["' + items.join('", "') + '"]'
     item_list = []
     for item in items
-      item_list.push (new DqxItems.DictionaryItemList()).where({name:item})[0]
+      item_list.push (new DqxItems.Collections.DictionaryItemList()).where({name:item})[0]
     item_list = item_list.sort (a,b) ->
       return -1 if (a.get('kana') < b.get('kana'))
       return 1 if (a.get('kana') > b.get('kana'))
@@ -146,7 +146,7 @@ window.DqxItems.MyItemsFormBuilder = class MyItemsFormBuilder
     return item_str
 
   typeahead_updater = (item) ->
-    _inputed = (new DqxItems.DictionaryItemList()).where({name:item})[0]
+    _inputed = (new DqxItems.Collections.DictionaryItemList()).where({name:item})[0]
     _mine = DqxItems.MyItem.get(item)
     debug_log "#typeahead_updater()", _inputed
     debug_log "#typeahead_updater()", _mine

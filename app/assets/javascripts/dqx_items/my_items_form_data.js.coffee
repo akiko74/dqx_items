@@ -55,7 +55,7 @@ window.DqxItems.MyItemsFormData = class MyItemsFormData
     return (isFinite(@deleteRenkinStock))
 
   dictionary: ->
-    return (new DqxItems.DictionaryItemList()).where({name:@keyword})[0]
+    return (new DqxItems.Collections.DictionaryItemList()).where({name:@keyword})[0]
 
   toAddItemParam: ->
     return {

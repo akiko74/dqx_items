@@ -7,6 +7,6 @@ window.DqxItems.MyItemFactory = class MyItemFactory
       return new DqxItems.MyItemInventory(item_data)
 
   @findByKey = (key) ->
-    _my_item = DqxItems.DataStorage.get(key)
+    _my_item = DqxItems.Utils.DataStorage.get(key)
     _my_item.key = key
     return @createMyItem(_my_item)

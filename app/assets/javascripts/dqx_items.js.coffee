@@ -1,30 +1,22 @@
 window.DqxItems =
   Models: {}
   Collections: {}
+  Controllers: {}
+  Regions: {}
   Views: {}
   Routers: {}
+  Utils: {}
+
   initialize: ->
-    #new DqxItems.Initializer()
     App = new Marionette.Application()
-    App.addRegions(
-      main: '#recipe_finder'
-    )
-
-    ###
-    if /^\/recipes/.test location.pathname
-      App.addRegions(
-        'main': '#recipe_finder'
-      )
-      console.log "recipes !"
-      #jQuery('#recipe_finder').recipeFinder()
-    new DqxItems.Views.MaterialListTable()
+    App.addInitializer ->
+      Backbone.history.stop() if Backbone.History.started
+      if /^\/recipes/.test location.pathname
+        new DqxItems.Routers.RecipeFinderRouter()
+      Backbone.history.start()
     App.start()
-    ###
-    #alert 'Hello from Backbone!'
-    console.log App
-    console.log App.main
 
-jQuery(document).ready ->
+jQuery(document).on "ready page:load", ->
   DqxItems.initialize()
 
 

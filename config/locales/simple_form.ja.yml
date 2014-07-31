@@ -1,0 +1,15 @@
+ja:
+  simple_form:
+    labels:
+      user:
+        email: 'ログインID'
+        password: 'パスワード'
+    #hints:
+    #  user:
+    #    email: 'User name to sign in.'
+    #    password: 'No special characters, please.'
+    placeholders:
+      user:
+        email: '登録したメールアドレス'
+        password: '登録したパスワード'
+

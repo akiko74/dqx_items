@@ -2,13 +2,11 @@
 source 'http://bundler-api.herokuapp.com'
 
 
-ruby '2.1.1'
+ruby '2.1.2'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.1.0'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'rails', '~> 4.1.4'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.2'
 # Use Uglifier as compressor for JavaScript assets
@@ -50,12 +48,16 @@ gem 'devise'
 gem 'mechanize'
 gem 'headless'
 gem 'selenium-webdriver'
+gem 'rails-i18n'
 gem 'devise-i18n'
+gem 'simple_form'
 
 gem 'puma'
 
 gem 'backbone-on-rails'
 gem 'marionette-rails'
+gem 'twitter-typeahead-rails'
+
 
 group :development do
   gem 'better_errors'
@@ -67,7 +69,7 @@ gem 'mysql2'
 group :test,:development do
   # Net::HTTPデバック用 環境変数HTTP_SPY=1を設定すると有効化
   gem 'cucumber-rails', require: false
-  gem 'rspec-rails','2.99.0.beta2'
+  gem 'rspec-rails','3.0.1'
   gem 'net-http-spy',:require => false
   gem 'database_cleaner'
   gem 'rb-fsevent'
@@ -76,7 +78,6 @@ group :test,:development do
   gem 'faker-japanese'
   #gem 'email_spec',    :git=>'git://github.com/bmabey/email-spec.git', :branch=>'rails3',:require => false
   gem 'simplecov'
-  gem 'debugger'
   gem 'capybara'
 #  gem 'jasmine'
 #  gem 'jasminerice'
@@ -89,4 +90,5 @@ group :production do
   gem 'astrails-safe'        ,:require => false
   gem 'request-log-analyzer' ,:require => false
 end
+
 

@@ -9,7 +9,7 @@ window.DqxItems.MyEquipment = class MyEquipment extends Backbone.Model
 
   initialize: (params) ->
     @set name: @get 'recipe_name' if @get 'recipe_name'
-    dictionaryItem = (new DqxItems.DictionaryItemList()).where({name:@get('name')})[0]
+    dictionaryItem = (new DqxItems.Collections.DictionaryItemList()).where({name:@get('name')})[0]
     @set kana: dictionaryItem.get('kana') if dictionaryItem
     @set key: (DqxItems.MyItem.my_key()+ CryptoJS.SHA1(
       "#{@get('name')}+#{@get('renkin_count')}+#{@get('cost')}"
@@ -30,7 +30,7 @@ window.DqxItems.MyEquipment = class MyEquipment extends Backbone.Model
     DqxItems.MyItem.update_my_items([], [param])
 
   save: ->
-    DqxItems.DataStorage.set(
+    DqxItems.Utils.DataStorage.set(
       @get('key'),
       this
     )
