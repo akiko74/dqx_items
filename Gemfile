@@ -56,7 +56,12 @@ gem 'puma'
 
 gem 'backbone-on-rails'
 gem 'marionette-rails'
-gem 'twitter-typeahead-rails'
+#gem 'twitter-typeahead-rails'
+gem 'twitter-typeahead-rails',
+  git: 'https://github.com/felixbuenemann/twitter-typeahead-rails.git',
+  branch: 'typeahead.js-0.10.5'
+
+
 
 
 group :development do
@@ -83,6 +88,7 @@ group :test,:development do
 #  gem 'jasminerice'
 #  gem 'guard-jasmine'
 #  gem 'sinon-rails'
+  gem 'jasmine-rails'
 end
 
 

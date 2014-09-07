@@ -19,6 +19,7 @@ window.DqxItems.Models.DictionaryItem = class DictionaryItem extends Backbone.Mo
 
     @key  = DqxItems.Utils.CodeGenerator.generate("dictionaries") +
       DqxItems.Utils.CodeGenerator.generate(@get('name'))
+    @set('key',@key)
 
   save: ->
     DqxItems.Utils.DataStorage.set(@key, @)

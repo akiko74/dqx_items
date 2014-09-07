@@ -121,8 +121,22 @@ window.DqxItems.Views.RecipeFinderFormView = class RecipeFinderFormView extends 
 
 
   fetchRecipeSuccessed: (model, response, options) ->
+    console.log 'fetchRecipeSuccessed'
     @options.recipes.add(model)
+    console.log @
+    console.log @$el.find('#recipe_keyword')
+    console.log @$el.find('#recipe_keyword').val()
+    console.log @engine
+
+
+  tmp: ->
     for item in model.items
-      @options.materials.add item
+      if elm = @options.materials.findWhere({ name: item.name})
+        @options.materials.remove(elm)
+        elm.set('count', (elm.count + item.count))
+        @options.materials.add(elm)
+      else
+        @options.materials.add item
+    console.log @options.materials
     @options.materials.sort()
 
