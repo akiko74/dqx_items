@@ -30,6 +30,7 @@
           <div class="nav navbar-nav navbar-right">
             <div class="hidden-xs hidden-sm">
 
+<%- if !user_signed_in? -%>
           <%= form_for(resource, as: resource_name, url: session_path(resource_name), html:{ class: 'navbar-form navbar-right', role: 'search' }) do |f| %>
 <%-   unless controller.is_a? Devise::SessionsController -%>
             <div class="form-group">
@@ -48,9 +49,17 @@
             </button>
 <%-   end -%>
           <% end %>
+<%- else -%>
+          <%= button_to(destroy_user_session_path, method: :delete, class: 'btn btn-default') do %>
+            <%= icon('power-off') %>
+            <span><%= t 'sign_out' %></span>
+          <% end %>
+<%- end -%>
 
             </div>
             <div class="hidden-md hidden-lg">
+
+<%- if !user_signed_in? -%>
               <button class="btn btn-default"
                       data-toggle="modal" data-target="#login-modal">
                 <i class="fa fa-sign-in "></i>
@@ -61,6 +70,13 @@
                 <i class="fa fa-edit "></i>
                 <span><%= t 'sign_up' %></span>
               </button>
+<%- else -%>
+              <%= button_to(destroy_user_session_path, method: :delete, class: 'btn btn-default') do %>
+                <%= icon('power-off') %>
+                <span><%= t 'sign_out' %></span>
+              <% end %>
+<%- end -%>
+
             </div>
           </div>
         </div>
@@ -124,26 +140,38 @@
               &times;
             </button>
             <h4 class="modal-title" id="myModalLabel">
-              ログイン！
+              ログインして在庫を確認しよう
             </h4>
           </div>
 
           <%= simple_form_for(resource, as: resource_name,
                        url: session_path(resource_name),
-                       html:{ class:'form-horizontal', role: 'form' }) do |f| %>
+                       html:{ role: 'form' }) do |f| %>
 
             <div class="modal-body">
-              <%= f.input :email,
-                          input_html: { class:'form-control' },
-                          wrapper_html: { class:'form-group' } %>
-              <%= f.input :password,
-                          input_html: { class:'form-control' },
-                          wrapper_html: { class:'form-group' } %>
+
+              <div class="form-group col-sm-12">
+                <%= f.label :email, class: 'sr-only' %>
+                <div class="input-group">
+                  <div class="input-group-addon"><%= icon('envelope-o') %></div>
+                  <%= f.input_field :email, class:'form-control' %>
+                </div>
+              </div>
+
+              <div class="form-group col-sm-12">
+                <%= f.label :password, class: 'sr-only' %>
+                <div class="input-group">
+                  <div class="input-group-addon"><%= icon('key') %></div>
+                  <%= f.input_field :password, class:'form-control' %>
+                </div>
+              </div>
+
             </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">
-                <span>close</span>
+                <%= icon('remove') %>
+                <span>キャンセル</span>
               </button>
               <button type="submit" class="btn btn-primary">
                 <i class="fa fa-edit fa-lg"></i>

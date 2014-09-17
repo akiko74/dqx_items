@@ -44,7 +44,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'nokogiri'
-gem 'devise'
+gem 'devise', '~> 3.3.0'
 gem 'mechanize'
 gem 'headless'
 gem 'selenium-webdriver'
@@ -58,8 +58,8 @@ gem 'backbone-on-rails'
 gem 'marionette-rails', '~> 2.2.1'
 gem 'twitter-typeahead-rails', '~> 0.10.5'
 
-
-
+gem 'cancancan'
+gem 'activeadmin', github: 'activeadmin'
 
 group :development do
   gem 'better_errors'

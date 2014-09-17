@@ -6,17 +6,19 @@
                       <% end %>
 
 <% content_for :content do %>
-<%= form_for(Item.new, :method => :get, :html => { :class => "form-search" }) do |f| %>
-  <div class="input-append">
+<%= form_for(Item.new, method: :get, html: { class: 'form-inline', role: 'form' }) do |f| %>
+  <div class="form-group">
     <%= text_field_tag :keyword,
           '',
           :autocomplete  => "off",
           :placeholder   => "素材名を入力",
-          :class         => "span12 search-query",
+          :class         => "form-control",
           :autofocus     => "autofocus",
           "data-provide" => "typeahead"  %>
-    <%= f.submit "検索", :class => "btn" %>
   </div>
+  <%= button_tag class: "btn btn-primary btn-lg" do %>
+    検索
+  <% end %>
 <% end %>
 <style>
 h1 {
@@ -31,7 +33,16 @@ h1 {
 
 }
 #keyword {
-  font-size: 14px;
+  width: 216px;
+  height: 45px;
+}
+.form-group {
+  display: inline-block;
+  margin: 0px;
+  vertical-align: bottom;
+}
+form#new_item {
+  text-align: center;
 }
 </style>
 <% if @item %>

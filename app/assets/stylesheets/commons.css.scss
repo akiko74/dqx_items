@@ -25,6 +25,7 @@ a:hover {
 body {
   padding-bottom: 4em;
 }
+
 footer {
     font-size: 10px;
   background-color:white;
@@ -113,3 +114,14 @@ form.login-form {
   }
 }
 
+
+.modal-dialog {
+  #new_user {
+    .form-group {
+      margin-bottom: 10px;
+    }
+  }
+  .modal-body {
+    height: 110px;
+  }
+}

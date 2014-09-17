@@ -2,6 +2,7 @@
 
 # 基底コントローラ
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
 
   def after_sign_in_path_for(resource)
     my_items_path

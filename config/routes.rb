@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -7,7 +8,6 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   devise_for :users
-  devise_for :admins
 
   resources :recipes
   resources :items

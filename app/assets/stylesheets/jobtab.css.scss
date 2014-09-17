@@ -1,81 +1,97 @@
 .job_tabs {
 
-	a {
-		border		 : solid 1px #eee;
-	}
+  a {
+    border     : solid 1px #eee;
+  }
 
-	.job_tab0 a, .job_tab0.active .badge {
-		border-color	 : orangered;
-		background-color : #ff7f7f;
-	}
-	.job_tab0 a:hover, .job_tab0.active a, .job_tab0 .badge {
-		background-color : orangered;
-		color		 : white;
-	}
+  .job_tab0 a, .job_tab0.active .badge {
+    border-color: orangered;
+    background-color: #ff7f7f;
+    color: #800000;
+  }
+  .job_tab0 a:hover, .job_tab0.active a, .job_tab0 .badge, .job_tab0.active a:hover {
+    background-color : orangered;
+    color     : white;
+  }
 
-	.job_tab1 a, .job_tab1.active .badge {
-		border-color	 : tomato;
-		background-color : #ffaf5f;
-	}
-	.job_tab1 a:hover, .job_tab1.active a, .job_tab1 .badge {
-		background-color : tomato;
-		color		 : white;
-	}
+  .job_tab1 a, .job_tab1.active .badge {
+    border-color   : tomato;
+    background-color : #ffaf5f;
+    color: #805000;
+  }
+  .job_tab1 a:hover, .job_tab1.active a, .job_tab1 .badge, .job_tab1.active a:hover {
+    background-color : tomato;
+    color     : white;
+  }
 
-	.job_tab2 a, .job_tab2.active .badge {
-		border-color	 : orange;
-		background-color : #efff7f;
-	}
-	.job_tab2 a:hover, .job_tab2.active a, .job_tab2 .badge {
-		background-color : orange;
-		color		 : white;
-	}
+  .job_tab2 a, .job_tab2.active .badge {
+    border-color   : orange;
+    background-color : #efff7f;
+    color: #808000;
+  }
+  .job_tab2 a:hover, .job_tab2.active a, .job_tab2 .badge, .job_tab2.active a:hover {
+    background-color : #a0c080;
+    color     : white;
+  }
 
-	.job_tab3 a, .job_tab3.active .badge {
-		border-color	 : limegreen;
-		background-color : #afff6f;
-	}
-	.job_tab3 a:hover, .job_tab3.active a, .job_tab3 .badge {
-		background-color : limegreen;
-		color		 : white;
-	}
+  .job_tab3 a, .job_tab3.active .badge {
+    border-color   : limegreen;
+    background-color : #afff6f;
+    color: darkgreen;
+  }
+  .job_tab3 a:hover, .job_tab3.active a, .job_tab3 .badge, .job_tab3.active a:hover {
+    background-color : limegreen;
+    color     : white;
+  }
 
-	.job_tab4 a, .job_tab4.active .badge {
-		border-color	 : mediumseagreen;
-		background-color : #7fff7f;
-	}
-	.job_tab4 a:hover, .job_tab4.active a, .job_tab4 .badge {
-		background-color : mediumseagreen;
-		color		 : white;
-	}
+  .job_tab4 a, .job_tab4.active .badge {
+    border-color   : mediumseagreen;
+    background-color : #7fff7f;
+    color: darkgreen;
+  }
+  .job_tab4 a:hover, .job_tab4.active a, .job_tab4 .badge, .job_tab4.active a:hover {
+    background-color : mediumseagreen;
+    color     : white;
+  }
 
-	.job_tab5 a, .job_tab5.active .badge {
-		border-color	 : lightskyblue;
-		background-color : #7fffff;
-	}
-	.job_tab5 a:hover, .job_tab5.active a, .job_tab5 .badge {
-		background-color : lightskyblue;
-		color		 : white;
-	}
+  .job_tab5 a, .job_tab5.active .badge {
+    border-color   : lightskyblue;
+    background-color : #7fffff;
+  }
+  .job_tab5 a:hover, .job_tab5.active a, .job_tab5 .badge, .job_tab5.active a:hover {
+    background-color : lightskyblue;
+    color     : white;
+  }
 
-	.job_tab6 a, .job_tab6.active .badge {
-		border-color	 : blue;
-		background-color : #7f7fff;
-	}
-	.job_tab6 a:hover, .job_tab6.active a, .job_tab6 .badge {
-		background-color : blue;
-		color		 : white;
-	}
-	
-	.disabled a, .disabled a:hover {
-		border-color	 : #EEE;
-		background-color : white;
-		color		 : #AAA;
-	}
+  .job_tab6 a, .job_tab6.active .badge {
+    border-color   : blue;
+    background-color : #7f7fff;
+    color: white;
+  }
+  .job_tab6 a:hover, .job_tab6.active a, .job_tab6 .badge, .job_tab6.active a:hover {
+    background-color : blue;
+    color     : white;
+  }
 
-	.badge {
-	        font-size        : 10px;
-	        padding          : 2px 5px;
-	}
+  .job_tab7 a, .job_tab7.active .badge {
+    border-color   : purple;
+    background-color : #ff7fff;
+    color: white;
+  }
+  .job_tab7 a:hover, .job_tab7.active a, .job_tab7 .badge, .job_tab7.active a:hover {
+    background-color : purple;
+    color     : white;
+  }
+
+  .disabled a, .disabled a:hover {
+    border-color   : #EEE;
+    background-color : white;
+    color     : #AAA;
+  }
+
+  .badge {
+    font-size        : 10px;
+    padding          : 2px 5px;
+  }
 
 }

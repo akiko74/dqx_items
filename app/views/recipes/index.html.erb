@@ -59,9 +59,11 @@
     <%#= javascript_include_tag "recipes" %>
     <script>
       function recipes_callback() {
-  <% unless admin_signed_in? %>
+<%- if user_signed_in? -%>
+<%-   unless current_user.admin? -%>
        $(".recipes-action").append("");
-  <% end %>
+<%-   end -%>
+<%- end -%>
     }
     </script>
 <% end %>
