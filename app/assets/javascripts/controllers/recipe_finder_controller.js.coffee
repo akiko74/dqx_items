@@ -9,38 +9,37 @@ class RecipeFinderController extends Marionette.Controller
     @recipes.on('remove', $.proxy(@onRemoveRecipe, @))
       .on('add', $.proxy(@onAddRecipe, @))
 
-    layout = new DqxItems.Views.RecipeFinderTopLayout
-    layout.render()
-    layout.form.show(
-      new DqxItems.Views.RecipeFinderFormView(
-        collection: @dictionary,
-        recipes:    @recipes,
-        materials:  @materials ))
-    layout.recipeTable.show(
-      new DqxItems.Views.RecipeFinderRecipeListTableView(
-        collection: @recipes ))
-    layout.materialTable.show(
-      new DqxItems.Views.RecipeFinderMaterialListTableView(
-        collection: @materials ))
+    recipeFinderForm = new DqxItems.Views.RecipeFinderFormView(
+                         collection: @dictionary
+                         recipes:    @recipes
+                         materials:  @materials)
+    recipesTable     = new DqxItems.Views.RecipeFinderRecipeListTableView(
+                         collection: @recipes)
+    materialsTable   = new DqxItems.Views.RecipeFinderMaterialListTableView(
+                         collection: @materials)
+
+    @layoutTop = new DqxItems.Views.RecipeFinderTopLayout
+    @layoutTop.render()
+    @layoutTop.form.show(recipeFinderForm)
+    @layoutTop.recipeTable.show(recipesTable)
+    @layoutTop.materialTable.show(materialsTable)
 
 
   onAddRecipe: (recipeModel, recipeCollection, option) ->
     for material in recipeModel.items
       if current = @materials.findWhere(name: material.name)
-        count = (current.count + material.count)
-        current.count = count
-        current.trigger('change', current, count)
+        current.set(count:(current.get('count') + material.count))
       else
         @materials.add(material)
+    @layoutTop.materialTable.currentView.render()
 
 
   onRemoveRecipe: (recipeModel, recipeCollection, option) ->
-    console.log JSON.stringify @materials
     for material in recipeModel.items
       current = @materials.findWhere(name:material.name)
-      if current.count == material.count
+      if current.get('count') == material.count
         @materials.remove(current)
       else
-        current.count = current.count - material.count
-    console.log @materials
+        current.set(count: (current.get('count') - material.count))
+    @layoutTop.materialTable.currentView.render()
 
