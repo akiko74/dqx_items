@@ -6,9 +6,7 @@ class RecipeFinderTopLayout extends Marionette.LayoutView
   template: JST['recipe_finder']
 
   regions:
-    form:          '#recipe_finder_form'
+    form:          '#recipe_finder_form_wrapper'
     recipeTable:   '#recipe_table'
     materialTable: '#material_table'
 
-  onRender: ->
-    console.log 'shown'

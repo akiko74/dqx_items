@@ -28,6 +28,18 @@
 #recipe_finder {
   #recipe_finder_form {
     margin-bottom: 20px;
+    #recipes_loading {
+      overflow: hidden;
+      text-align: left;
+      padding-left: 30px;
+      display: inline-block;
+      width: 227px;
+      background: {
+        image: url(asset-path('loading-02.gif'));
+        repeat: no-repeat;
+        position: 10px center;
+      }
+    }
   }
   #recipe_keyword_fields {
     background-color: white;
@@ -54,3 +66,4 @@
     }
   }
 }
+

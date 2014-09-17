@@ -12,7 +12,9 @@
 //$navbar-default-link-active-color: #555;
 $grid-float-breakpoint: 100px;
 
+@import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome-sprockets";
 @import "font-awesome";
 
 .navbar .navbar-right {

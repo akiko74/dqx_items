@@ -41,8 +41,8 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'debugger', group: [:development, :test]
 
 
-gem 'bootstrap-sass'
-gem 'font-awesome-sass'
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'font-awesome-sass', '~> 4.2.0'
 gem 'nokogiri'
 gem 'devise'
 gem 'mechanize'
@@ -55,11 +55,8 @@ gem 'simple_form'
 gem 'puma'
 
 gem 'backbone-on-rails'
-gem 'marionette-rails'
-#gem 'twitter-typeahead-rails'
-gem 'twitter-typeahead-rails',
-  git: 'https://github.com/felixbuenemann/twitter-typeahead-rails.git',
-  branch: 'typeahead.js-0.10.5'
+gem 'marionette-rails', '~> 2.2.1'
+gem 'twitter-typeahead-rails', '~> 0.10.5'
 
 
 
@@ -74,7 +71,7 @@ gem 'mysql2'
 group :test,:development do
   # Net::HTTPデバック用 環境変数HTTP_SPY=1を設定すると有効化
   gem 'cucumber-rails', require: false
-  gem 'rspec-rails','3.0.1'
+  gem 'rspec-rails','~> 3.0.1'
   gem 'net-http-spy',:require => false
   gem 'database_cleaner'
   gem 'rb-fsevent'
@@ -95,6 +92,7 @@ end
 group :production do
   gem 'astrails-safe'        ,:require => false
   gem 'request-log-analyzer' ,:require => false
+  gem 'rails_12factor'
 end
 
 

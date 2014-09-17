@@ -23,16 +23,16 @@ class RecipeFinderController extends Marionette.Controller
       new DqxItems.Views.RecipeFinderMaterialListTableView(
         collection: @materials ))
 
-    @dictionary.fetch()
-
 
   onAddRecipe: (recipeModel, recipeCollection, option) ->
     for material in recipeModel.items
       if current = @materials.findWhere(name: material.name)
-        current.count = current.count + material.count
+        count = (current.count + material.count)
+        current.count = count
+        current.trigger('change', current, count)
       else
         @materials.add(material)
-    console.log @materials
+
 
   onRemoveRecipe: (recipeModel, recipeCollection, option) ->
     console.log JSON.stringify @materials

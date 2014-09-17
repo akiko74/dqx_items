@@ -1,5 +1,5 @@
-      <form id="recipe_finder_form">
-      </form>
+      <div id="recipe_finder_form_wrapper">
+      </div>
       <div class="container-fluid">
       <div class="row">
       	<div id="recipe_table" class="col-md-5">

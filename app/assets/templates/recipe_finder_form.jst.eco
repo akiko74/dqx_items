@@ -4,7 +4,12 @@
         </button>
         <div class="form-group" id="recipe_keyword_fields">
           <label class="sr-only" for="recipe_keyword">検索レシピ名</label>
-          <input autocomplete="off" placeholder="レシピ名を入力" autofocus="autofocus" data-provide="typeahead" type="text" class="form-control input-lg" id="recipe_keyword">
+          <div class="form-control input-lg" id="recipes_loading">
+            Loading...
+          </div>
+          <div id="recipe_keyword_wrapper">
+            <input autocomplete="off" placeholder="レシピ名を入力" autofocus="autofocus" data-provide="typeahead" type="text" class="form-control input-lg" id="recipe_keyword">
+          </div>
         </div>
         <button type="submit" class="btn btn-primary btn-lg">追加</button>
       </form>
