@@ -1,18 +1,53 @@
-<h2>Sign up</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p><%= t('.maintext') %></p>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= t('.title') %>
+          </h3>
+        </div>
+        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html:{ role: 'form' }) do |f| %>
+          <div class="panel-body">
+            <%= devise_error_messages! %>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+            <%= content_tag :div, class: 'form-group' do %>
+              <%= content_tag :div, class: 'input-group' do %>
+                <%= content_tag :div, class: 'input-group-addon' do %>
+                  <%= icon 'envelope-o' %>
+                  <%= f.label :email %>
+                <% end %>
+                <%= f.input_field :email, class: 'form-control', placeholder: t('.placeholder.email') %>
+              <% end %>
+            <% end %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+            <%= content_tag :div, class: 'form-group' do %>
+              <%= content_tag :div, class: 'input-group' do %>
+                <%= content_tag :div, class: 'input-group-addon' do %>
+                  <%= icon 'key' %>
+                  <%= f.label :password %>
+                <% end %>
+                <%= f.input_field :password, class: 'form-control', placeholder: t('.placeholder.password') %>
+                <%= f.input_field :password_confirmation, class: 'form-control', placeholder: t('.placeholder.password_confirmation') %>
+              <% end %>
+            <% end %>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
-
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.submit "Sign up" %></div>
+        </div>
+        <div class="panel-footer">
+          <%= f.submit class: 'btn btn-primary btn-block' do %>
+            <%= icon 'edit' %>
+            <%= t 'sign_up' %>
+          <% end %>
+          <%= link_to root_path, class: 'btn btn-default btn-block' do %>
+            <%= icon 'edit' %>
+            戻る
+          <% end %>
+        </div>
 <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= render "devise/shared/links" %>
+

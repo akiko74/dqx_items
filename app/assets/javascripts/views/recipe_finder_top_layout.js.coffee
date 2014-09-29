@@ -10,3 +10,23 @@ class RecipeFinderTopLayout extends Marionette.LayoutView
     recipeTable:   '#recipe_table'
     materialTable: '#material_table'
 
+  ui:
+    tables: '#have_content'
+    noInfo: '#no_content'
+
+  initialize: (options) ->
+    @on('recipeSync', @onRecipeSynced)
+
+  onRecipeSynced: (recipes) ->
+    if recipes.length > 0
+      @ui.tables.show()
+      @ui.noInfo.hide()
+    else
+      @ui.tables.hide()
+      @ui.noInfo.show()
+
+
+  onRender: ->
+    @ui.tables.hide()
+    @ui.noInfo.show()
+

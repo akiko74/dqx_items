@@ -2,10 +2,16 @@
       </div>
       <div class="container-fluid">
       <div class="row">
-      	<div id="recipe_table" class="col-md-5">
-      	</div>
-        <div id="material_table" class="col-md-5">
-      	</div>
+        <div class="alert alert-info col-md-10" role="alert" id="no_content">
+          <p><strong>レシピを検索して必要な素材とお店で素材を買った時の値段をチェック！</strong></p>
+          <p>レシピを続けて検索すると、必要な素材の合計数も出るので職人の依頼に便利です。</p>
+        </div>
+        <div id="have_content">
+      	  <div id="recipe_table" class="col-md-5">
+      	  </div>
+          <div id="material_table" class="col-md-5">
+      	  </div>
+        </div>
         <div class="col-md-2">
       	</div>
       </div>

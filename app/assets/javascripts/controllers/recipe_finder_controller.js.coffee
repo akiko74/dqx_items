@@ -32,6 +32,7 @@ class RecipeFinderController extends Marionette.Controller
       else
         @materials.add(material)
     @layoutTop.materialTable.currentView.render()
+    @layoutTop.trigger('recipeSync', @recipes)
 
 
   onRemoveRecipe: (recipeModel, recipeCollection, option) ->
@@ -42,4 +43,5 @@ class RecipeFinderController extends Marionette.Controller
       else
         current.set(count: (current.get('count') - material.count))
     @layoutTop.materialTable.currentView.render()
+    @layoutTop.trigger('recipeSync', @recipes)
 

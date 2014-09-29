@@ -10,5 +10,16 @@ ja:
       new_recipe_link: レシピ追加
       new_item_link: 素材アイテム追加
 
+  devise:
+    registrations:
+      new:
+        title: 'ユーザー登録'
+        maintext: 'ユーザー登録のために下記を入力してください'
+        placeholder:
+          email: '登録するメールアドレスを入力'
+          password: 'ログインパスワードを入力'
+          password_confirmation: '確認のためもう一度パスワードを入力'
+
+
 
 

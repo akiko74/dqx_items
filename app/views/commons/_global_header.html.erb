@@ -4,6 +4,7 @@
     :user
   end
 
+
   def resource
     @resource ||= User.new
   end
@@ -65,11 +66,12 @@
                 <i class="fa fa-sign-in "></i>
                 <span><%= t 'sign_in' %></span>
               </button>
-              <button class="btn btn-primary"
-                      data-toggle="modal" data-target="#signup-modal">
-                <i class="fa fa-edit "></i>
+<%-   if params[:controller] != 'devise/registrations' -%>
+              <%= link_to(new_user_registration_path, class: 'btn btn-primary', role:'button') do %>
+                <%= icon('edit') %>
                 <span><%= t 'sign_up' %></span>
-              </button>
+              <% end %>
+<%-   end -%>
 <%- else -%>
               <%= button_to(destroy_user_session_path, method: :delete, class: 'btn btn-default') do %>
                 <%= icon('power-off') %>

@@ -63,7 +63,7 @@ form.login-form {
   }
   #global-header-menu {
     @media (max-width: 640px) {
-      button {
+      button, a[role='button'] {
         padding: 3px 5px;
         * {
           display: block;
@@ -123,5 +123,12 @@ form.login-form {
   }
   .modal-body {
     height: 110px;
+  }
+}
+
+.input-group-addon label {
+  margin-bottom: 0px;
+  @media (max-width: 480px) {
+    display: none;
   }
 }
